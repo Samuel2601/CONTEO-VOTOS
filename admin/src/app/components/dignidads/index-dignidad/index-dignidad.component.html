@@ -1,0 +1,315 @@
+<app-sidebar></app-sidebar>
+<ng-container  *ngIf="rol!=undefined && rol=='admin'">
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-12 col-xl-10">
+
+            <!-- Header -->
+            <div class="header mt-md-5">
+              <div class="header-body">
+                <div class="row align-items-center">
+                  <div class="col">
+
+                    <!-- Pretitle -->
+                    <h6 class="header-pretitle">
+                      Módulo
+                    </h6>
+
+                    <!-- Title -->
+                    <h1 class="header-title">
+                      Dignidades a elegir
+                    </h1>
+
+                  </div>
+                </div> <!-- / .row -->
+      
+              </div>
+            </div>
+
+            <!-- Alert -->
+
+
+            <!-- Card -->
+            <div class="card">
+              <div class="card-header">
+
+                <!-- Title -->
+                <h4 class="card-header-title">
+                  Mostrando todos tus dignidades por elegir
+                </h4>
+
+              </div>
+              <ng-container *ngIf="load_data_doc">
+              
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-12 text-center">
+                      <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="visually-hidden"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              
+            </ng-container>
+            <ng-container *ngIf="!load_data_doc">
+              <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="input-group input-group-merge ">
+                            <select class="form-control custom-select" id="select-input" style="max-width: 200px; min-width: 100px;" required name="tipo_filtro" (ngModelChange)="cambiar_tipo_filtro($event)" [(ngModel)]="tipo_filtro">
+                              <option value="" selected disabled>Seleccionar</option>
+                              <option value="'codigo_dignidad'" [ngValue]="'codigo_dignidad'">Código de Dignidad</option>
+                              <option value="'nombre_dignidad'" [ngValue]="'nombre_dignidad'">Nombre de Dignidad</option>
+                              <option value="'codigo_provincia'" [ngValue]="'codigo_provincia'">Código de Provincia</option>
+                              <option value="'nombre_provincia'" [ngValue]="'nombre_provincia'">Nombre de Provincia</option>
+                              <option value="'seleccion'" [ngValue]="'seleccion'">Elección</option>
+                          </select>
+                          <ng-container *ngIf="tipo_filtro=='seleccion'">
+                            <select class="form-control custom-select" id="select-input" style="max-width: 250px; min-width: 100px;" required placeholder="Buscar Elección"  name="tipo_filtro" [(ngModel)]="filtro">
+                              <option selected value="">Tipo de Dignidad a eligir</option>
+                                <option value="PrefecturaViceprefectura">Prefecto y Viceprefecto</option>
+                                <option value="AlcaldesM">Alcaldes Municipales</option>
+                                <option value="ConcejalesU">Concejales Urbanos</option>
+                                <option value="ConcejalesR">Consejales Rurales</option>
+                                <option value="VocalesJP">Vocales de Juntas Parroquiales</option>
+                                <option value="ConsejoPCCS">Consejo de Participación Ciudadana y Control Social</option>
+                          </select>
+                          </ng-container>
+                          <ng-container *ngIf="tipo_filtro!='seleccion'">
+                            <input type="text" class="form-control form-control-appended" style="max-width: 250px; min-width: 100px;"placeholder="Buscar dignidad" name="filtro" [(ngModel)]="filtro">
+                          </ng-container>
+                            <div class="input-group-append">
+                              <button class="btn btn-primary" (click)="filtrar_dignidad()">
+                                  Buscar
+                              </button>
+                            </div>
+                           
+                            <div class="input-group-append">
+                              <button class="btn btn-primary" [routerLink]="['/dignidads/create']" routerLinkActive="router-link-active"  style="cursor: pointer;">Nueva Dignidad</button>
+                        
+                            </div>
+                          </div>
+                          
+                    </div>
+                    <div class="col-3" *ngIf="rol=='direc' || aux=='samuel.arevalo@espoch.edu.ec'" style="text-align:right ;">
+                      <div class="input-group-append">
+                      <button class="btn btn-danger" data-toggle="modal" [attr.data-target]="'#delete-todo'" style="cursor: pointer; color: aliceblue;">Eliminar</button>
+                    </div>
+                  </div>
+                </div>
+                
+          </div>
+          <div class="table-responsive">
+            <table class="table table-sm table-nowrap card-table">
+              <thead>
+                <tr>
+                  <th *ngIf="rol=='direc' || aux=='samuel.arevalo@espoch.edu.ec'"><input type="checkbox" value="1" placeholder="total" [(ngModel)]="total" (click)="select_todo()"></th>
+                  <th>Codigo de Dignidad</th>
+                  <th>Nombre de Dignidad</th>
+                  <th>Provincia</th>
+                  <th>Elección a</th>
+                  <th>Opciones</th>
+                </tr>
+              </thead>
+              <tbody class="font-size-base" *ngIf="!load">
+                <tr *ngFor="let item of dignidads | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                  <td *ngIf="rol=='direc' || aux=='samuel.arevalo@espoch.edu.ec'">
+                    <input type="checkbox" value="1" placeholder="item.ckechk" [(ngModel)]="item.ckechk" >
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+
+                      <!-- Image -->
+                      
+
+                      <div class="ms-3">
+                        <!-- Heading -->
+                        <h4 class="fw-normal mb-1">{{item.element.codigo_dignidad}}</h4>
+                        <!-- Text -->
+                        
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    {{item.element.nombre_dignidad}}
+                  <td>
+                    <div class="avatar mr-3" *ngIf="item.element.partido=='lista1'">
+                      <a href="{{url +'obtener_portada_partido/1.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/1.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                    </div>
+                    <div class="avatar mr-3" *ngIf="item.element.partido=='lista2'">
+                      <a href="{{url +'obtener_portada_partido/2.png'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/2.png'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                    </div>
+                    <div class="avatar mr-3" *ngIf="item.element.partido=='lista3'">
+                      <a href="{{url +'obtener_portada_partido/3.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/3.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                    </div>
+                    <div class="avatar mr-3" *ngIf="item.element.partido=='lista6'">
+                      <a href="{{url +'obtener_portada_partido/6.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/6.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                    </div>
+                    <div class="avatar mr-3" *ngIf="item.element.partido=='lista7'">
+                      <a href="{{url +'obtener_portada_partido/7.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/7.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                    </div>
+                    <div class="avatar mr-3" *ngIf="item.element.partido=='lista8'">
+                      <a href="{{url +'obtener_portada_partido/8.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/8.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                    </div>
+                    <div class="avatar mr-3" *ngIf="item.element.partido=='lista10'">
+                      <a href="{{url +'obtener_portada_partido/10.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/10.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                    </div>
+                    <div class="avatar mr-3" *ngIf="item.element.partido=='lista12'">
+                      <a href="{{url +'obtener_portada_partido/12.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/12.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                    </div>
+                    <div class="avatar mr-3" *ngIf="item.element.partido=='lista17'">
+                      <a href="{{url +'obtener_portada_partido/17.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/17.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                    </div>
+                    <div class="avatar mr-3" *ngIf="item.element.partido=='lista18'">
+                      <a href="{{url +'obtener_portada_partido/18.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/18.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                    </div>
+                    <div class="avatar mr-3" *ngIf="item.element.partido=='lista19'">
+                      <a href="{{url +'obtener_portada_partido/19.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/19.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                    </div>
+                    <div class="avatar mr-3" *ngIf="item.element.partido=='lista21'">
+                      <a href="{{url +'obtener_portada_partido/21.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/21.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                    </div>
+                    <div class="avatar mr-3" *ngIf="item.element.partido=='lista23'">
+                      <a href="{{url +'obtener_portada_partido/23.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/23.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                    </div>
+                    <div class="avatar mr-3" *ngIf="item.element.partido=='lista35'">
+                      <a href="{{url +'obtener_portada_partido/35.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/35.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                    </div>
+                    <div class="avatar mr-3" *ngIf="item.element.partido=='lista51'">
+                      <a href="{{url +'obtener_portada_partido/51.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/51.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                    </div>
+                    {{item.element.codigo_provincia.nombre_provincia}}
+                  </td>
+                  <td>
+                    <span *ngIf="item.element.seleccion=='PrefecturaViceprefectura'">Prefecto y Viceprefecto</span>
+                    <span *ngIf="item.element.seleccion=='AlcaldesM'">Alcaldes Municipales</span>
+                    <span *ngIf="item.element.seleccion=='ConcejalesU'">Concejales Urbanos</span>
+                    <span *ngIf="item.element.seleccion=='ConcejalesR'">Consejales Rurales</span>
+                    <span *ngIf="item.element.seleccion=='VocalesJP'">Vocales de Juntas Parroquiales</span>
+                    <span *ngIf="item.element.seleccion=='ConsejoPCCS'">Consejo de Participación Ciudadana y Control Social</span>
+                  
+                  </td>
+                  <td>
+                    <div class="dropdown">
+
+                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonAlias" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Opciones
+                      </button>
+                    
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonAlias">
+                        <li *ngIf="rol=='admin' || aux=='samuel.arevalo@espoch.edu.ec'">
+                          <a class="dropdown-item" [routerLink]="['/dignidads/edit',item.element._id]">Editar</a>
+                        </li>
+
+                        <li *ngIf="rol=='admin' || aux=='samuel.arevalo@espoch.edu.ec'">
+                            <a class="dropdown-item" style="cursor: pointer;" data-toggle="modal" [attr.data-target]="'#delete-'+item.element._id">Eliminar</a>
+                        </li>
+                        
+                      </ul>
+                      
+                  </div>
+
+                  <div class="modal fade" id="delete-{{item.element._id}}" tabindex="-1" style="display: none;" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Eliminar dignidad</h4>
+                          <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <div class="modal-body">
+                          <p>Desea eliminar este dignidad?  {{item.element.dignidad}} </p>
+                        </div>
+                        <div class="modal-footer">
+                          <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                          <button class="btn btn-primary btn-shadow btn-sm" (click)="eliminar(item.element._id)" type="button">Si, eliminar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  </td>
+                </tr>
+               
+              </tbody>
+              <tbody *ngIf="load">
+                <tr>
+                    <td colspan="5" class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden"></span>
+                        </div>
+                    </td>
+                </tr>
+              </tbody>  
+            </table>
+            
+          </div>
+          <ngb-pagination *ngIf="dignidads.length >= 1"
+            [(page)]="page"
+            [pageSize]="pageSize"
+            [maxSize]="10"
+            [rotate]="true" [boundaryLinks]="true"
+    [collectionSize]="dignidads.length"></ngb-pagination>
+       
+            </ng-container>
+          </div>
+          <div class="modal fade" id="delete-todo" tabindex="-1" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Eliminación masiva</h4>
+                  <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                  <p>Desea eliminar estos dignidads? </p>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                  <button class="btn btn-primary btn-shadow btn-sm" (click)="eliminar_todo()" type="button">Si, eliminar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+      <br>
+
+          </div>
+        </div> <!-- / .row -->
+      </div>
+</div>
+</ng-container>
+<ng-container  *ngIf="rol!=undefined && rol!='admin'">
+  <div class="card">
+    <div class="card-body">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-5 col-xl-4 my-5">
+          
+          <div class="text-center">
+          
+            <!-- Preheading -->
+            <h6 class="text-uppercase text-muted mb-4">
+              404 error
+            </h6>
+
+            <!-- Heading -->
+            <h1 class="display-4 mb-3">
+              Está página no se cuentra habilitada 😭
+            </h1>
+
+            <!-- Subheading -->
+            <p class="text-muted mb-4">
+              ¿Parece que llegaste aquí por accidente?
+            </p>
+
+            <!-- Button -->
+            <a [routerLink]="['/votaciones/create']"  class="btn btn-lg btn-primary">
+              Regresar a votaciones
+            </a>
+          
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

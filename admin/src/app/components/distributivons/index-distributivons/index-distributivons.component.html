@@ -1,0 +1,416 @@
+<app-sidebar></app-sidebar>
+<ng-container  *ngIf="rol!=undefined && rol=='admin'">
+  <div class="main-content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-12 col-xl-10">
+
+            <!-- Header -->
+            <div class="header mt-md-5">
+              <div class="header-body">
+                <div class="row align-items-center">
+                  <div class="col">
+
+                    <!-- Pretitle -->
+                    <h6 class="header-pretitle">
+                      Módulo
+                    </h6>
+
+                    <!-- Title -->
+                    <h1 class="header-title">
+                        Distributivo Nacional
+                    </h1>
+
+                  </div>
+                </div> <!-- / .row -->
+      
+              </div>
+            </div>
+
+            <!-- Alert -->
+
+
+            <!-- Card -->
+            <ng-container *ngIf="load_data_est">
+              
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-12 text-center">
+                    <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                      <span class="visually-hidden"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </ng-container>
+          <ng-container *ngIf="!load_data_est">
+            <div class="card">
+              <div class="card-body">
+
+                <!-- Title -->
+                <div class="row">
+                  <div class="col-9">
+                    <h4 class="card-header-title">
+                      Mostrando todos tus distributivo Nacionales {{distributivons.length}}
+                    </h4>
+                  </div>
+
+                  
+                  
+                </div>
+                <hr>
+             
+
+                
+              </div>
+              <div class="card-body" >
+
+                <div class="row">
+
+                <div class="col-9">
+                <div class="input-group input-group-merge">
+                          <select class="form-control custom-select" style="max-width: 150px; min-width: 100px;" id="select-input" required name="tipo_filtro" [(ngModel)]="tipo_filtro">
+                              <option value="" selected disabled>Seleccionar</option>
+                              <option value="item.element.codigo_provincia.codigo_provincia" >codigo_provincia</option>
+                              <option value="item.element.codigo_provincia.nombre_provincia" >nombre_provincia</option>
+                              <option value="item.element.codigo_canton.codigo_canton" >codigo_canton</option>
+                              <option value="item.element.codigo_canton.nombre_canton" >nombre_canton</option>
+                              <option value="item.element.codigo_parroquia.codigo_parroquia" >codigo_parroquia</option>
+                              <option value="item.element.codigo_parroquia.nombre_parroquia" >nombre_parroquia</option>
+                              <option value="item.element.codigo_zona.codigo_zona" >codigo_zona</option>
+                              <option value="item.element.codigo_zona.nombre_zona" >nombre_zona</option>
+                              <option value="item.element.codigo_recinto" >codigo_recinto</option>
+                              <option value="item.element.nombre_recinto" >nombre_recinto</option>
+                              <option value="item.element.direccion_recinto" >direccion_recinto</option>
+                              <option value="item.element.telefono" >telefono</option>
+                              <option value="item.element.zona_utm" >zona_utm</option>
+                              <option value="item.element.coord_x" >coord_x</option>
+                              <option value="item.element.coord_y" >coord_y</option>
+                              <option value="item.element.long" >long</option>
+                              <option value="item.element.lat" >lat</option>
+                              <option value="item.element.u_r" >u_r</option>
+                              <option value="item.element.jun_fem" >jun_fem</option>
+                              <option value="item.element.jun_mas" >jun_mas</option>
+                              <option value="item.element.num_junr" >num_junr</option>
+                              <option value="item.element.jun_inif" >jun_inif</option>
+                              <option value="item.element.jun_finf" >jun_finf</option>
+                              <option value="item.element.jun_inim" >jun_inim</option>
+                              <option value="item.element.jun_finm" >jun_finm</option>
+                              <option value="item.element.numero_electores" >numero_electores</option>
+                          </select>
+                    <input type="text" class="form-control form-control-appended" style="max-width: 150px; min-width: 100px;" placeholder="Buscar distributivon" name="filtro" [(ngModel)]="filtro">
+                    <div class="input-group-append">
+                          <button class="btn btn-primary" (click)="filtrar_distributivon()">
+                              Buscar
+                          </button>
+                          
+                    </div>
+                    <div class="input-group-append" *ngIf="rol=='admin'" style="text-align: right;">
+                      <a class="btn btn-primary" [routerLink]="['/distributivons/create']" routerLinkActive="router-link-active"  style="cursor: pointer;">Nuevo Distributivo Nacional</a>
+                    </div> 
+                    
+                    
+
+                  </div>
+                  
+                </div>
+
+                <div class="col">
+                  <div class="input-group input-group-merge">
+                    <div class="input-group-append">
+                    
+                      <flatfile-button *ngIf="rol=='admin'"
+                      [settings]="settings"
+                      [customer]="customer"
+                      [licenseKey]="licenseKey"
+                      [onData]="onData.bind(this)" 
+                      >
+                      <button  class="btn btn-primary">
+                        Subida masiva
+                      </button>
+                      
+                    </flatfile-button> 
+                  
+
+                  </div>
+
+                  <div class="input-group-append">
+                    <ng-container *ngIf="rol=='admin'">
+                      <button  class="btn btn-danger" *ngIf="load_eliminados==false" (click)="contar_eliminado()" data-toggle="modal" [attr.data-target]="'#delete-todo'" >
+                        Eliminar
+                    </button>
+                    </ng-container>
+                  </div>
+                  </div>
+                </div>
+
+              
+                
+                    
+                  
+                    
+                    
+                  
+                
+              </div>
+              
+            
+          
+              </div>
+              <div class="table-responsive">
+                <table class="table table-sm table-nowrap card-table">
+                  <thead>
+                    <tr>
+                      <th *ngIf="rol=='admin'"><input type="checkbox" value="1" placeholder="total" [(ngModel)]="total" (click)="select_todo()" ></th>
+                      <th>codigo_provincia</th>
+                      <th>nombre_provincia</th>
+                      <th>codigo_canton</th>
+                      <th>nombre_canton</th>
+                      <th>codigo_parroquia</th>
+                      <th>nombre_parroquia</th>
+                      <th>codigo_zona</th>
+                      <th>nombre_zona</th>
+                      <th>codigo_recinto</th>
+                      <th>nombre_recinto</th>
+                      <th>direccion_recinto</th>
+                      <th>telefono</th>
+                      <th>zona_utm</th>
+                      <th>coord_x</th>
+                      <th>coord_y</th>
+                      <th>long</th>
+                      <th>lat</th>
+                      <th>u_r</th>
+                      <th>jun_fem</th>
+                      <th>jun_mas</th>
+                      <th>num_junr</th>
+                      <th>jun_inif</th>
+                      <th>jun_finf</th>
+                      <th>jun_inim</th>
+                      <th>jun_finm</th>
+                      <th>numero_electores</th>
+                      <th>Opción</th>
+                    </tr>
+                  </thead>
+                  <tbody class="font-size-base">
+                    <ng-container *ngFor="let item of distributivons | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                      <tr>
+                        <td *ngIf="rol=='admin'">
+                          <input type="checkbox" value="1" placeholder="item.ckechk" [(ngModel)]="item.ckechk" >
+                        </td>
+                        <td>
+                          {{item.element.codigo_provincia.codigo_provincia}}
+                        </td>
+                        <td>
+                          {{item.element.codigo_provincia.nombre_provincia}}
+                        </td>
+                        <td>
+                          {{item.element.codigo_canton.codigo_canton}}
+                        </td>
+                        <td>
+                          {{item.element.codigo_canton.nombre_canton}}
+                        </td>
+                        <td>
+                          {{item.element.codigo_parroquia.codigo_parroquia}}
+                        </td>
+                        <td>
+                          {{item.element.codigo_parroquia.nombre_parroquia}}
+                        </td>
+                        <td>
+                          {{item.element.codigo_zona.codigo_zona}}
+                        </td>
+                        <td>
+                          {{item.element.codigo_zona.nombre_zona}}
+                        </td>
+                        <td>
+                          {{item.element.codigo_recinto}}
+                        </td>
+                        <td>
+                          {{item.element.nombre_recinto}}
+                        </td>
+                        <td>
+                          {{item.element.direccion_recinto}}
+                        </td>
+                        <td>
+                          {{item.element.telefono}}
+                        </td>
+                        <td>
+                          {{item.element.zona_utm}}
+                        </td>
+                        <td>
+                          {{item.element.coord_x}}
+                        </td>
+                        <td>
+                          {{item.element.coord_y}}
+                        </td>
+                        <td>
+                          {{item.element.long}}
+                        </td>
+                        <td>
+                          {{item.element.lat}}
+                        </td>
+                        <td>
+                          {{item.element.u_r}}
+                        </td>
+                        <td>
+                          {{item.element.jun_fem}}
+                        </td>
+                        <td>
+                          {{item.element.jun_mas}}
+                        </td>
+                        <td>
+                          {{item.element.num_junr}}
+                        </td>
+                        <td>
+                          {{item.element.jun_inif}}
+                        </td>
+                        <td>
+                          {{item.element.jun_finf}}
+                        </td>
+                        <td>
+                          {{item.element.jun_inim}}
+                        </td>
+                        <td>
+                          {{item.element.jun_finm}}
+                        </td>
+                        <td>
+                          {{item.element.numero_electores}}
+                        </td>
+                        <td>
+                          <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonAlias" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Opciones
+                            </button>
+                          
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonAlias">
+                              <li>
+                                <a class="dropdown-item" *ngIf="rol=='admin'" [routerLink]="['/distributivons/edit',item.element._id]">Editar</a>
+                              </li>
+                              
+                              <li *ngIf="rol=='admin'">
+                                <a class="dropdown-item" style="cursor: pointer;" data-toggle="modal" [attr.data-target]="'#delete-'+item.element._id">Eliminar</a>
+                              </li>
+                              
+                            </ul>
+                          </div>
+                          <div class="modal fade" id="delete-{{item.element._id}}" tabindex="-1" style="display: none;" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h4 class="modal-title">Eliminar</h4>
+                                  <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body">
+                                  <p>Desea eliminar este distributivo nacional?</p>
+                                  <p>{{item.element.codigo_provincia.nombre_provincia}}/{{item.element.codigo_canton.nombre_canton}}/{{item.element.codigo_parroquia.nombre_parroquia}}/{{item.element.codigo_zona.nombre_zona}}</p>
+                                  <p>{{item.element.nombre_recinto}}/{{item.element.direccion_recinto}}/{{item.element.telefono}}/{{item.element.zona_utm}}</p>
+                                  <p>{{item.element.coord_x}}/{{item.element.coord_y}}</p>
+                                  <p>{{item.element.long}}/{{item.element.lat}}</p>
+                                  <p>{{item.element.u_r}}</p>
+                                  <p>{{item.element.jun_fem}}/{{item.element.jun_mas}}</p>
+                                  <p>{{item.element.num_junr}}</p>
+                                  <p>{{item.element.jun_inif}}/{{item.element.jun_finf}}</p>
+                                  <p>{{item.element.jun_inim}}/{{item.element.jun_finm}}</p>
+                                  <p>{{item.element.numero_electores}}</p>
+                                </div>
+                                <div class="modal-footer">
+                                  <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                                  <button class="btn btn-primary btn-shadow btn-sm" (click)="eliminar(item.element._id)" type="button">Si, eliminar</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+  
+                          
+                        </td>
+                         
+                      </tr>
+
+                    </ng-container>
+                  </tbody>
+                </table>
+                
+              </div>
+
+            </div>
+                <ngb-pagination *ngIf="distributivons.length >= 1"
+                        [(page)]="page"
+                        [pageSize]="pageSize"
+                        [maxSize]="10"
+                        [rotate]="true" [boundaryLinks]="true"
+                [collectionSize]="distributivons.length"></ngb-pagination>
+  
+            <br>
+            <div class="modal fade" id="delete-todo" tabindex="-1" style="display: none;" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Eliminación masiva ({{cont_el}})</h4>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                  </div>
+                  <ng-container *ngIf="cont_el!=0">
+                    <div class="modal-body">
+                      <p>Desea eliminar estos Distributivo Nacional?, se eliminaran solo los datos del recinto: ({{cont_el}})</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                      <button class="btn btn-primary btn-shadow btn-sm" (click)="eliminar_todo()" type="button">Si, eliminar</button>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="cont_el==0">
+                    <div class="modal-body">
+                    <p>No hay valores por eliminar</p>
+                  </div>
+                    <div class="modal-footer">
+                      <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Regresar</button>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+
+          </ng-container>
+          </div>
+        </div> <!-- / .row -->
+      </div>
+</div>
+</ng-container>
+
+
+
+
+<ng-container  *ngIf="rol!=undefined && rol!='admin'">
+  <div class="card">
+    <div class="card-body">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-5 col-xl-4 my-5">
+          
+          <div class="text-center">
+          
+            <!-- Preheading -->
+            <h6 class="text-uppercase text-muted mb-4">
+              404 error
+            </h6>
+
+            <!-- Heading -->
+            <h1 class="display-4 mb-3">
+              Está página no se cuentra habilitada 😭
+            </h1>
+
+            <!-- Subheading -->
+            <p class="text-muted mb-4">
+              ¿Parece que llegaste aquí por accidente?
+            </p>
+
+            <!-- Button -->
+            <a [routerLink]="['/votaciones/create']"  class="btn btn-lg btn-primary">
+              Regresar a votaciones
+            </a>
+          
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

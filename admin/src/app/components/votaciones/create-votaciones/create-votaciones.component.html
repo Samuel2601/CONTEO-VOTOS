@@ -1,0 +1,838 @@
+<app-sidebar></app-sidebar>
+
+<ng-container *ngIf="(rol!=undefined && rol=='encuestador')||yo==1">
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10 col-xl-8">
+
+            <!-- Header -->
+            <!-- Header -->
+            <div class="header mt-md-5">
+                <div class="header-body">
+                  <div class="row align-items-center">
+                    <div class="col">
+  
+                      <!-- Pretitle -->
+                      <h6 class="header-pretitle">
+                        Módulo
+                      </h6>
+  
+                      <!-- Title -->
+                      <h1 class="header-title">
+                          Votaciones
+                      </h1>
+  
+                    </div>
+                  </div> <!-- / .row -->
+        
+                </div>
+              </div>
+
+            <!-- Alert -->
+
+
+            <div class="card" >
+              
+              <!--Provincia--> <!--Canton-->
+                <ng-container>
+                  <!--Titulos-->
+                  <div class="card-header">
+                    <div class="col-lg"> 
+                    <!-- Title -->
+                    <h4 class="card-header-title">
+                      Selección de Provincia - Canton
+                    </h4>
+                  </div>
+
+                  </div>
+                  <!--Campos-->
+                  <div class="card-body">
+                      <div class="row form-group">
+                          <div class="col-lg">
+                              <label for="validationCustom01" class="form-label"><b>Provincia</b></label> <br>
+                              <div class="input-group">
+                                  
+                                  <input class="form-control" type="text" id="input-provincia" placeholder="Seleccionar provincia" disabled>
+                                  <button id="btnBuscarProvincia" class="btn btn-primary" type="button" data-toggle="modal" (click)="llamada_pro(false)" [attr.data-target]="'#modalProvincia'">Buscar!</button>
+                              </div>
+  
+                              <div class="modal fade" id="modalProvincia" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                  <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Selecciona la Provincia</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                      <div class="modal-body" style="max-height: 600px;
+                                      overflow: hidden;
+                                      overflow-y: auto;">
+                                          <div class="input-group">
+                                              <input class="form-control" type="text" placeholder="Busca el provincia" name="filtro_provincia" [(ngModel)]="filtro_provincia">
+                                              <button class="btn btn-primary" type="button" (click)="func_filtro_provincia()">Buscar</button>
+                                          </div>
+                                        <table class="table">
+                                              <thead>
+                                                  <th>Codigo de Provincia</th>
+                                                  <th>Nombre de Provincia</th>
+                                                  <th>Acción</th>
+                                              </thead>
+                                              <tbody *ngIf="!load_provincia">
+                                                <ng-container>
+                                                  <td>{{d_p.codigo_provincia}}</td>
+                                                  <td>{{d_p.nombre_provincia}}</td>
+                                                  <td><a style="cursor: pointer;" class="text-success" (click)="seleccion_pro(d_p,false)">[Seleccionar]</a></td>
+                                                </ng-container>
+                                                <ng-container *ngFor="let item of arr_provincia| slice: (pageProvincia-1)*pageSizeProvincia : (pageProvincia-1) * pageSizeProvincia + pageSizeProvincia; let indice = index">
+                                                  <tr *ngIf="item._id !=d_p._id">  
+                                                    <ng-container >
+                                                      <td>{{item.codigo_provincia}}</td>
+                                                      <td>{{item.nombre_provincia}}</td>
+                                                      <td><a style="cursor: pointer;" class="text-success" (click)="seleccion_pro(item,false)">[Seleccionar]</a></td>
+                                                    </ng-container>
+                                                  </tr>
+                                                </ng-container>
+                                                  
+                                                
+                                              </tbody>
+                                              <tbody *ngIf="load_provincia">
+                                                  <tr>
+                                                      <td colspan="2" class="text-center">
+                                                          <div class="spinner-border" role="status">
+                                                              <span class="visually-hidden"></span>
+                                                            </div> 
+                                                      </td>
+                                                  </tr> 
+                                              </tbody>
+                                              
+                                                
+                                            
+                                        </table>
+                                        <ngb-pagination *ngIf="arr_provincia.length >= 1"
+                                          [(page)]="pageProvincia"
+                                          [pageSize]="pageSizeProvincia"
+                                          [maxSize]="5"
+                                          [rotate]="true" [boundaryLinks]="true"
+                                          [collectionSize]="arr_provincia.length"></ngb-pagination>
+  
+                                      </div>
+                                      
+                                    </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-lg">
+                            <label for="validationCustom01" class="form-label"><b>Canton</b></label> <br>
+                            <div class="input-group">
+                                
+                                <input class="form-control" type="text" id="input-canton" placeholder="Seleccionar canton" disabled>
+                                <button id="btnBuscarCanton" *ngIf="new_votacion.codigo_provincia" class="btn btn-primary" type="button" data-toggle="modal" (click)="llamada_can(false)" [attr.data-target]="'#modalCanton'">Buscar!</button>
+                            </div>
+
+                            <div class="modal fade" id="modalCanton" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLongTitle">Selecciona la Canton</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body" style="max-height: 600px;
+                                    overflow: hidden;
+                                    overflow-y: auto;">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" placeholder="Busca el canton" name="filtro_canton" [(ngModel)]="filtro_canton">
+                                            <button class="btn btn-primary" type="button" (click)="func_filtro_canton()">Buscar</button>
+                                        </div>
+                                      <table class="table">
+                                            <thead>
+                                                <th>Codigo de Canton</th>
+                                                <th>Nombre de Canton</th>
+                                                <th>Acción</th>
+                                            </thead>
+                                            <tbody *ngIf="!load_canton">
+                                              
+                                              <ng-container *ngFor="let item of arr_canton| slice: (pageCanton-1)*pageSizeCanton : (pageCanton-1) * pageSizeCanton + pageSizeCanton; let indice = index">
+                                                <tr>  
+                                                  <ng-container >
+                                                    <td>{{item.codigo_canton}}</td>
+                                                    <td>{{item.nombre_canton}}</td>
+                                                    <td><a style="cursor: pointer;" class="text-success" (click)="seleccion_can(item,false)">[Seleccionar]</a></td>
+                                                  </ng-container>
+                                                </tr>
+                                              </ng-container>
+                                                
+                                              
+                                            </tbody>
+                                            <tbody *ngIf="load_canton && new_votacion.codigo_provincia!=undefined">
+                                                <tr>
+                                                    <td colspan="2" class="text-center">
+                                                        <div class="spinner-border" role="status">
+                                                            <span class="visually-hidden"></span>
+                                                          </div> 
+                                                    </td>
+                                                </tr> 
+                                            </tbody>
+
+                                            <tbody *ngIf="load_canton && new_votacion.codigo_provincia==undefined">
+                                              <h2>Selecciona una Provincia</h2> 
+                                          </tbody>
+                                            
+                                              
+                                          
+                                      </table>
+                                      <ngb-pagination *ngIf="arr_canton.length >= 1"
+                                        [(page)]="pageCanton"
+                                        [pageSize]="pageSizeCanton"
+                                        [maxSize]="5"
+                                        [rotate]="true" [boundaryLinks]="true"
+                                        [collectionSize]="arr_canton.length"></ngb-pagination>
+
+                                    </div>
+                                    
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+                  
+                </ng-container>
+
+                <!--Parroquia-->
+                <ng-container>
+                   <!--Titulos-->
+                  <div class="card-header">
+                      <div class="col-lg">
+                      <!-- Title -->
+                      <h4 class="card-header-title">
+                        Selección de Parroquia - Zona
+                      </h4>
+                    </div>                   
+                  </div>
+                  <!--Campos-->
+                  <div class="card-body">
+                      <div class="row form-group">
+                          <div class="col-lg-6">
+                              <label for="validationCustom01" class="form-label"><b>Parroquia</b></label> <br>
+                              <div class="input-group">
+                                  
+                                  <input class="form-control" type="text" id="input-parroquia" placeholder="Seleccionar parroquia" disabled>
+                                  <button id="btnBuscarParroquia" *ngIf="new_votacion.codigo_canton" class="btn btn-primary" type="button" data-toggle="modal" (click)="llamada_parr(false)" [attr.data-target]="'#modalParroquia'">Buscar!</button>
+                              </div>
+  
+                              <div class="modal fade" id="modalParroquia" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                  <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Selecciona la Parroquia</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                      <div class="modal-body" style="max-height: 600px;
+                                      overflow: hidden;
+                                      overflow-y: auto;">
+                                          <div class="input-group">
+                                              <input class="form-control" type="text" placeholder="Busca el parroquia" name="filtro_parroquia" [(ngModel)]="filtro_parroquia">
+                                              <button class="btn btn-primary" type="button" (click)="func_filtro_parroquia()">Buscar</button>
+                                          </div>
+                                        <table class="table">
+                                              <thead>
+                                                  <th>Codigo de Parroquia</th>
+                                                  <th>Nombre de Parroquia</th>
+                                                  <th>Acción</th>
+                                              </thead>
+                                              <tbody *ngIf="!load_parroquia">
+                                                
+                                                <ng-container *ngFor="let item of arr_parroquia| slice: (pageParroquia-1)*pageSizeParroquia : (pageParroquia-1) * pageSizeParroquia + pageSizeParroquia; let indice = index">
+                                                  <tr>  
+                                                    <ng-container >
+                                                      <td>{{item.codigo_parroquia}}</td>
+                                                      <td>{{item.nombre_parroquia}}</td>
+                                                      <td><a style="cursor: pointer;" class="text-success" (click)="seleccion_parr(item,false)">[Seleccionar]</a></td>
+                                                    </ng-container>
+                                                  </tr>
+                                                </ng-container>
+                                                  
+                                                
+                                              </tbody>
+                                              
+                                              <tbody *ngIf="load_parroquia && new_votacion.codigo_provincia!=undefined && new_votacion.codigo_canton!=undefined">
+                                                  <tr>
+                                                    
+                                                      <td colspan="2" class="text-center">
+                                                          <div class="spinner-border" role="status">
+                                                              <span class="visually-hidden"></span>
+                                                            </div> 
+                                                      </td>
+                                                  </tr> 
+                                              </tbody>
+  
+                                              <tbody *ngIf="load_parroquia && (new_votacion.codigo_provincia==undefined || new_votacion.codigo_canton==undefined)">
+                                                <h2 *ngIf="new_votacion.codigo_provincia==undefined">Selecciona una Provincia</h2> 
+                                                <h2 *ngIf="new_votacion.codigo_canton==undefined">Selecciona un Canton</h2> 
+                                            </tbody>
+                                              
+                                                
+                                            
+                                        </table>
+                                        <ngb-pagination *ngIf="arr_parroquia.length >= 1"
+                                          [(page)]="pageParroquia"
+                                          [pageSize]="pageSizeParroquia"
+                                          [maxSize]="5"
+                                          [rotate]="true" [boundaryLinks]="true"
+                                          [collectionSize]="arr_parroquia.length"></ngb-pagination>
+  
+                                      </div>
+                                      
+                                    </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-lg-6">
+                            <label for="validationCustom01" class="form-label"><b>Zona</b></label> <br>
+                            <div class="input-group">
+                                
+                                <input class="form-control" type="text" id="input-zona" placeholder="Seleccionar zona" disabled>
+                                <button id="btnBuscarZona" *ngIf="new_votacion.codigo_parroquia" class="btn btn-primary" type="button" data-toggle="modal" (click)="llamada_zon(false)" [attr.data-target]="'#modalZona'">Buscar!</button>
+                            </div>
+
+                            <div class="modal fade" id="modalZona" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLongTitle">Selecciona la Zona</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body" style="max-height: 600px;
+                                    overflow: hidden;
+                                    overflow-y: auto;">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" placeholder="Busca el zona" name="filtro_zona" [(ngModel)]="filtro_zona">
+                                            <button class="btn btn-primary" type="button" (click)="func_filtro_zona()">Buscar</button>
+                                        </div>
+                                      <table class="table">
+                                            <thead>
+                                                <th>Codigo de Zona</th>
+                                                <th>Nombre de Zona</th>
+                                                <th>Acción</th>
+                                            </thead>
+                                            <tbody *ngIf="!load_zona">
+                                              
+                                              <ng-container *ngFor="let item of arr_zona| slice: (pageZona-1)*pageSizeZona : (pageZona-1) * pageSizeZona + pageSizeZona; let indice = index">
+                                                <tr>  
+                                                  <ng-container >
+                                                    <td>{{item.codigo_zona}}</td>
+                                                    <td>{{item.nombre_zona}}</td>
+                                                    <td><a style="cursor: pointer;" class="text-success" (click)="seleccion_zon(item,false)">[Seleccionar]</a></td>
+                                                  </ng-container>
+                                                </tr>
+                                              </ng-container>
+                                                
+                                              
+                                            </tbody>
+                                            
+                                            <tbody *ngIf="load_zona && new_votacion.codigo_provincia!=undefined && new_votacion.codigo_canton!=undefined && new_votacion.codigo_parroquia!=undefined">
+                                                <tr>
+                                                  
+                                                    <td colspan="2" class="text-center">
+                                                        <div class="spinner-border" role="status">
+                                                            <span class="visually-hidden"></span>
+                                                          </div> 
+                                                    </td>
+                                                </tr> 
+                                            </tbody>
+
+                                            <tbody *ngIf="load_zona && (new_votacion.codigo_provincia==undefined || new_votacion.codigo_canton==undefined || new_votacion.codigo_parroquia==undefined)">
+                                              <h2 *ngIf="new_votacion.codigo_provincia==undefined">Selecciona una Provincia</h2> 
+                                              <h2 *ngIf="new_votacion.codigo_canton==undefined">Selecciona un Canton</h2> 
+                                              <h2 *ngIf="new_votacion.codigo_parroquia==undefined">Selecciona una Parroquia</h2> 
+                                          </tbody>
+                                            
+                                              
+                                          
+                                      </table>
+                                      <ngb-pagination *ngIf="arr_zona.length >= 1"
+                                        [(page)]="pageZona"
+                                        [pageSize]="pageSizeZona"
+                                        [maxSize]="5"
+                                        [rotate]="true" [boundaryLinks]="true"
+                                        [collectionSize]="arr_zona.length"></ngb-pagination>
+
+                                    </div>
+                                    
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+                  <hr>
+                </ng-container>
+              <!--Recinto-->
+              <ng-container>
+                <div class="card-header">
+
+                  <!-- Title -->
+                  <h4 class="card-header-title">
+                    Selección de Recinto
+                  </h4>
+  
+                </div>
+  
+                <div class="card-body">
+                    <div class="row form-group">
+                        <div class="col-lg">
+                            <label for="validationCustom01" class="form-label"><b>Recinto</b></label> <br>
+                            <div class="input-group">
+                                
+                                <input class="form-control" type="text" id="input-recinto" placeholder="Seleccionar recinto" disabled>
+                                <button id="btnBuscarRecinto" *ngIf="new_votacion.codigo_zona" class="btn btn-primary" type="button" data-toggle="modal" (click)="llamada_rec(false)" [attr.data-target]="'#modalRecinto'">Buscar!</button>
+                            </div>
+
+                            <div class="modal fade" id="modalRecinto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLongTitle">Selecciona la Recinto</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body" style="max-height: 600px;
+                                    overflow: hidden;
+                                    overflow-y: auto;">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" placeholder="Busca el recinto" name="filtro_recinto" [(ngModel)]="filtro_recinto">
+                                            <button class="btn btn-primary" type="button" (click)="func_filtro_recinto()">Buscar</button>
+                                        </div>
+                                      <table class="table">
+                                            <thead>
+                                                <th>Codigo de Recinto</th>
+                                                <th>Nombre de Recinto</th>
+                                                <th>Acción</th>
+                                            </thead>
+                                            <tbody *ngIf="!load_recinto">
+                                              
+                                              <ng-container *ngFor="let item of arr_recinto| slice: (pageRecinto-1)*pageSizeRecinto : (pageRecinto-1) * pageSizeRecinto + pageSizeRecinto; let indice = index">
+                                                <tr>  
+                                                  <ng-container >
+                                                    <td>{{item.codigo_recinto}}</td>
+                                                    <td>{{item.nombre_recinto}}</td>
+                                                    <td><a style="cursor: pointer;" class="text-success" (click)="seleccion_rec(item,false)">[Seleccionar]</a></td>
+                                                  </ng-container>
+                                                </tr>
+                                              </ng-container>
+                                                
+                                              
+                                            </tbody>
+                                            
+                                            <tbody *ngIf="load_recinto && new_votacion.codigo_provincia!=undefined && new_votacion.codigo_canton!=undefined && new_votacion.codigo_parroquia!=undefined&& new_votacion.codigo_zona!=undefined">
+                                                <tr>
+                                                  
+                                                    <td colspan="2" class="text-center">
+                                                        <div class="spinner-border" role="status">
+                                                            <span class="visually-hidden"></span>
+                                                          </div> 
+                                                    </td>
+                                                </tr> 
+                                            </tbody>
+
+                                            <tbody *ngIf="load_recinto && (new_votacion.codigo_provincia==undefined || new_votacion.codigo_canton==undefined || new_votacion.codigo_parroquia==undefined|| new_votacion.codigo_zona==undefined)">
+                                              <h2 *ngIf="new_votacion.codigo_provincia==undefined">Selecciona una Provincia</h2> 
+                                              <h2 *ngIf="new_votacion.codigo_canton==undefined">Selecciona un Canton</h2> 
+                                              <h2 *ngIf="new_votacion.codigo_parroquia==undefined">Selecciona una Parroquia</h2> 
+                                              <h2 *ngIf="new_votacion.codigo_zona==undefined">Selecciona una Zona</h2>
+                                          </tbody>
+                                            
+                                              
+                                          
+                                      </table>
+                                      <ngb-pagination *ngIf="arr_recinto.length >= 1"
+                                        [(page)]="pageRecinto"
+                                        [pageSize]="pageSizeRecinto"
+                                        [maxSize]="5"
+                                        [rotate]="true" [boundaryLinks]="true"
+                                        [collectionSize]="arr_recinto.length"></ngb-pagination>
+
+                                    </div>
+                                    
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="row form-group">
+                      <div class="col-lg-6">
+                        <label for="" class="form-label"><b>Tipo de junta (*)</b></label>
+                        <div class="input-group">
+                        <select class="form-control custom-select" disabled  id="select-tipo-junta" required name="tipo_jt" [ngModel]="tipo_jt" (ngModelChange)="tipo_junta($event)">
+                          <option selected disabled value="">Tipo de junta</option>
+                          <option value="F" [ngValue]="'F'" >Femenino</option>
+                          <option value="M" [ngValue]="'M'">Masculino</option>
+
+                        </select>
+                       
+                      </div>
+                    </div>
+                      <div class="col-lg-6" *ngIf="tipo_jt=='F'">
+                          <label for="" class="form-label"><b>Femenino (*)</b></label>
+                          <div class="input-group">
+                          <select class="form-control custom-select"   id="select-junta-f" required name="new_votacion.junta" [ngModel]="new_votacion.junta" (ngModelChange)="junta_f($event)">
+                            <option selected value="0" [ngValue]="0">Junta Femenina a eligir</option>
+                            <ng-container *ngFor="let item of junta">
+                              <option value="item" [ngValue]="item" >{{item}} F</option>
+                            </ng-container>
+                            </select>
+                         
+                        </div>
+                      </div>
+                      <div class="col-lg-6" *ngIf="tipo_jt=='M'">
+                        <label for="" class="form-label"><b>Masculino (*)</b></label>
+                        <div class="input-group">
+                        <select class="form-control custom-select"   id="select-junta-m" required name="new_votacion.junta" [ngModel]="new_votacion.junta" (ngModelChange)="junta_m($event)">
+                          <option selected value="0" [ngValue]="0">Junta Masculina a eligir</option>
+                          <ng-container *ngFor="let item of junta">
+                            <option value="item" [ngValue]="item" >{{item}} M</option>
+                          </ng-container>
+                        </select>
+                       
+                      </div>
+                    </div>
+                      
+                  </div>
+                    
+                    
+                    
+                </div>
+                <hr>
+              </ng-container>
+
+              <div class="card-header">
+
+                <!-- Title -->
+                <h4 class="card-header-title">
+                  Selección de Dignidad
+                </h4>
+
+              </div>
+              <!--Selección de Dignidad-->
+                <div class="card-body">
+                    <div class="row form-group">
+                      <!--Tipo de Dignidad-->
+                      <div class="row">
+                        <div class="col-lg">
+                          <div class="col-lg-6">
+                            <label for="" class="form-label"><b>Tipo de Dignidad (*)</b></label>
+                            <div class="input-group">
+                            <select class="form-control custom-select" disabled  id="select-tipo-dignidad" required name="tipo" [ngModel]="tipo" (ngModelChange)="tipo_dignidad($event)">
+                              <option selected disabled value="">Tipo de Dignidad a eligir</option>
+                              <option value="PrefecturaViceprefectura" [ngValue]="'PrefecturaViceprefectura'" >Prefecto y Viceprefecto</option>
+                              <option value="AlcaldesM" [ngValue]="'AlcaldesM'">Alcaldes Municipales</option>
+                              <option value="ConcejalesU" [ngValue]="'ConcejalesU'">Concejales Urbanos</option>
+                              <option value="ConcejalesR" [ngValue]="'ConcejalesR'">Consejales Rurales</option>
+                              <option value="VocalesJP" [ngValue]="'VocalesJP'">Vocales de Juntas Parroquiales</option>
+                              <option value="ConsejoPCCS" [ngValue]="'ConsejoPCCS'">Consejo de Participación Ciudadana y Control Social</option>
+                            </select>
+                           
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                          <table class="table">
+                            <thead>
+                                <th>Codigo Dignidad</th>   
+                                <th>Nombre de Dignidad</th>
+                                <th>Conteo</th>
+                            </thead>
+                            <tbody *ngIf="!load_dignidad && tipo">
+                              <ng-container *ngIf="dignidad.length>0">
+                                <ng-container *ngFor="let item of dignidad| slice: (pageVariedad-1)*pageSizeVariedad : (pageVariedad-1) * pageSizeVariedad + pageSizeVariedad; let indice = index">
+                                  <tr *ngIf="tipo==item.dignidad.seleccion">
+                                    
+                                    <td>{{item.dignidad.codigo_dignidad}}</td>
+
+                                    <td>
+                                      <div class="avatar mr-3" *ngIf="item.dignidad.partido=='lista1'">
+                                        <a href="{{url +'obtener_portada_partido/1.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/1.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                      </div>
+                                      <div class="avatar mr-3" *ngIf="item.dignidad.partido=='lista2'">
+                                        <a href="{{url +'obtener_portada_partido/2.png'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/2.png'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                      </div>
+                                      <div class="avatar mr-3" *ngIf="item.dignidad.partido=='lista3'">
+                                        <a href="{{url +'obtener_portada_partido/3.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/3.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                      </div>
+                                      <div class="avatar mr-3" *ngIf="item.dignidad.partido=='lista6'">
+                                        <a href="{{url +'obtener_portada_partido/6.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/6.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                      </div>
+                                      <div class="avatar mr-3" *ngIf="item.dignidad.partido=='lista7'">
+                                        <a href="{{url +'obtener_portada_partido/7.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/7.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                      </div>
+                                      <div class="avatar mr-3" *ngIf="item.dignidad.partido=='lista8'">
+                                        <a href="{{url +'obtener_portada_partido/8.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/8.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                      </div>
+                                      <div class="avatar mr-3" *ngIf="item.dignidad.partido=='lista10'">
+                                        <a href="{{url +'obtener_portada_partido/10.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/10.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                      </div>
+                                      <div class="avatar mr-3" *ngIf="item.dignidad.partido=='lista12'">
+                                        <a href="{{url +'obtener_portada_partido/12.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/12.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                      </div>
+                                      <div class="avatar mr-3" *ngIf="item.dignidad.partido=='lista17'">
+                                        <a href="{{url +'obtener_portada_partido/17.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/17.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                      </div>
+                                      <div class="avatar mr-3" *ngIf="item.dignidad.partido=='lista18'">
+                                        <a href="{{url +'obtener_portada_partido/18.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/18.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                      </div>
+                                      <div class="avatar mr-3" *ngIf="item.dignidad.partido=='lista19'">
+                                        <a href="{{url +'obtener_portada_partido/19.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/19.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                      </div>
+                                      <div class="avatar mr-3" *ngIf="item.dignidad.partido=='lista21'">
+                                        <a href="{{url +'obtener_portada_partido/21.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/21.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                      </div>
+                                      <div class="avatar mr-3" *ngIf="item.dignidad.partido=='lista23'">
+                                        <a href="{{url +'obtener_portada_partido/23.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/23.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                      </div>
+                                      <div class="avatar mr-3" *ngIf="item.dignidad.partido=='lista35'">
+                                        <a href="{{url +'obtener_portada_partido/35.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/35.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                      </div>
+                                      <div class="avatar mr-3" *ngIf="item.dignidad.partido=='lista51'">
+                                        <a href="{{url +'obtener_portada_partido/51.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/51.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                      </div>
+                                      {{item.dignidad.nombre_dignidad}}</td>
+                                      <td>
+                                        <input id="{{item.dignidad._id}}" name="{{item.dignidad._id}}" type="number" max="100" min="0" [(ngModel)]="item.contador" >
+                                        <!--  <form #registroForm="ngForm" (ngSubmit)="tabla_dig2(registroForm, item.dignidad._id,indice)">
+                                          
+                                          <a style="cursor: pointer;" class="text-success" (click)="tabla_dig(item.dignidad._id)">[Act]</a>
+                                          <button style="cursor: pointer;" class="text-success" type="submit">[Guardar]</button>
+                                        
+                                        </form>
+                                      -->
+                                       
+                                       </td>
+                                    <!--<td>
+                                      
+                                    </td> -->
+                                      
+                                </tr>
+                                </ng-container>
+                                 
+                              </ng-container>
+                                <ng-container *ngIf="dignidad.length==0 && tipo!=''">
+                                  <h2>No hay Dignidades para este puesto a dicha Provincia</h2>
+                                </ng-container>
+                            </tbody>
+                            <tbody *ngIf="load_dignidad">
+                                <tr>
+                                    <td colspan="2" class="text-center">
+                                        <div class="spinner-border" role="status">
+                                            <span class="visually-hidden"></span>
+                                          </div> 
+                                    </td>
+                                </tr> 
+                            </tbody>
+                      </table>
+                      <button style="cursor: pointer;" class="btn-primary" (click)="tabla_dig()">Guardar</button>
+                      </div>
+                      
+                      <!--Dignidad-->
+                      <!--<div class="col-lg">
+                        <label for="" class="form-label"><b>Dignidad (*)</b></label>
+                          <div class="input-group" id="seccion_dignidad">
+                              <input class="form-control" type="text" placeholder="Seleccionar la dignidad" disabled id="input-dignidad">
+                              <button id="btnbuscardignidad" disabled class="btn btn-primary" type="button" data-toggle="modal" [attr.data-target]="'#modalDignidad'" >Buscar!</button>
+                          </div>
+                          
+                          
+                          <div class="modal fade" id="modalDignidad" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                              <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 550px;">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Seleccion Dignidad</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body" style="max-height: 600px;
+                                  overflow: hidden;
+                                  overflow-y: auto;">
+                                      <div class="input-group">
+                                          <input class="form-control" type="text" placeholder="Busca el dignidad" name="filtro_dignidad" [(ngModel)]="filtro_dignidad">
+                                          <button class="btn btn-primary" type="button" (click)="func_filtro_dignidad()">Buscar</button>
+                                      </div>
+                                    <table class="table">
+                                          <thead>
+                                              <th>Codigo Dignidad</th>   
+                                              <th>Nombre de Dignidad</th>
+                                              <th>Acción</th>
+                                          </thead>
+                                          <tbody *ngIf="!load_dignidad">
+                                            <ng-container *ngIf="dignidad.length>0">
+                                                <tr *ngFor="let item of dignidad| slice: (pageVariedad-1)*pageSizeVariedad : (pageVariedad-1) * pageSizeVariedad + pageSizeVariedad; let indice = index">
+                                                  <td>{{item.codigo_dignidad}}</td>
+                                                  <td>{{item.nombre_dignidad}}</td>
+                                                  <td><a style="cursor: pointer;" class="text-success" (click)="seleccion_dig(item)">[Seleccionar]</a></td>
+                                              </tr>
+                                            </ng-container>
+                                              <ng-container *ngIf="dignidad.length==0">
+                                                <h2>No hay Dignidades para este puesto a dicha Provincia</h2>
+                                              </ng-container>
+                                          </tbody>
+                                          <tbody *ngIf="load_dignidad">
+                                              <tr>
+                                                  <td colspan="2" class="text-center">
+                                                      <div class="spinner-border" role="status">
+                                                          <span class="visually-hidden"></span>
+                                                        </div> 
+                                                  </td>
+                                              </tr> 
+                                          </tbody>
+                                    </table>
+                                  </div>
+                                  <div class="modal-footer">
+                                      <ngb-pagination
+                                          [(page)]="pageVariedad"
+                                          [pageSize]="pageSizeVariedad"
+                                          [collectionSize]="dignidad.length"
+                                      ></ngb-pagination>
+                                  </div>
+                                </div>
+                              </div>
+                          </div>
+
+                      </div> -->
+                      
+                      
+                      
+                    </div>
+                </div>
+                <div class="col-lg-12 form-group">	
+                  <label for="">Portada (*)</label>
+                  <div class="custom-file">
+                      <input class="custom-file-input" type="file" id="file-input" (change)="fileChangeEvent($event)">
+                      <label class="custom-file-label" id="input-portada" for="file-input" style="white-space:nowrap;overflow:hidden">Seleccionar imagen</label>
+                  </div>
+              </div>
+              <div class="col-lg-12">
+                  <img [src]="imgSelect" class="img-thumbnail" alt="Rounded image">
+              </div>
+
+              <div class="modal fade" id="configuracion" tabindex="-1" style="display: none;" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Eliminar</h4>
+                      <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Desea guardar tu configuracion?</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button class="btn btn-secondary btn-sm" (click)="refresh()"  type="button" data-dismiss="modal">Cancelar</button>
+                      <button class="btn btn-primary btn-shadow btn-sm"  type="button">Si, guardar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+                <div class="card-footer">
+                  <ng-container *ngIf="rol=='admin'">
+                    <a class="btn btn-warning btn-shadow mr-3" [routerLink]="['/votaciones']" routerLinkActive="router-link-active" >Regresar</a>
+                    
+                  </ng-container>
+                  <ng-container *ngIf="rol!='admin'">
+                    <a class="btn btn-warning btn-shadow mr-3" (click)="refresh()" routerLinkActive="router-link-active" >Regresar</a>
+                    
+                  </ng-container>
+                    
+                    <button id="btnCrear"  class="btn btn-primary btn-shadow" type="button" (click)="registro_votacion()">Crear</button>
+                                    
+                    <button disabled *ngIf="load_btn" type="button" class="btn btn-primary btn-shadow">
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Creando...
+                    </button>
+  
+                    
+                </div>
+              </div>
+ 
+
+
+                          
+                          
+                          
+                          <div class="modal fade" id="modal-spinner" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                              <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 550px;">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Cargando configuracion</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body" style="max-height: 600px;
+                                  overflow: hidden;
+                                  overflow-y: auto;">
+                                       <div class="spinner-border" style="width: 3rem; height: 3rem; margin-left: 45%;" role="status">
+                                        <span class="visually-hidden"></span>
+                                      </div>
+                                    
+                                  </div>
+                                 
+                                </div>
+                              </div>
+                          </div>
+                      
+               
+            
+
+          </div>
+        </div> <!-- / .row -->
+      </div>
+</div>
+</ng-container>
+
+<ng-container  *ngIf="(rol!=undefined && rol!='encuestador')&&yo==0">
+  <div class="card">
+    <div class="card-body">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-5 col-xl-4 my-5">
+          
+          <div class="text-center">
+          
+            <!-- Preheading -->
+            <h6 class="text-uppercase text-muted mb-4">
+              404 error
+            </h6>
+
+            <!-- Heading -->
+            <h1 class="display-4 mb-3">
+              Está página no se cuentra habilitada 😭
+            </h1>
+
+            <!-- Subheading -->
+            <p class="text-muted mb-4">
+              ¿Parece que llegaste aquí por accidente?
+            </p>
+
+            <!-- Button -->
+            <a [routerLink]="['/distributivons']"  class="btn btn-lg btn-primary">
+              Regresar a votaciones
+            </a>
+          
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

@@ -1,0 +1,76 @@
+Embed Id
+de2269e2-baf5-4f33-844d-8127e63adfa9
+
+Private Key
+JknF9V7kMYDVUKV0CudLuwV0Glkhx2uzeXwARL0DPqHhhMHLmy6AWDaqM4as9BWr
+
+
+npm install ejs express jsonwebtoken
+
+main////////////
+const express = require('express');
+const jwt = require('jsonwebtoken');
+const app = express();
+
+const EMBED_ID = 'de2269e2-baf5-4f33-844d-8127e63adfa9'
+const PRIVATE_KEY = 'YOUR_PRIVATE_KEY' // change this
+
+app.set('view engine', 'html');
+app.set('views', __dirname);
+app.engine('html', require('ejs').renderFile)
+
+app.get('/', async (_req, res) => {
+  return res.render('index.html', {
+    token: jwt.sign({
+      embed: EMBED_ID,
+      user: {
+        id: '30220',
+        email: 'saamare99@gmail.com',
+        name: 'Samuel2601',
+      },
+      org: {
+        id: '34691',
+        name: 'ESPOCH',
+      }
+    }, PRIVATE_KEY)
+  })
+})
+
+app.listen(4242)
+
+/////////////index
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flatfile SDK Demo</title>
+  <script src="https://unpkg.com/@flatfile/sdk/dist/index.js"></script>
+</head>
+<body>
+  <button id="import">Import Data</button>
+
+  <script>
+    const importer = flatfileImporter('<%= token %>')
+
+    importer.on('init', ({ batchId }) => {
+      //console.log(`Batch ${batchId} has been initialized.`)
+    })
+    importer.on('launch', ({ batchId }) => {
+      //console.log(`Batch ${batchId} has been launched.`)
+    })
+    importer.on('error', (error) => {
+      console.error(error)
+    })
+    importer.on('complete', async (payload) => {
+      //console.log(JSON.stringify(await payload.data(), null, 4))
+    })
+
+    document.querySelector('#import').addEventListener('click', async () => {
+      await importer.launch()
+    })
+  </script>
+</body>
+</html>
+////////////

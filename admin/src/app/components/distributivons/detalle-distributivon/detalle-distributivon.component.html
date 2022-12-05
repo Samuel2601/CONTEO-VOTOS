@@ -1,0 +1,388 @@
+<app-sidebar></app-sidebar>
+
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10 col-xl-8">
+
+            <!-- Header -->
+            <div class="header mt-md-5">
+              <div class="header-body">
+                <div class="row align-items-center">
+                  <div class="col">
+
+                    <!-- Pretitle -->
+                    <h6 class="header-pretitle">
+                      Módulo
+                    </h6>
+
+                    <!-- Title -->
+                    <h1 class="header-title">
+                        Detalle de Distributivon
+                    </h1>
+
+                  </div>
+                </div> <!-- / .row -->
+      
+              </div>
+            </div>
+
+            <!-- Alert -->
+
+
+            <ng-container *ngIf="!load_data">
+              <ng-container *ngIf="pago != undefined">
+                <!-- Card -->
+                <div class="card mb-5">
+                  <div class="card-header">
+  
+                    <!-- Title -->
+                    <h4 class="card-header-title">
+                      Distributivon #{{distributivon._id}}
+                    </h4>
+  
+                    <a [routerLink]="['/distributivons']">Regresar</a>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                          <table class="table mb-0">
+                            <tbody>
+                              <tr *ngIf="distributivon">
+                                  <th class="border-0 py-2 pl-0">Distributivon:</th>
+                                  <td class="border-0 py-2 px-0 text-muted">{{distributivon.nombres}} {{distributivon.apellidos}}</td>
+                                </tr>
+                              <tr>
+                                <th class="border-0 py-2 pl-0">Cédual No:</th>
+                                <td class="border-0 py-2 px-0 text-muted">{{distributivon.dni}}</td>
+                              </tr>
+  
+                           
+
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="col-lg-6">
+                          <table class="table mb-0">
+                            <tbody>
+                              <tr>
+                                <th class="border-0 py-2 pl-0">Email:</th>
+                                <td class="border-0 py-2 px-0 text-muted">{{distributivon.email}}</td>
+                              </tr>
+                              <tr>
+                                <th class="border-0 py-2 pl-0">Teléfono:</th>
+                                <td class="border-0 py-2 px-0 text-muted">{{distributivon.telefono}}</td>
+                              </tr>
+                             
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                  </div>
+    
+  
+                </div>
+  
+                <div class="card">
+                  <div class="card-body">       
+                    <ng-container>
+                      <button class="btn btn-primary text-white mr-3" style="cursor: pointer;" 
+                      *ngFor="let pen of votacionesdistributivon; let val=index" (click)="detalle_data(val)" value="val">
+                      {{pen.anio_lectivo|date:'YYYY'}} {{pen.curso}}{{pen.paralelo}}</button>
+                    </ng-container>
+
+                  </div>
+                
+                </div>
+               
+                <div class="card">
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table mb-0">
+                      <tbody *ngIf="pagopension!=[]">
+                        <tr *ngFor="let item of pagopension; let idx = index"  >
+                          
+                          <td class="border-top-1" *ngIf="item.estado=='Pago atrasado'"  style="background-color: #fffecc;margin-left: 1rem;">
+                            <div class="media pl-2 py-2">
+                              <div class="media-body pl-3">
+                                <h4 class="font-size-sm mb-3">
+                                  <a  style="cursor: pointer;" class="nav-link font-weight-bold" *ngIf="item.date!='Matricula'"> Pensión {{idx}} {{item.date|date:'MMMM'}} {{item.date|date:'YYYY'}} </a>
+                                  <a  style="cursor: pointer;" class="nav-link font-weight-bold" *ngIf="item.date=='Matricula'"> {{item.date}}</a> 
+                                </h4>
+                                <ul class="list-unstyled font-size-xs mt-n2 mb-2" style="margin-left: 1rem; " >
+                                  <ng-container *ngIf="votacionesdistributivon[idexpension].matricula==0 || item.valor!=0">
+                                    <li class="mb-0" *ngIf=" item.date=='Matricula'"><span class="text-muted" >Valor a pagar: {{config.matricula-item.valor|currency:'USD'}}</span></li>
+                                  </ng-container>
+                                  <ng-container *ngIf="votacionesdistributivon[idexpension].matricula==1 && item.valor==0">
+                                    <li class="mb-0" *ngIf=" item.date=='Matricula'"><span class="text-muted" >Cubierto por Beca</span></li>
+                                  </ng-container>
+                                    <li class="mb-0" *ngIf="(condicion == 'No' || (idx>auxbecares&&idx>0))&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="item.tipo!=0 && item.tipo != 'no'" >Valor a pagar: {{config.pension-item.valor|currency:'USD'}}</span></li>
+                                    <li class="mb-0"   *ngIf="(condicion == 'No' || (idx>auxbecares&&idx>0))&&item.date!='Matricula'" ><span class="text-muted" *ngIf="item.tipo == 'no' "    >Valor a pagar: {{config.pension|currency:'USD'}}</span></li>
+                                    <li class="mb-0" *ngIf="(condicion == 'Si' && idx<=auxbecares&&idx>0)&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="item.tipo!=0 && item.tipo != 'no' && item.date!=diciembre" >Valor a pagar: {{votacionesdistributivon[idexpension].val_beca-item.valor|currency:'USD'}}</span></li>
+                                    <li class="mb-0" *ngIf="(condicion == 'Si' && idx<=auxbecares&&idx>0)&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="(item.tipo!=0 && item.tipo != 'no') && item.date==diciembre" >Valor a pagar: {{config.pension|currency:'USD'}}</span></li>
+                                    <li class="mb-0"   *ngIf="item.date!='Matricula'&&(condicion == 'Si' && idx<=auxbecares&&idx>0)" ><span class="text-muted" *ngIf="item.tipo == 'no' && item.date!=diciembre" >Valor a pagar: {{votacionesdistributivon[idexpension].val_beca|currency:'USD'}}</span></li>
+                                  </ul>
+                                <span *ngIf="item.estado=='Pago atrasado Abono'"  class="badge badge-warning" style="background-color: #f1ee51;margin-left: 1rem;">{{item.estado}}</span>
+                                <span *ngIf="item.estado=='Pago anticipado Abono'"  class="badge badge-warning" style="background-color: #469df4;margin-left: 1rem;">{{item.estado}}</span>
+                                <span *ngIf="item.estado=='Pago a tiempo Abono'"  class="badge badge-warning" style="background-color: #67fa49;margin-left: 1rem;">{{item.estado}}</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="border-top-1" *ngIf="item.estado=='Pago atrasado Abono'"  style="background-color: #fffecc;margin-left: 1rem;">
+                            <div class="media pl-2 py-2">
+                              <div class="media-body pl-3">
+                                <h4 class="font-size-sm mb-3">
+                                  <a  style="cursor: pointer;" class="nav-link font-weight-bold" *ngIf="item.date!='Matricula'"> Pensión {{idx}} {{item.date|date:'MMMM'}} {{item.date|date:'YYYY'}} </a>
+                                  <a  style="cursor: pointer;" class="nav-link font-weight-bold" *ngIf="item.date=='Matricula'"> {{item.date}}</a> 
+                                </h4>
+                                <ul class="list-unstyled font-size-xs mt-n2 mb-2" style="margin-left: 1rem; " >
+                                  <ng-container *ngIf="votacionesdistributivon[idexpension].matricula==0 || item.valor!=0">
+                                    <li class="mb-0" *ngIf=" item.date=='Matricula'"><span class="text-muted" >Valor a pagar: {{config.matricula-item.valor|currency:'USD'}}</span></li>
+                                  </ng-container>
+                                  <ng-container *ngIf="votacionesdistributivon[idexpension].matricula==1 && item.valor==0">
+                                    <li class="mb-0" *ngIf=" item.date=='Matricula'"><span class="text-muted" >Cubierto por Beca</span></li>
+                                  </ng-container>
+                                    <li class="mb-0" *ngIf="(condicion == 'No' || (idx>auxbecares&&idx>0))&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="item.tipo!=0 && item.tipo != 'no'" >Valor a pagar: {{config.pension-item.valor|currency:'USD'}}</span></li>
+                                    <li class="mb-0"   *ngIf="(condicion == 'No' || (idx>auxbecares&&idx>0))&&item.date!='Matricula'" ><span class="text-muted" *ngIf="item.tipo == 'no' "    >Valor a pagar: {{config.pension|currency:'USD'}}</span></li>
+                                    <li class="mb-0" *ngIf="(condicion == 'Si' && idx<=auxbecares&&idx>0)&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="item.tipo!=0 && item.tipo != 'no' && item.date!=diciembre" >Valor a pagar: {{votacionesdistributivon[idexpension].val_beca-item.valor|currency:'USD'}}</span></li>
+                                    <li class="mb-0" *ngIf="(condicion == 'Si' && idx<=auxbecares&&idx>0)&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="(item.tipo!=0 && item.tipo != 'no') && item.date==diciembre" >Valor a pagar: {{config.pension|currency:'USD'}}</span></li>
+                                    <li class="mb-0"   *ngIf="item.date!='Matricula'&&(condicion == 'Si' && idx<=auxbecares&&idx>0)" ><span class="text-muted" *ngIf="item.tipo == 'no' && item.date!=diciembre" >Valor a pagar: {{votacionesdistributivon[idexpension].val_beca|currency:'USD'}}</span></li>
+                                  </ul>
+                                <span *ngIf="item.estado=='Pago atrasado Abono'"  class="badge badge-warning" style="background-color: #f1ee51;margin-left: 1rem;">{{item.estado}}</span>
+                                <span *ngIf="item.estado=='Pago anticipado Abono'"  class="badge badge-warning" style="background-color: #469df4;margin-left: 1rem;">{{item.estado}}</span>
+                                <span *ngIf="item.estado=='Pago a tiempo Abono'"  class="badge badge-warning" style="background-color: #67fa49;margin-left: 1rem;">{{item.estado}}</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="border-top-1" *ngIf="item.estado=='Pago anticipado'"  style="background-color: #b6f2ff;margin-left: 1rem;">
+                            <div class="media pl-2 py-2">
+                              <div class="media-body pl-3">
+                                <h4 class="font-size-sm mb-3">
+                                  <a  style="cursor: pointer;" class="nav-link font-weight-bold" *ngIf="item.date!='Matricula'"> Pensión {{idx}} {{item.date|date:'MMMM'}} {{item.date|date:'YYYY'}} </a>
+                                  <a  style="cursor: pointer;" class="nav-link font-weight-bold" *ngIf="item.date=='Matricula'"> {{item.date}}</a> 
+                                </h4>
+                                <ul class="list-unstyled font-size-xs mt-n2 mb-2" style="margin-left: 1rem; " >
+                                  <ng-container *ngIf="votacionesdistributivon[idexpension].matricula==0 || item.valor!=0">
+                                    <li class="mb-0" *ngIf=" item.date=='Matricula'"><span class="text-muted" >Valor a pagar: {{config.matricula-item.valor|currency:'USD'}}</span></li>
+                                  </ng-container>
+                                  <ng-container *ngIf="votacionesdistributivon[idexpension].matricula==1 && item.valor==0">
+                                    <li class="mb-0" *ngIf=" item.date=='Matricula'"><span class="text-muted" >Cubierto por Beca</span></li>
+                                  </ng-container>
+                                    <li class="mb-0" *ngIf="(condicion == 'No' || (idx>auxbecares&&idx>0))&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="item.tipo!=0 && item.tipo != 'no'" >Valor a pagar: {{config.pension-item.valor|currency:'USD'}}</span></li>
+                                    <li class="mb-0"   *ngIf="(condicion == 'No' || (idx>auxbecares&&idx>0))&&item.date!='Matricula'" ><span class="text-muted" *ngIf="item.tipo == 'no' "    >Valor a pagar: {{config.pension|currency:'USD'}}</span></li>
+                                    <li class="mb-0" *ngIf="(condicion == 'Si' && idx<=auxbecares&&idx>0)&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="item.tipo!=0 && item.tipo != 'no' && item.date!=diciembre" >Valor a pagar: {{votacionesdistributivon[idexpension].val_beca-item.valor|currency:'USD'}}</span></li>
+                                    <li class="mb-0" *ngIf="(condicion == 'Si' && idx<=auxbecares&&idx>0)&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="(item.tipo!=0 && item.tipo != 'no') && item.date==diciembre" >Valor a pagar: {{config.pension|currency:'USD'}}</span></li>
+                                    <li class="mb-0"   *ngIf="item.date!='Matricula'&&(condicion == 'Si' && idx<=auxbecares&&idx>0)" ><span class="text-muted" *ngIf="item.tipo == 'no' && item.date!=diciembre" >Valor a pagar: {{votacionesdistributivon[idexpension].val_beca|currency:'USD'}}</span></li>
+                                  </ul>
+                                <span *ngIf="item.estado=='Pago atrasado Abono'"  class="badge badge-warning" style="background-color: #f1ee51;margin-left: 1rem;">{{item.estado}}</span>
+                                <span *ngIf="item.estado=='Pago anticipado Abono'"  class="badge badge-warning" style="background-color: #469df4;margin-left: 1rem;">{{item.estado}}</span>
+                                <span *ngIf="item.estado=='Pago a tiempo Abono'"  class="badge badge-warning" style="background-color: #67fa49;margin-left: 1rem;">{{item.estado}}</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="border-top-1" *ngIf="item.estado=='Pago anticipado Abono'"  style="background-color: #b6f2ff;margin-left: 1rem;">
+                            <div class="media pl-2 py-2">
+                              <div class="media-body pl-3">
+                                <h4 class="font-size-sm mb-3">
+                                  <a  style="cursor: pointer;" class="nav-link font-weight-bold" *ngIf="item.date!='Matricula'"> Pensión {{idx}} {{item.date|date:'MMMM'}} {{item.date|date:'YYYY'}} </a>
+                                  <a  style="cursor: pointer;" class="nav-link font-weight-bold" *ngIf="item.date=='Matricula'"> {{item.date}}</a> 
+                                </h4>
+                                <ul class="list-unstyled font-size-xs mt-n2 mb-2" style="margin-left: 1rem; " >
+                                  <ng-container *ngIf="votacionesdistributivon[idexpension].matricula==0 || item.valor!=0">
+                                    <li class="mb-0" *ngIf=" item.date=='Matricula'"><span class="text-muted" >Valor a pagar: {{config.matricula-item.valor|currency:'USD'}}</span></li>
+                                  </ng-container>
+                                  <ng-container *ngIf="votacionesdistributivon[idexpension].matricula==1 && item.valor==0">
+                                    <li class="mb-0" *ngIf=" item.date=='Matricula'"><span class="text-muted" >Cubierto por Beca</span></li>
+                                  </ng-container>
+                                    <li class="mb-0" *ngIf="(condicion == 'No' || (idx>auxbecares&&idx>0))&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="item.tipo!=0 && item.tipo != 'no'" >Valor a pagar: {{config.pension-item.valor|currency:'USD'}}</span></li>
+                                    <li class="mb-0"   *ngIf="(condicion == 'No' || (idx>auxbecares&&idx>0))&&item.date!='Matricula'" ><span class="text-muted" *ngIf="item.tipo == 'no' "    >Valor a pagar: {{config.pension|currency:'USD'}}</span></li>
+                                    <li class="mb-0" *ngIf="(condicion == 'Si' && idx<=auxbecares&&idx>0)&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="item.tipo!=0 && item.tipo != 'no' && item.date!=diciembre" >Valor a pagar: {{votacionesdistributivon[idexpension].val_beca-item.valor|currency:'USD'}}</span></li>
+                                    <li class="mb-0" *ngIf="(condicion == 'Si' && idx<=auxbecares&&idx>0)&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="(item.tipo!=0 && item.tipo != 'no') && item.date==diciembre" >Valor a pagar: {{config.pension|currency:'USD'}}</span></li>
+                                    <li class="mb-0"   *ngIf="item.date!='Matricula'&&(condicion == 'Si' && idx<=auxbecares&&idx>0)" ><span class="text-muted" *ngIf="item.tipo == 'no' && item.date!=diciembre" >Valor a pagar: {{votacionesdistributivon[idexpension].val_beca|currency:'USD'}}</span></li>
+                                  </ul>
+                                <span *ngIf="item.estado=='Pago atrasado Abono'"  class="badge badge-warning" style="background-color: #f1ee51;margin-left: 1rem;">{{item.estado}}</span>
+                                <span *ngIf="item.estado=='Pago anticipado Abono'"  class="badge badge-warning" style="background-color: #469df4;margin-left: 1rem;">{{item.estado}}</span>
+                                <span *ngIf="item.estado=='Pago a tiempo Abono'"  class="badge badge-warning" style="background-color: #67fa49;margin-left: 1rem;">{{item.estado}}</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="border-top-1" *ngIf="item.estado=='Pago a tiempo'"  style="background-color: #daffdd;margin-left: 1rem;">
+                            <div class="media pl-2 py-2">
+                              <div class="media-body pl-3">
+                                <h4 class="font-size-sm mb-3">
+                                  <a  style="cursor: pointer;" class="nav-link font-weight-bold" *ngIf="item.date!='Matricula'"> Pensión {{idx}} {{item.date|date:'MMMM'}} {{item.date|date:'YYYY'}} </a>
+                                  <a  style="cursor: pointer;" class="nav-link font-weight-bold" *ngIf="item.date=='Matricula'"> {{item.date}}</a> 
+                                </h4>
+                                <ul class="list-unstyled font-size-xs mt-n2 mb-2" style="margin-left: 1rem; " >
+                                  <ng-container *ngIf="votacionesdistributivon[idexpension].matricula==0 || item.valor!=0">
+                                    <li class="mb-0" *ngIf=" item.date=='Matricula'"><span class="text-muted" >Valor a pagar: {{config.matricula-item.valor|currency:'USD'}}</span></li>
+                                  </ng-container>
+                                  <ng-container *ngIf="votacionesdistributivon[idexpension].matricula==1 && item.valor==0">
+                                    <li class="mb-0" *ngIf=" item.date=='Matricula'"><span class="text-muted" >Cubierto por Beca</span></li>
+                                  </ng-container>
+                                    <li class="mb-0" *ngIf="(condicion == 'No' || (idx>auxbecares&&idx>0))&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="item.tipo!=0 && item.tipo != 'no'" >Valor a pagar: {{config.pension-item.valor|currency:'USD'}}</span></li>
+                                    <li class="mb-0"   *ngIf="(condicion == 'No' || (idx>auxbecares&&idx>0))&&item.date!='Matricula'" ><span class="text-muted" *ngIf="item.tipo == 'no' "    >Valor a pagar: {{config.pension|currency:'USD'}}</span></li>
+                                    <li class="mb-0" *ngIf="(condicion == 'Si' && idx<=auxbecares&&idx>0)&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="item.tipo!=0 && item.tipo != 'no' && item.date!=diciembre" >Valor a pagar: {{votacionesdistributivon[idexpension].val_beca-item.valor|currency:'USD'}}</span></li>
+                                    <li class="mb-0" *ngIf="(condicion == 'Si' && idx<=auxbecares&&idx>0)&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="(item.tipo!=0 && item.tipo != 'no') && item.date==diciembre" >Valor a pagar: {{config.pension|currency:'USD'}}</span></li>
+                                    <li class="mb-0"   *ngIf="item.date!='Matricula'&&(condicion == 'Si' && idx<=auxbecares&&idx>0)" ><span class="text-muted" *ngIf="item.tipo == 'no' && item.date!=diciembre" >Valor a pagar: {{votacionesdistributivon[idexpension].val_beca|currency:'USD'}}</span></li>
+                                  </ul>
+                                <span *ngIf="item.estado=='Pago atrasado Abono'"  class="badge badge-warning" style="background-color: #f1ee51;margin-left: 1rem;">{{item.estado}}</span>
+                                <span *ngIf="item.estado=='Pago anticipado Abono'"  class="badge badge-warning" style="background-color: #469df4;margin-left: 1rem;">{{item.estado}}</span>
+                                <span *ngIf="item.estado=='Pago a tiempo Abono'"  class="badge badge-warning" style="background-color: #67fa49;margin-left: 1rem;">{{item.estado}}</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="border-top-1" *ngIf="item.estado=='Pago a tiempo Abono'"  style="background-color: #daffdd;margin-left: 1rem;">
+                            <div class="media pl-2 py-2">
+                              <div class="media-body pl-3">
+                                <h4 class="font-size-sm mb-3">
+                                  <a  style="cursor: pointer;" class="nav-link font-weight-bold" *ngIf="item.date!='Matricula'"> Pensión {{idx}} {{item.date|date:'MMMM'}} {{item.date|date:'YYYY'}} </a>
+                                  <a  style="cursor: pointer;" class="nav-link font-weight-bold" *ngIf="item.date=='Matricula'"> {{item.date}}</a> 
+                                </h4>
+                                <ul class="list-unstyled font-size-xs mt-n2 mb-2" style="margin-left: 1rem; " >
+                                  <ng-container *ngIf="votacionesdistributivon[idexpension].matricula==0 || item.valor!=0">
+                                    <li class="mb-0" *ngIf=" item.date=='Matricula'"><span class="text-muted" >Valor a pagar: {{config.matricula-item.valor|currency:'USD'}}</span></li>
+                                  </ng-container>
+                                  <ng-container *ngIf="votacionesdistributivon[idexpension].matricula==1 && item.valor==0">
+                                    <li class="mb-0" *ngIf=" item.date=='Matricula'"><span class="text-muted" >Cubierto por Beca</span></li>
+                                  </ng-container>
+                                    <li class="mb-0" *ngIf="(condicion == 'No' || (idx>auxbecares&&idx>0))&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="item.tipo!=0 && item.tipo != 'no'" >Valor a pagar: {{config.pension-item.valor|currency:'USD'}}</span></li>
+                                    <li class="mb-0"   *ngIf="(condicion == 'No' || (idx>auxbecares&&idx>0))&&item.date!='Matricula'" ><span class="text-muted" *ngIf="item.tipo == 'no' "    >Valor a pagar: {{config.pension|currency:'USD'}}</span></li>
+                                    <li class="mb-0" *ngIf="(condicion == 'Si' && idx<=auxbecares&&idx>0)&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="item.tipo!=0 && item.tipo != 'no' && item.date!=diciembre" >Valor a pagar: {{votacionesdistributivon[idexpension].val_beca-item.valor|currency:'USD'}}</span></li>
+                                    <li class="mb-0" *ngIf="(condicion == 'Si' && idx<=auxbecares&&idx>0)&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="(item.tipo!=0 && item.tipo != 'no') && item.date==diciembre" >Valor a pagar: {{config.pension|currency:'USD'}}</span></li>
+                                    <li class="mb-0"   *ngIf="item.date!='Matricula'&&(condicion == 'Si' && idx<=auxbecares&&idx>0)" ><span class="text-muted" *ngIf="item.tipo == 'no' && item.date!=diciembre" >Valor a pagar: {{votacionesdistributivon[idexpension].val_beca|currency:'USD'}}</span></li>
+                                  </ul>
+                                <span *ngIf="item.estado=='Pago atrasado Abono'"  class="badge badge-warning" style="background-color: #f1ee51;margin-left: 1rem;">{{item.estado}}</span>
+                                <span *ngIf="item.estado=='Pago anticipado Abono'"  class="badge badge-warning" style="background-color: #469df4;margin-left: 1rem;">{{item.estado}}</span>
+                                <span *ngIf="item.estado=='Pago a tiempo Abono'"  class="badge badge-warning" style="background-color: #67fa49;margin-left: 1rem;">{{item.estado}}</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="border-top-1" *ngIf="item.estado=='Sin Pago'"  style="background-color: #ffd2f4;margin-left: 1rem;">
+                            <div class="media pl-2 py-2">
+                              <div class="media-body pl-3">
+                                <h4 class="font-size-sm mb-3">
+                                  <a  style="cursor: pointer;" class="nav-link font-weight-bold" *ngIf="item.date!='Matricula'"> Pensión {{idx}} {{item.date|date:'MMMM'}} {{item.date|date:'YYYY'}} </a>
+                                  <a  style="cursor: pointer;" class="nav-link font-weight-bold" *ngIf="item.date=='Matricula'"> {{item.date}}</a> 
+                                </h4>
+                                <ul class="list-unstyled font-size-xs mt-n2 mb-2" style="margin-left: 1rem; " >
+                                  <ng-container *ngIf="votacionesdistributivon[idexpension].matricula==0 || item.valor!=0">
+                                    <li class="mb-0" *ngIf=" item.date=='Matricula'"><span class="text-muted" >Valor a pagar: {{config.matricula-item.valor|currency:'USD'}}</span></li>
+                                  </ng-container>
+                                  <ng-container *ngIf="votacionesdistributivon[idexpension].matricula==1 && item.valor==0">
+                                    <li class="mb-0" *ngIf=" item.date=='Matricula'"><span class="text-muted" >Cubierto por Beca</span></li>
+                                  </ng-container>
+                                    <li class="mb-0" *ngIf="(condicion == 'No' || (idx>auxbecares&&idx>0))&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="item.tipo!=0 && item.tipo != 'no'" >Valor a pagar: {{config.pension-item.valor|currency:'USD'}}</span></li>
+                                    <li class="mb-0"   *ngIf="(condicion == 'No' || (idx>auxbecares&&idx>0))&&item.date!='Matricula'" ><span class="text-muted" *ngIf="item.tipo == 'no' "    >Valor a pagar: {{config.pension|currency:'USD'}}</span></li>
+                                    <li class="mb-0" *ngIf="(condicion == 'Si' && idx<=auxbecares&&idx>0)&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="item.tipo!=0 && item.tipo != 'no' && item.date!=diciembre" >Valor a pagar: {{votacionesdistributivon[idexpension].val_beca-item.valor|currency:'USD'}}</span></li>
+                                    <li class="mb-0" *ngIf="(condicion == 'Si' && idx<=auxbecares&&idx>0)&&item.date!='Matricula'" ><span class="text-muted"  *ngIf="(item.tipo!=0 && item.tipo != 'no') || item.date==diciembre" >Valor a pagar: {{config.pension|currency:'USD'}}</span></li>
+                                    <li class="mb-0"   *ngIf="item.date!='Matricula'&&(condicion == 'Si' && idx<=auxbecares&&idx>0)" ><span class="text-muted" *ngIf="item.tipo == 'no' && item.date!=diciembre" >Valor a pagar: {{votacionesdistributivon[idexpension].val_beca|currency:'USD'}}</span></li>
+                                  </ul>
+                                <span *ngIf="item.estado=='Pago atrasado Abono'"  class="badge badge-warning" style="background-color: #f1ee51;margin-left: 1rem;">{{item.estado}}</span>
+                                <span *ngIf="item.estado=='Pago anticipado Abono'"  class="badge badge-warning" style="background-color: #469df4;margin-left: 1rem;">{{item.estado}}</span>
+                                <span *ngIf="item.estado=='Pago a tiempo Abono'"  class="badge badge-warning" style="background-color: #67fa49;margin-left: 1rem;">{{item.estado}}</span>
+                              </div>
+                            </div>
+                          </td>
+
+                          <td class="border-top-0">
+                            <div class="py-2">
+                              <div class="font-size-xs text-muted mb-1">Factura:</div>
+                              <ng-container *ngIf="item.pago!=undefined">
+                                <ng-container *ngFor="let fact of item.pago">
+                              <h4 class="font-size-sm mb-3">
+                                <a  style="cursor: pointer;" class="nav-link font-weight-bold"   [routerLink]="['/votaciones/',fact]"> {{fact}}</a>
+                              </h4>
+                                </ng-container>
+                              </ng-container>
+                            </div>
+                          </td>
+                          <td class="border-top-0">
+                            <div class="py-2 pr-3 text-right">
+                              <div class="font-size-xs text-muted mb-1">Valor: {{item.valor|currency:'USD'}}</div>
+                              <div class="font-size-sm font-weight-bold text-dark">
+                              
+                                <span></span>
+                                </div>
+                            </div>
+                          </td>
+                        
+                        </tr>
+                    
+                        
+                       
+                        <tr>
+                          <td style="padding-left: 1.3rem !important;" colspan="2">
+                            <b>Total por pagar</b>
+                          </td>
+                          <td class="" colspan="1">
+                            <div  class="py-2 pr-3 text-right">
+
+                              <span >{{total_pagar|currency:'USD'}}</span>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                </div>
+              </ng-container>
+
+              <ng-container  *ngIf="distributivon == undefined">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row justify-content-center">
+                      <div class="col-12 col-md-5 col-xl-4 my-5">
+                        
+                        <div class="text-center">
+                        
+                          <!-- Preheading -->
+                          <h6 class="text-uppercase text-muted mb-4">
+                            404 error
+                          </h6>
+              
+                          <!-- Heading -->
+                          <h1 class="display-4 mb-3">
+                            There’s no page here 😭
+                          </h1>
+              
+                          <!-- Subheading -->
+                          <p class="text-muted mb-4">
+                            Looks like you ended up here by accident? 
+                          </p>
+              
+                          <!-- Button -->
+                          <a [routerLink]="['/votaciones']"  class="btn btn-lg btn-primary">
+                            Regresar a votaciones
+                          </a>
+                        
+                        </div>
+              
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="load_data">
+              <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                      <div class="col-12 text-center">
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="visually-hidden"></span>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </ng-container>
+            
+            
+
+
+          </div>
+        </div> <!-- / .row -->
+      </div>
+</div>

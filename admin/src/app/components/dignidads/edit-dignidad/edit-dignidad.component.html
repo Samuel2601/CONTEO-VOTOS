@@ -1,0 +1,239 @@
+<app-sidebar></app-sidebar>
+<ng-container  *ngIf="rol!=undefined && rol=='admin'">
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10 col-xl-8">
+
+            <!-- Header -->
+            <div class="header mt-md-5">
+              <div class="header-body">
+                <div class="row align-items-center">
+                  <div class="col">
+
+                    <!-- Pretitle -->
+                    <h6 class="header-pretitle">
+                      Módulo
+                    </h6>
+
+                    <!-- Title -->
+                    <h1 class="header-title">
+                        Edición de Dignidads de deposito
+                    </h1>
+
+                  </div>
+                </div> <!-- / .row -->
+      
+              </div>
+            </div>
+
+            <!-- Alert -->
+
+
+            <ng-container *ngIf="!load_data">
+              <!-- Card -->
+                <form *ngIf="dignidad!=undefined" #actualizarForm="ngForm" (ngSubmit)="actualizar(actualizarForm)">
+                  <div class="card">
+                    <div class="card-header">
+      
+                      <!-- Title -->
+                      <h4 class="card-header-title">
+                        Edición de un nuevo Deposito
+                      </h4>
+      
+                    </div>
+      
+                    <div *ngIf="!load_data" class="card-body">
+                      <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Código de Dignidad (*)</label>
+                                            <input type="text" class="form-control" required placeholder="Código de dignidad" name="codigo" [(ngModel)]="dignidad.codigo_dignidad">
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="exampleInputEmail1">Nombre de la Dignidad (*)</label>
+                                          <input type="text" class="form-control" required placeholder="Código de dignidad" name="nombre" [(ngModel)]="dignidad.nombre_dignidad">
+                                      </div>
+                                    </div>
+                                  
+                                      
+                              
+                  
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+            
+                              <div class="row">
+                                <div class="form-group">
+                                  <label  class="form-label"><b>Provincia</b></label> <br>
+                                  <select class="form-control" id="pro" required name="pro" [(ngModel)]="dignidad.codigo_provincia">
+                                    <option selected disabled value="">Selecciones una Provincia</option>
+                                    <ng-container *ngFor="let item of provincia">
+                                      <option value="{{item._id}}">{{item.nombre_provincia}}</option>
+                                    </ng-container>
+                                </select>
+                              </div>
+                              </div>
+                                <div class="row">
+                                  <div class="form-group">
+                                  <label class="form-label"><b>Tipo de Dignidad</b></label> <br>
+                                  <select class="form-control" id="dig" required name="dig" [(ngModel)]="dignidad.seleccion">
+                                    <option selected disabled value="">Tipo de Dignidad a eligir</option>
+                                      <option value="PrefecturaViceprefectura">Prefecto y Viceprefecto</option>
+                                      <option value="AlcaldesM">Alcaldes Municipales</option>
+                                      <option value="ConcejalesU">Concejales Urbanos</option>
+                                      <option value="ConcejalesR">Consejales Rurales</option>
+                                      <option value="VocalesJP">Vocales de Juntas Parroquiales</option>
+                                      <option value="ConsejoPCCS">Consejo de Participación Ciudadana y Control Social</option>
+                                    
+                                </select>
+                              </div>
+                             </div>
+                             <div class="row">
+                              <div class="form-group">
+                              <label class="form-label"><b>Partido Político</b></label> <br>
+                              <select class="form-control" id="par" required name="par" [(ngModel)]="dignidad.partido">
+                                <option selected disabled value="">Escoje un partido político</option>
+                                  <option value="lista1">Movimiento Centro Democrático Nacional</option>
+                                  <option value="lista2">Movimiento Unidad Popular</option>
+                                  <option value="lista3">Partido Sociedad Patriótica 21 de Enero</option>
+                                  <option value="lista6">Partido Social Cristiano</option>
+                                  <option value="lista7">Partido Adelante Ecuatoriano Adelante</option>
+                                  <option value="lista8">Partido Avanza</option>
+                                  <option value="lista10">Partido Fuerza Ecuador</option>
+                                  <option value="lista12">Partido Izquierda Democrática</option>
+                                  <option value="lista17">Partido Socialista Ecuatoriano</option>
+                                  <option value="lista18">Movimiento de Unidad Plurinacional Pachakutik</option>
+                                  <option value="lista19">Movimiento Unión Ecuatoriana</option>
+                                  <option value="lista21">Movimiento Creando Oportunidades CREO</option>
+                                  <option value="lista23">Movimiento Sociedad Unida Más Acción SUMA</option>
+                                  <option value="lista35">Movimiento Alianza PAIS, Patria Altiva y Soberana</option>
+                                  <option value="lista51">Movimiento Concertación</option>
+  
+                            </select>
+                          </div>
+                        </div>
+                            </div>
+                           
+                        </div>
+                      </div>
+                    </div>
+                    <ng-container *ngIf="load_data">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-12 text-center">
+                            <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                              <span class="visually-hidden"></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <div class="card-footer">
+      
+                        <a class="btn btn-warning btn-shadow mr-3" [routerLink]="['/dignidads']" routerLinkActive="router-link-active" >Regresar</a>
+                        <button *ngIf="!load_btn" class="btn btn-primary btn-shadow" type="submit">Actualizar</button>
+                                        
+                        <button disabled *ngIf="load_btn" type="button" class="btn btn-primary btn-shadow">
+                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                            Actualizando...
+                        </button>
+      
+                        
+                    </div>
+                  </div>
+                </form>
+                <ng-container  *ngIf="dignidad == undefined">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row justify-content-center">
+                        <div class="col-12 col-md-5 col-xl-4 my-5">
+                          
+                          <div class="text-center">
+                          
+                            <!-- Preheading -->
+                            <h6 class="text-uppercase text-muted mb-4">
+                              404 error
+                            </h6>
+                
+                            <!-- Heading -->
+                            <h1 class="display-4 mb-3">
+                              There’s no page here 😭
+                            </h1>
+                
+                            <!-- Subheading -->
+                            <p class="text-muted mb-4">
+                              Looks like you ended up here by accident? 
+                            </p>
+                
+                            <!-- Button -->
+                            <a [routerLink]="['/dignidads']"  class="btn btn-lg btn-primary">
+                              Regresar a dignidads
+                            </a>
+                          
+                          </div>
+                
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+            </ng-container>
+            
+            <ng-container *ngIf="load_data">
+              <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                      <div class="col-12 text-center">
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="visually-hidden"></span>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </ng-container>
+
+          </div>
+        </div> <!-- / .row -->
+      </div>
+</div>
+</ng-container>
+<ng-container  *ngIf="rol!=undefined && rol!='admin'">
+  <div class="card">
+    <div class="card-body">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-5 col-xl-4 my-5">
+          
+          <div class="text-center">
+          
+            <!-- Preheading -->
+            <h6 class="text-uppercase text-muted mb-4">
+              404 error
+            </h6>
+
+            <!-- Heading -->
+            <h1 class="display-4 mb-3">
+              Está página no se cuentra habilitada 😭
+            </h1>
+
+            <!-- Subheading -->
+            <p class="text-muted mb-4">
+              ¿Parece que llegaste aquí por accidente?
+            </p>
+
+            <!-- Button -->
+            <a [routerLink]="['/votaciones/create']"  class="btn btn-lg btn-primary">
+              Regresar a votaciones
+            </a>
+          
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
