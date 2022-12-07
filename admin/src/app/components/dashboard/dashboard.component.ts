@@ -389,202 +389,96 @@ export class DashboardComponent implements OnInit {
 	filtrar_votos():void{
 		this.lav=[];
 		var base=[];
-		if(this.new_recinto.codigo_recinto){
-			if(this.c_new_votacion){
-				this._adminService.listar_votacion_esp_rec(this.new_recinto.codigo_recinto,this.token).subscribe(response=>{
-					if(response.data){
-						if(response.data){
-							this.c_new_votacion=response.data;
+		//if(this.c_new_votacion.length==0){
+			this._adminService.listar_votacion_esp_pro(this.new_recinto.codigo_provincia, this.token).subscribe(response=>{
+				if(response.data){
+					this.c_new_votacion=response.data;
 
-							if(this.tipo_seleccion){
-								this.new_votacion=this.c_new_votacion.filter((element:any)=>
-									this.new_recinto.codigo_provincia==element.codigo_provincia && 
-									this.tipo_seleccion==element.codigo_dignidad.seleccion
-								);
+					if(this.tipo_seleccion){
+						this.new_votacion=this.c_new_votacion.filter((element:any)=>
+							this.tipo_seleccion==element.codigo_dignidad.seleccion
+						);
+					}
+					//console.log(this.new_votacion);
+			
+					if(this.new_recinto.codigo_recinto){
+						var rec=this.arr_recinto.filter((element:any)=>
+							element._id==this.new_recinto.codigo_recinto);
+						//console.log(rec);
+			
+						for(var i=parseInt(rec[0].jun_inif);i<=parseInt(rec[0].jun_finf);i++){
+							this.lav.push((i).toString() + ' F');
+						}
+						for(var i=parseInt(rec[0].jun_inim);i<=parseInt(rec[0].jun_finm);i++){
+							this.lav.push((i).toString()+ ' M');
+						}
+						base= new Array(this.lav.length);
+						base.fill(0,0);
+						//console.log(this.lav);
+						//console.log(base);
+						this.armador_grafica(this.lav,'Recinto',base);
+						//tipo='Recinto';
+						
+			
+					}else if(this.new_recinto.codigo_zona){
+						for(var i=0; i<this.arr_recinto.length;i++){
+							if(i==0||this.lav.find(element=> element==this.arr_recinto[i].nombre_recinto)==undefined){
+								this.lav.push({nombre:this.arr_recinto[i].nombre_recinto,codigo:this.arr_recinto[i]._id});
+								base.push(0);
 							}
-							//console.log(this.new_votacion);
-							var rec=this.arr_recinto.filter((element:any)=>
-								element._id==this.new_recinto.codigo_recinto);
-							//console.log(rec);
+						}
+						//console.log(this.lav);
+						//console.log(this.new_votacion);
+						this.armador_grafica(this.lav,'Zona',base);
+						//tipo='Zona';
+						
+					}else if(this.new_recinto.codigo_parroquia){
+						for(var i=0; i<this.arr_zona.length;i++){
+							if(i==0||this.lav.find(element=> element==this.arr_zona[i].nombre_zona)==undefined){
+								this.lav.push({nombre:this.arr_zona[i].nombre_zona,codigo:this.arr_zona[i]._id});
+								base.push(0);
+							}
+						}
+						//console.log(this.lav);
+						//console.log(this.new_votacion);
+						this.armador_grafica(this.lav,'Parroquia',base);
+						//tipo='Parroquia';
+						
+					}else if(this.new_recinto.codigo_canton){
+						for(var i=0; i<this.arr_parroquia.length;i++){
+							if(i==0||this.lav.find(element=> element==this.arr_parroquia[i].nombre_parroquia)==undefined){
+								this.lav.push({nombre:this.arr_parroquia[i].nombre_parroquia,codigo:this.arr_parroquia[i]._id});
+								base.push(0);
+							}
+						}
+						//console.log(this.lav);
+						//console.log(this.new_votacion);
+						this.armador_grafica(this.lav,'Canton',base);
+						///tipo='Canton';
+						
+					}else if(this.new_recinto.codigo_provincia){
+						for(var i=0; i<this.arr_canton.length;i++){
+							////console.log(this.lav.find(element=> element==this.arr_canton[i].nombre_canton)==undefined);
+							if(i==0||this.lav.find(element=> element==this.arr_canton[i].nombre_canton)==undefined){
+								this.lav.push({nombre:this.arr_canton[i].nombre_canton,codigo:this.arr_canton[i]._id});
+								
+								base.push(0);
+							}
+						}
+						//console.log(this.lav);
+						this.armador_grafica(this.lav,'Provincia',base);
+						//tipo='Provincia';
+						
+					}else{
+						//console.log('seleccione un filtro');
+					}
+				}
+			});
+		/*}else{
+			this.new_votacion=this.c_new_votacion;
+		}*/
 
-							for(var i=parseInt(rec[0].jun_inif);i<=parseInt(rec[0].jun_finf);i++){
-								this.lav.push((i).toString() + ' F');
-							}
-							for(var i=parseInt(rec[0].jun_inim);i<=parseInt(rec[0].jun_finm);i++){
-								this.lav.push((i).toString()+ ' M');
-							}
-							base= new Array(this.lav.length);
-							base.fill(0,0);
-							//console.log(this.lav);
-							//console.log(base);
-							this.armador_grafica(this.lav,'Recinto',base);
-							
-						}
-					}
-				});
-			}else{
-				if(this.tipo_seleccion){
-					this.new_votacion=this.c_new_votacion.filter((element:any)=>
-						this.new_recinto.codigo_provincia==element.codigo_provincia && 
-						this.tipo_seleccion==element.codigo_dignidad.seleccion
-					);
-				}else{
-					this.new_votacion=this.c_new_votacion;
-				}
-			}
-			//tipo='Recinto';
-			
-
-		}else if(this.new_recinto.codigo_zona){
-			if(this.c_new_votacion){
-				this._adminService.listar_votacion_esp_zon(this.new_recinto.codigo_zona,this.token).subscribe(response=>{
-					if(response.data){
-						if(response.data){
-							this.c_new_votacion=response.data;
-							if(this.tipo_seleccion){
-								this.new_votacion=this.c_new_votacion.filter((element:any)=>
-									this.new_recinto.codigo_provincia==element.codigo_provincia && 
-									this.tipo_seleccion==element.codigo_dignidad.seleccion
-								);
-							}
-							for(var i=0; i<this.arr_recinto.length;i++){
-								if(i==0||this.lav.find(element=> element==this.arr_recinto[i].nombre_recinto)==undefined){
-									this.lav.push(this.arr_recinto[i].nombre_recinto);
-									base.push(0);
-								}
-							}
-							//console.log(this.lav);
-							//console.log(this.new_votacion);
-							this.armador_grafica(this.lav,'Zona',base);
-						}
-					}
-				});
-			}else{
-				if(this.tipo_seleccion){
-					this.new_votacion=this.c_new_votacion.filter((element:any)=>
-						this.new_recinto.codigo_provincia==element.codigo_provincia && 
-						this.tipo_seleccion==element.codigo_dignidad.seleccion
-					);
-				}else{
-					this.new_votacion=this.c_new_votacion;
-				}
-			}
-			//tipo='Zona';
-			
-		}else if(this.new_recinto.codigo_parroquia){
-			if(this.c_new_votacion){
-				this._adminService.listar_votacion_esp_parr(this.new_recinto.codigo_parroquia,this.token).subscribe(response=>{
-					if(response.data){
-						if(response.data){
-							this.c_new_votacion=response.data;
-							if(this.tipo_seleccion){
-								this.new_votacion=this.c_new_votacion.filter((element:any)=>
-									this.new_recinto.codigo_provincia==element.codigo_provincia && 
-									this.tipo_seleccion==element.codigo_dignidad.seleccion
-								);
-							}
-							for(var i=0; i<this.arr_zona.length;i++){
-								if(i==0||this.lav.find(element=> element==this.arr_zona[i].nombre_zona)==undefined){
-									this.lav.push(this.arr_zona[i].nombre_zona);
-									base.push(0);
-								}
-							}
-							//console.log(this.lav);
-							//console.log(this.new_votacion);
-							this.armador_grafica(this.lav,'Parroquia',base);
-						}
-					}
-				});
-			}else{
-				if(this.tipo_seleccion){
-					this.new_votacion=this.c_new_votacion.filter((element:any)=>
-						this.new_recinto.codigo_provincia==element.codigo_provincia && 
-						this.tipo_seleccion==element.codigo_dignidad.seleccion
-					);
-				}else{
-					this.new_votacion=this.c_new_votacion;
-				}
-			}
-			//tipo='Parroquia';
-			
-		}else if(this.new_recinto.codigo_canton){
-			if(this.c_new_votacion){
-				this._adminService.listar_votacion_esp_can(this.new_recinto.codigo_canton,this.token).subscribe(response=>{
-					if(response.data){
-						if(response.data){
-							this.c_new_votacion=response.data;
-							if(this.tipo_seleccion){
-								this.new_votacion=this.c_new_votacion.filter((element:any)=>
-									this.new_recinto.codigo_provincia==element.codigo_provincia && 
-									this.tipo_seleccion==element.codigo_dignidad.seleccion
-								);
-							}
-							for(var i=0; i<this.arr_parroquia.length;i++){
-								if(i==0||this.lav.find(element=> element==this.arr_parroquia[i].nombre_parroquia)==undefined){
-									this.lav.push(this.arr_parroquia[i].nombre_parroquia);
-									base.push(0);
-								}
-							}
-							//console.log(this.lav);
-							//console.log(this.new_votacion);
-							this.armador_grafica(this.lav,'Canton',base);
-						}
-					}
-				});
-			}else{
-				if(this.tipo_seleccion){
-					this.new_votacion=this.c_new_votacion.filter((element:any)=>
-						this.new_recinto.codigo_provincia==element.codigo_provincia && 
-						this.tipo_seleccion==element.codigo_dignidad.seleccion
-					);
-				}else{
-					this.new_votacion=this.c_new_votacion;
-				}
-			}
-			///tipo='Canton';
-			
-		}else if(this.new_recinto.codigo_provincia){
-			if(this.c_new_votacion){
-				this._adminService.listar_votacion_esp_pro(this.new_recinto.codigo_provincia,this.token).subscribe(response=>{
-					if(response.data){
-						if(response.data){
-							this.c_new_votacion=response.data;
-							if(this.tipo_seleccion){
-								this.new_votacion=this.c_new_votacion.filter((element:any)=>
-									this.new_recinto.codigo_provincia==element.codigo_provincia && 
-									this.tipo_seleccion==element.codigo_dignidad.seleccion
-								);
-							}
-							//console.log(this.new_votacion);
-							
-							for(var i=0; i<this.arr_canton.length;i++){
-								////console.log(this.lav.find(element=> element==this.arr_canton[i].nombre_canton)==undefined);
-								if(i==0||this.lav.find(element=> element==this.arr_canton[i].nombre_canton)==undefined){
-									this.lav.push(this.arr_canton[i].nombre_canton);
-									
-									base.push(0);
-								}
-							}
-							//console.log(this.lav);
-							this.armador_grafica(this.lav,'Provincia',base);
-						}
-					}
-				});
-			}else{
-				if(this.tipo_seleccion){
-					this.new_votacion=this.c_new_votacion.filter((element:any)=>
-						this.new_recinto.codigo_provincia==element.codigo_provincia && 
-						this.tipo_seleccion==element.codigo_dignidad.seleccion
-					);
-				}else{
-					this.new_votacion=this.c_new_votacion;
-				}
-			}
-			//tipo='Provincia';
-			
-		}else{
-			//console.log('seleccione un filtro');
-		}
+		
 
 		
 	}
@@ -620,53 +514,82 @@ export class DashboardComponent implements OnInit {
 				if(this.arr_vot[this.arr_vot.length-1].data){
 					this.arr_vot[this.arr_vot.length-1].data.fill(0,0);
 				}
+				//console.log(this.new_votacion[i].conteo);
+				
+				let c=0;
+				let d1='';
 				switch(tipo){
 					case 'Provincia':
-							var c=this.lav.indexOf(this.new_votacion[i].codigo_canton.nombre_canton);
-							this.arr_vot[this.arr_vot.length-1].data[c]++;
+						d1=this.new_votacion[i].votacion.codigo_canton;
 						break;
 					case 'Canton':
-						var c=this.lav.indexOf(this.new_votacion[i].codigo_parroquia.nombre_parroquia);
-							this.arr_vot[this.arr_vot.length-1].data[c]++;
+						d1=this.new_votacion[i].votacion.codigo_parroquia;
 						break;
 					case 'Parroquia':
-						var c=this.lav.indexOf(this.new_votacion[i].codigo_zona.nombre_zona);
-							this.arr_vot[this.arr_vot.length-1].data[c]++;
+						d1=this.new_votacion[i].votacion.codigo_zona;
 						break;
 					case 'Zona':
-						var c=this.lav.indexOf(this.new_votacion[i].codigo_recinto.nombre_recinto);
-							this.arr_vot[this.arr_vot.length-1].data[c]++;
+						d1=this.new_votacion[i].votacion.codigo_recinto;
 						break;
 					default:
-						var c=this.lav.indexOf(this.new_votacion[i].junta+' '+this.new_votacion[i].tipo_junta);
-							this.arr_vot[this.arr_vot.length-1].data[c]++;
+						c=this.lav.indexOf(this.new_votacion[i].votacion.junta+' '+this.new_votacion[i].votacion.tipo_junta);
+						//console.log(c);
+						this.arr_vot[this.arr_vot.length-1].data[c]=parseInt(this.new_votacion[i].conteo)+this.arr_vot[this.arr_vot.length-1].data[c];
 						break;
 				}
+				if(tipo!='Recinto'){
+					for(var j=1; j<this.lav.length;j++){
+						
+						if(this.lav[j].codigo==d1){
+							//console.log("Codigo: "+this.lav[j].codigo,"voto:"+d1,this.lav[j].codigo==d1);
+							c=j;
+							break;
+						}
+					}
+					this.arr_vot[this.arr_vot.length-1].data[c]=this.arr_vot[this.arr_vot.length-1].data[c]+parseInt(this.new_votacion[i].conteo);
+				
+				}
+				
+				
+				
 			//	this.arr_vot[i].data[c]=this.arr_vot[i].data[c]+1;
 			}else if(this.arr_vot.find((elemet:any)=>elemet.label==this.new_votacion[i].codigo_dignidad.nombre_dignidad)!=undefined){
-				var d=this.arr_vot.findIndex((elemet:any)=>elemet.label==this.new_votacion[i].codigo_dignidad.nombre_dignidad);
+				let d=this.arr_vot.findIndex((elemet:any)=>elemet.label==this.new_votacion[i].codigo_dignidad.nombre_dignidad);
+				let d2='';
+				let c1=0;
 				switch(tipo){
 					case 'Provincia':
-							var c=this.lav.indexOf(this.new_votacion[i].codigo_canton.nombre_canton);
-							this.arr_vot[d].data[c]++;
+							 d2=this.new_votacion[i].votacion.codigo_canton;
+							//this.arr_vot[d].data[c]=parseInt(this.new_votacion[i].conteo)+this.arr_vot[d].data[c];
 						break;
 					case 'Canton':
-						var c=this.lav.indexOf(this.new_votacion[i].codigo_parroquia.nombre_parroquia);
-							this.arr_vot[d].data[c]++;
+						 d2=this.new_votacion[i].votacion.codigo_parroquia;
+							//this.arr_vot[d].data[c]=parseInt(this.new_votacion[i].conteo)+this.arr_vot[d].data[c];
 						break;
 					case 'Parroquia':
-						var c=this.lav.indexOf(this.new_votacion[i].codigo_zona.nombre_zona);
-							this.arr_vot[d].data[c]++;
+						 d2=this.new_votacion[i].votacion.codigo_zona;
+							//this.arr_vot[d].data[c]=parseInt(this.new_votacion[i].conteo)+this.arr_vot[d].data[c];
 						break;
 					case 'Zona':
-						var c=this.lav.indexOf(this.new_votacion[i].codigo_recinto.nombre_recinto);
-							this.arr_vot[d].data[c]++;
+						 d2=this.new_votacion[i].votacion.codigo_recinto;
+							//this.arr_vot[d].data[c]=parseInt(this.new_votacion[i].conteo)+this.arr_vot[d].data[c];
 						break;
 					default:
-						var c=this.lav.indexOf(this.new_votacion[i].junta+' '+this.new_votacion[i].tipo_junta);
-							this.arr_vot[d].data[c]++;
+						 c1=this.lav.indexOf(this.new_votacion[i].votacion.junta+' '+this.new_votacion[i].votacion.tipo_junta);
+							this.arr_vot[d].data[c1]=parseInt(this.new_votacion[i].conteo)+this.arr_vot[d].data[c1];
 						break;
 				}
+				if(tipo!='Recinto'){
+					for(var j=1; j<this.lav.length;j++){
+						if(this.lav[j].codigo==d2){
+							c1=j;
+							break;
+						}
+					}
+					this.arr_vot[d].data[c1]=this.arr_vot[d].data[c1]+parseInt(this.new_votacion[i].conteo);
+				}
+
+				
 			}
 			
 		}
@@ -686,7 +609,7 @@ export class DashboardComponent implements OnInit {
 			this.myChart = new Chart(ctx, {
 				type: "bar",
 				data: {
-					labels: this.lav,
+					//labels: this.lav,
 					datasets: this.arr_vot
 				},
 				options: {
@@ -697,17 +620,26 @@ export class DashboardComponent implements OnInit {
 					}
 				}
 			});
+			if(tipo!='Recinto'){
+				this.lav.forEach((element:any) => {
+					this.myChart.data.labels.push(element.nombre);
+				});
+			}else{
+				this.myChart.data.labels=this.lav;
+			}
 			//console.log(this.arr_vot);
 			//console.log(this.lav);
 			this.cont=0;
+			
 			this.arr_vot.forEach((element:any) => {
-
+				
 					for(var i=0; i<base.length;i++){
 						this.con[i]=this.con[i]+element.data[i];
 						this.cont=this.cont+element.data[i];
 					}
-
+							
 			});
+		
 			//console.log(this.con);
 			this.myChart.update();
 			$("#modalRecinto").modal("hide");
@@ -1016,6 +948,7 @@ export class DashboardComponent implements OnInit {
 	cambio_sele(prov){
 		this.tipo_seleccion=prov;
 	}
+	public condig=0;
 	armadodignidad(){
 		var labels=[];
 		this.dignidad_arr=[{
@@ -1033,19 +966,20 @@ export class DashboardComponent implements OnInit {
 			this._adminService.listar_votacion_esp_pro(this.new_recinto.codigo_provincia,this.token).subscribe(response=>{
 				if(response.data){
 					this.dignidads=response.data;
+					//console.log(this.dignidads);
 					this.dignidads=this.dignidads.filter((element:any)=>
 						this.tipo_seleccion==element.codigo_dignidad.seleccion
 					);
 					this.dignidads.forEach(element => {
 						if(!labels.find(element2=> element.codigo_dignidad.nombre_dignidad==element2)){
 							labels.push(element.codigo_dignidad.nombre_dignidad);
-							this.dignidad_arr[0].data.push(1);
+							this.dignidad_arr[0].data.push(element.conteo);
 							this.dignidad_arr[0].backgroundColor.push(this.backgroundColor[this.dignidad_arr[0].data.length-1]);
 							this.dignidad_arr[0].borderColor.push(this.borderColor[this.dignidad_arr[0].data.length-1]);
 						}else{
 							
 							var c = labels.findIndex(element2=>element.codigo_dignidad.nombre_dignidad==element2);
-							this.dignidad_arr[0].data[c]=this.dignidad_arr[0].data[c]+1;
+							this.dignidad_arr[0].data[c]=this.dignidad_arr[0].data[c]+element.conteo;
 						}
 					});
 					
@@ -1090,6 +1024,11 @@ export class DashboardComponent implements OnInit {
 					for(var i=0; i<this.dignidad_arr[0].data.length;i++){
 						this.dignidads_const.push({'valor':this.dignidad_arr[0].data[i],'nombre':labels[i]});
 					}
+					this.condig=0;
+					this.dignidads_const.forEach((element:any) => {
+							
+							this.condig+=element.valor;	
+					});
 					this.dignidads_const.sort(function(a,b){return b.valor-a.valor});
 				//	console.log(this.dignidads_const);
 				}

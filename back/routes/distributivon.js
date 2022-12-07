@@ -55,9 +55,11 @@ api.post('/registro_recinto',auth.auth,distributivonController.registro_recinto)
 api.post('/registro_zona',auth.auth,distributivonController.registro_zona);
 
 api.post('/registrar_votacion',[auth.auth,path],distributivonController.registrar_votacion);
+api.post('/registro_dvotacion',auth.auth,path,distributivonController.registro_dvotacion);
 
 api.get('/obtener_portada/:img',distributivonController.obtener_portada);
 api.get('/obtener_portada_partido/:img',distributivonController.obtener_portada_partido);
+
 /*
 
 api.post('/registro_distributivon_tienda',distributivonController.registro_distributivon_tienda);

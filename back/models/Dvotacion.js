@@ -7,7 +7,7 @@ var DvotacionSchema = Schema({
 
     votacion:{type: Schema.ObjectId, ref: 'votacion', required: true},
     codigo_dignidad:{type: Schema.ObjectId, ref: 'dignidad', required: true},
-    conteo:{type: Number, required: false},
+    conteo:{type: Number, required: true},
     createdAt: {type:Date, default: Date.now, require: true}
 });
 

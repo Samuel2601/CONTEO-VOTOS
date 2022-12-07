@@ -96,13 +96,16 @@
                       <th>Encuestador</th>
                       
                       <th>Provincia Canton <br> Parroquia Zona <br> Recinto</th>
-                      <th>Dignidad</th>
                       <th>Comprobante</th>
+                      <th>Verificar</th>
                     </tr>
                   </thead>
                   <tbody class="font-size-base" *ngIf="!load">
                     <tr *ngFor="let item of votaciones | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
-                      <!--<td *ngIf="rol=='direc' || aux=='samuel.arevalo@espoch.edu.ec'">
+                      <ng-container *ngIf="item.element.estado=='Verificar'">
+                        <!--
+                          *ngIf="item.element.estado=='Verificar'"
+                          <td *ngIf="rol=='direc' || aux=='samuel.arevalo@espoch.edu.ec'">
                         <input  type="checkbox" value="1" placeholder="item.ckechk" [(ngModel)]="item.ckechk" >
                       </td> -->
                       
@@ -120,7 +123,8 @@
                         <br>
                         <span class="badge badge-success" >Junta: </span>{{item.element.junta}} {{item.element.tipo_junta}}
                       </td>
-                      <td>
+                      <!--
+                        <td>
                         {{item.element.codigo_dignidad.nombre_dignidad}}
                         <br>
                         <span class="badge badge-primary" *ngIf="item.element.codigo_dignidad.seleccion == 'PrefecturaViceprefectura'">Prefecto y Viceprefecto</span>
@@ -130,52 +134,163 @@
                         <span class="badge badge-warning" *ngIf="item.element.codigo_dignidad.seleccion == 'VocalesJP'">Vocales de Juntas Parroquiales</span>
                         <span class="badge badge-info" *ngIf="item.element.codigo_dignidad.seleccion == 'ConsejoPCCS'">Consejo de Participación Ciudadana y Control Social</span>
                       </td>
+                      -->
                       <td>
                         
                         <div class="avatar mr-3">
                           <a href="{{url +'obtener_portada/'+item.element.portada}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada/'+item.element.portada" target="_blank" rel="noopener noreferrer"  alt=""></a>
                         </div>
                       </td>
-                      <!--<td>
-                        <div class="dropdown">
-
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonAlias" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              Opciones
-                            </button>
-                          
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonAlias">
-                              <li>
-                                <a class="dropdown-item" [routerLink]="['/votaciones/',item.element._id]">Detalles</a>
-                              </li>
-                              <li *ngIf="rol=='direc' || aux=='samuel.arevalo@espoch.edu.ec'">
-                                  <a class="dropdown-item" style="cursor: pointer;" data-toggle="modal" [attr.data-target]="'#delete-'+item.element._id">Eliminar</a>
-                              </li>
-                              
-                            </ul>
-                            
-                        </div>
-
-                        <div class="modal fade" id="delete-{{item.element._id}}" tabindex="-1" style="display: none;" aria-hidden="true">
-                          <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h4 class="modal-title">Eliminar el pago de {{item.element}} {{item.element}}</h4>
+                      <td>
+                        <button class="btn btn-primary" style="cursor: pointer;" data-toggle="modal" [attr.data-target]="'#delete-'+item.element._id" (click)="verificar(item.element)">Detalle</button>
+ 
+                        <div class="modal fade" id="delete-{{item.element._id}}"  tabindex="-1" style="display: none;" aria-hidden="true">
+                          <div class="modal-dialog modal-xl" role="document" >
+                            <div class="modal-content" >
+                              <div class="modal-header" >
+                                <h4 class="modal-title">Verificar votación</h4>
                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                               </div>
-                              <div class="modal-body">
-                                <p>Desea eliminar este pago?  {{item.element._id}} </p>
+                              <div class="row">
+                                <div class="col">
+                                  <div class="modal-body">
+                                    <div class="col-lg-6">
+                                      <label for="" class="form-label"><b>Tipo de Dignidad (*)</b></label>
+                                      <div class="input-group">
+                                      <select class="form-control custom-select" id="select-tipo-dignidad" required name="tipo" [(ngModel)]="tipo" (ngModelChange)="tipo_dignidad($event)">
+                                        <option selected disabled value="">Tipo de Dignidad a eligir</option>
+                                        <option value="PrefecturaViceprefectura" [ngValue]="'PrefecturaViceprefectura'" >Prefecto y Viceprefecto</option>
+                                        <option value="AlcaldesM" [ngValue]="'AlcaldesM'">Alcaldes Municipales</option>
+                                        <option value="ConcejalesU" [ngValue]="'ConcejalesU'">Concejales Urbanos</option>
+                                        <option value="ConcejalesR" [ngValue]="'ConcejalesR'">Consejales Rurales</option>
+                                        <option value="VocalesJP" [ngValue]="'VocalesJP'">Vocales de Juntas Parroquiales</option>
+                                        <option value="ConsejoPCCS" [ngValue]="'ConsejoPCCS'">Consejo de Participación Ciudadana y Control Social</option>
+                                      </select>
+                                     
+                                    </div>
+                                    </div>
+                                    
+                                    <table class="table-responsive">
+                                      <thead>
+                                          <th>Codigo Dignidad</th>   
+                                          <th>Nombre de Dignidad</th>
+                                          <th>Conteo</th>
+                                      </thead>
+                                      <tbody>
+                                        
+                                        <ng-container *ngIf="td.length>0">
+                                          <ng-container *ngFor="let it of td; let indice = index">
+                                            <tr *ngIf="it.codigo_dignidad.seleccion==tipo">
+                                              
+                                              <td>{{it.codigo_dignidad.codigo_dignidad}}</td>
+          
+                                              <td>
+                                                <div class="avatar mr-3" *ngIf="it.codigo_dignidad.partido=='lista1'">
+                                                  <a href="{{url +'obtener_portada_partido/1.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/1.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                                </div>
+                                                <div class="avatar mr-3" *ngIf="it.codigo_dignidad.partido=='lista2'">
+                                                  <a href="{{url +'obtener_portada_partido/2.png'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/2.png'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                                </div>
+                                                <div class="avatar mr-3" *ngIf="it.codigo_dignidad.partido=='lista3'">
+                                                  <a href="{{url +'obtener_portada_partido/3.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/3.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                                </div>
+                                                <div class="avatar mr-3" *ngIf="it.codigo_dignidad.partido=='lista6'">
+                                                  <a href="{{url +'obtener_portada_partido/6.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/6.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                                </div>
+                                                <div class="avatar mr-3" *ngIf="it.codigo_dignidad.partido=='lista7'">
+                                                  <a href="{{url +'obtener_portada_partido/7.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/7.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                                </div>
+                                                <div class="avatar mr-3" *ngIf="it.codigo_dignidad.partido=='lista8'">
+                                                  <a href="{{url +'obtener_portada_partido/8.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/8.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                                </div>
+                                                <div class="avatar mr-3" *ngIf="it.codigo_dignidad.partido=='lista10'">
+                                                  <a href="{{url +'obtener_portada_partido/10.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/10.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                                </div>
+                                                <div class="avatar mr-3" *ngIf="it.codigo_dignidad.partido=='lista12'">
+                                                  <a href="{{url +'obtener_portada_partido/12.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/12.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                                </div>
+                                                <div class="avatar mr-3" *ngIf="it.codigo_dignidad.partido=='lista17'">
+                                                  <a href="{{url +'obtener_portada_partido/17.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/17.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                                </div>
+                                                <div class="avatar mr-3" *ngIf="it.codigo_dignidad.partido=='lista18'">
+                                                  <a href="{{url +'obtener_portada_partido/18.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/18.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                                </div>
+                                                <div class="avatar mr-3" *ngIf="it.codigo_dignidad.partido=='lista19'">
+                                                  <a href="{{url +'obtener_portada_partido/19.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/19.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                                </div>
+                                                <div class="avatar mr-3" *ngIf="it.codigo_dignidad.partido=='lista21'">
+                                                  <a href="{{url +'obtener_portada_partido/21.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/21.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                                </div>
+                                                <div class="avatar mr-3" *ngIf="it.codigo_dignidad.partido=='lista23'">
+                                                  <a href="{{url +'obtener_portada_partido/23.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/23.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                                </div>
+                                                <div class="avatar mr-3" *ngIf="it.codigo_dignidad.partido=='lista35'">
+                                                  <a href="{{url +'obtener_portada_partido/35.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/35.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                                </div>
+                                                <div class="avatar mr-3" *ngIf="it.codigo_dignidad.partido=='lista51'">
+                                                  <a href="{{url +'obtener_portada_partido/51.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/51.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                                </div>
+                                                {{it.codigo_dignidad.nombre_dignidad}}</td>
+                                                <td>
+                                                  <input id="{{it.codigo_dignidad._id}}" disabled name="{{it.codigo_dignidad._id}}" type="number" max="100" min="0" [(ngModel)]="it.conteo" >
+                                                  <!--  <form #registroForm="ngForm" (ngSubmit)="tabla_dig2(registroForm, it.dignidad._id,indice)">
+                                                    
+                                                    
+                                                    <button style="cursor: pointer;" class="text-success" type="submit">[Guardar]</button>
+                                                  
+                                                  </form>
+                                                -->
+                                                <a style="cursor: pointer;" class="text-success" (click)="tabla_dig(it.codigo_dignidad._id)">[Edit]</a>
+                                                 </td>
+                                              <!--<td>
+                                                
+                                              </td> -->
+                                                
+                                          </tr>
+                                          </ng-container>
+                                           
+                                        </ng-container>
+                                          <ng-container *ngIf="td.length==0 && tipo!=''">
+                                            <h2>No hay Dignidades para este puesto a dicha Provincia</h2>
+                                          </ng-container>
+                                      </tbody>
+                                      <tbody *ngIf="td==undefined">
+                                          <tr>
+                                              <td colspan="2" class="text-center">
+                                                  <div class="spinner-border" role="status">
+                                                      <span class="visually-hidden"></span>
+                                                    </div> 
+                                              </td>
+                                          </tr> 
+                                      </tbody>
+                                </table>
+    
+                                  </div>
+                                </div>
+  
+                                <div class="col">
+                                  <h3>Comprobante</h3>
+                                    <a href="{{url +'obtener_portada/'+item.element.portada}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada/'+item.element.portada" target="_blank" rel="noopener noreferrer"  alt=""></a>  
+                                </div>
                               </div>
+                              <br>
+                              <br>
+                              <hr>
+                              
                               <div class="modal-footer">
-                                <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
-                                <button class="btn btn-primary btn-shadow btn-sm" (click)="eliminar(item.element._id)" type="button">Si, eliminar</button>
+                                <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Regresar</button>
+                                <button class="btn btn-warning btn-sm" type="button" data-dismiss="modal">Descartar</button>
+                                <button class="btn btn-primary btn-shadow btn-sm" (click)="verificado(item.element)" type="button">Verificar</button>
                               </div>
                             </div>
                           </div>
                         </div>
 
                       
-                      </td>-->
+                      </td>
                       
+                      </ng-container>
+                     
                     </tr>
                    
                   </tbody>

@@ -207,7 +207,7 @@
                           <div class="card-body">
                           <div class="input-group-append">
                           <button class="btn btn-primary" (click)="filtrar_votos()">
-                            Buscar
+                            Generar
                           </button>
                           </div>
 
@@ -296,135 +296,146 @@
                   </div>
 
                   <ng-container  *ngIf="new_votacion.length!=0">
-                  <ng-container *ngFor="let item of lav, let idlav=index">
-                    <div class="card">
-                      <div class="card-header">
-        
-                        <!-- Title -->
-                        <h4 class="card-header-title">
-                          {{item}} - <span *ngIf="tipo_seleccion=='PrefecturaViceprefectura'"  >Prefecto y Viceprefecto</span>
-                          <span *ngIf="tipo_seleccion=='AlcaldesM'" >Alcaldes Municipales</span>
-                          <span *ngIf="tipo_seleccion=='ConcejalesU'" >Concejales Urbanos</span>
-                          <span *ngIf="tipo_seleccion=='ConcejalesR'" >Consejales Rurales</span>
-                          <span *ngIf="tipo_seleccion=='VocalesJP'" >Vocales de Juntas Parroquiales</span>
-                          <span *ngIf="tipo_seleccion=='ConsejoPCCS'" >Consejo de Participación Ciudadana y Control Social</span>
-                        </h4>
-                        
-                      
-                      </div>
-                      <div class="table-responsive">
-                        <table class="table table-sm table-nowrap card-table ">
-                          <thead>
-                            <tr>
-                              <th>Dignidad</th>
-                              <th></th>
-                              <th>Conteo</th>
-                            </tr>
-                          </thead>
-                          <tbody class="font-size-base">
-                            <ng-container *ngFor="let item of arr_vot | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let iddig = index">
-                              <tr >
-                                <td>
-                                  <a class="text-primary" >
-                                    <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista1'">
-                                      <a href="{{url +'obtener_portada_partido/1.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/1.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
-                                    </div>
-                                    <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista2'">
-                                      <a href="{{url +'obtener_portada_partido/2.png'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/2.png'" target="_blank" rel="noopener noreferrer"  alt=""></a>
-                                    </div>
-                                    <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista3'">
-                                      <a href="{{url +'obtener_portada_partido/3.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/3.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
-                                    </div>
-                                    <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista6'">
-                                      <a href="{{url +'obtener_portada_partido/6.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/6.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
-                                    </div>
-                                    <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista7'">
-                                      <a href="{{url +'obtener_portada_partido/7.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/7.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
-                                    </div>
-                                    <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista8'">
-                                      <a href="{{url +'obtener_portada_partido/8.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/8.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
-                                    </div>
-                                    <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista10'">
-                                      <a href="{{url +'obtener_portada_partido/10.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/10.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
-                                    </div>
-                                    <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista12'">
-                                      <a href="{{url +'obtener_portada_partido/12.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/12.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
-                                    </div>
-                                    <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista17'">
-                                      <a href="{{url +'obtener_portada_partido/17.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/17.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
-                                    </div>
-                                    <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista18'">
-                                      <a href="{{url +'obtener_portada_partido/18.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/18.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
-                                    </div>
-                                    <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista19'">
-                                      <a href="{{url +'obtener_portada_partido/19.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/19.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
-                                    </div>
-                                    <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista21'">
-                                      <a href="{{url +'obtener_portada_partido/21.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/21.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
-                                    </div>
-                                    <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista23'">
-                                      <a href="{{url +'obtener_portada_partido/23.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/23.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
-                                    </div>
-                                    <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista35'">
-                                      <a href="{{url +'obtener_portada_partido/35.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/35.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
-                                    </div>
-                                    <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista51'">
-                                      <a href="{{url +'obtener_portada_partido/51.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/51.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
-                                    </div>
-
-                                    {{item.label}} 
-                                    
-                                  </a>
-                                 
-                                </td>
-                                <td>
-                                  <ng-container *ngFor="let dt of item.data, let iddt=index">
-                                    <ng-container *ngIf="iddt==idlav">
-                                      <ng-container *ngFor="let cuentas of con; let idxe = index">
-                                        <span *ngIf="idxe==idlav">
-
-                                          <progress id="html5" max="{{cuentas}}" value="{{dt}}"></progress>
-                                          {{dt/cuentas | percent}}
-                                        </span>
-                                      </ng-container>
-                                </ng-container>
-                              </ng-container>
-                                </td>
-                                <td>
-                                 <ng-container *ngFor="let dt of item.data, let iddt=index">
-                                  <ng-container *ngIf="iddt==idlav">
-                                      {{dt}}
-                                  </ng-container>
-                                 </ng-container>
-                                </td>
-                              </tr>
-                            </ng-container>
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                              <td ><b>Total</b></td>
-                              <td></td>
-                              <td >
-                                <ng-container *ngFor="let cuentas of con; let idxe = index">
-                                <span *ngIf="idxe==idlav">{{cuentas}}</span>
-                              </ng-container>
-                              </td> 
-                   
+                    
+                      <ng-container *ngFor="let item of lav, let idlav=index">
+                        <div class="card">
+                          <div class="card-header">
+            
+                            <!-- Title -->
+                            <h4 class="card-header-title" *ngIf="new_recinto.codigo_recinto">
                               
-                            </tr>
-                          </tfoot>
-                        </table>
-                        <ngb-pagination *ngIf="auxanio.length >= 1"
-                          [(page)]="page"
-                          [pageSize]="pageSize"
-                          [maxSize]="10"
-                          [rotate]="true" [boundaryLinks]="true"
-                          [collectionSize]="auxanio.length"></ngb-pagination>
-                      
-                        
-                      </div>
-                    </div>
-                  </ng-container>
+                              {{item}} - <span *ngIf="tipo_seleccion=='PrefecturaViceprefectura'"  >Prefecto y Viceprefecto</span>
+                              <span *ngIf="tipo_seleccion=='AlcaldesM'" >Alcaldes Municipales</span>
+                              <span *ngIf="tipo_seleccion=='ConcejalesU'" >Concejales Urbanos</span>
+                              <span *ngIf="tipo_seleccion=='ConcejalesR'" >Consejales Rurales</span>
+                              <span *ngIf="tipo_seleccion=='VocalesJP'" >Vocales de Juntas Parroquiales</span>
+                              <span *ngIf="tipo_seleccion=='ConsejoPCCS'" >Consejo de Participación Ciudadana y Control Social</span>
+                            </h4>
+                            <h4 class="card-header-title" *ngIf="!new_recinto.codigo_recinto">
+                              
+                              {{item.nombre}} - <span *ngIf="tipo_seleccion=='PrefecturaViceprefectura'"  >Prefecto y Viceprefecto</span>
+                              <span *ngIf="tipo_seleccion=='AlcaldesM'" >Alcaldes Municipales</span>
+                              <span *ngIf="tipo_seleccion=='ConcejalesU'" >Concejales Urbanos</span>
+                              <span *ngIf="tipo_seleccion=='ConcejalesR'" >Consejales Rurales</span>
+                              <span *ngIf="tipo_seleccion=='VocalesJP'" >Vocales de Juntas Parroquiales</span>
+                              <span *ngIf="tipo_seleccion=='ConsejoPCCS'" >Consejo de Participación Ciudadana y Control Social</span>
+                            </h4>
+                            
+                          
+                          </div>
+                          <div class="table-responsive">
+                            <table class="table table-sm table-nowrap card-table ">
+                              <thead>
+                                <tr>
+                                  <th>Dignidad</th>
+                                  <th></th>
+                                  <th>Conteo</th>
+                                </tr>
+                              </thead>
+                              <tbody class="font-size-base">
+                                <ng-container *ngFor="let item of arr_vot | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let iddig = index">
+                                  <tr >
+                                    <td>
+                                      <a class="text-primary" >
+                                        <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista1'">
+                                          <a href="{{url +'obtener_portada_partido/1.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/1.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                        </div>
+                                        <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista2'">
+                                          <a href="{{url +'obtener_portada_partido/2.png'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/2.png'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                        </div>
+                                        <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista3'">
+                                          <a href="{{url +'obtener_portada_partido/3.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/3.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                        </div>
+                                        <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista6'">
+                                          <a href="{{url +'obtener_portada_partido/6.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/6.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                        </div>
+                                        <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista7'">
+                                          <a href="{{url +'obtener_portada_partido/7.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/7.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                        </div>
+                                        <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista8'">
+                                          <a href="{{url +'obtener_portada_partido/8.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/8.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                        </div>
+                                        <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista10'">
+                                          <a href="{{url +'obtener_portada_partido/10.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/10.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                        </div>
+                                        <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista12'">
+                                          <a href="{{url +'obtener_portada_partido/12.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/12.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                        </div>
+                                        <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista17'">
+                                          <a href="{{url +'obtener_portada_partido/17.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/17.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                        </div>
+                                        <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista18'">
+                                          <a href="{{url +'obtener_portada_partido/18.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/18.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                        </div>
+                                        <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista19'">
+                                          <a href="{{url +'obtener_portada_partido/19.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/19.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                        </div>
+                                        <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista21'">
+                                          <a href="{{url +'obtener_portada_partido/21.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/21.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                        </div>
+                                        <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista23'">
+                                          <a href="{{url +'obtener_portada_partido/23.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/23.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                        </div>
+                                        <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista35'">
+                                          <a href="{{url +'obtener_portada_partido/35.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/35.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                        </div>
+                                        <div class="avatar mr-3" *ngIf="portada[iddig].p=='lista51'">
+                                          <a href="{{url +'obtener_portada_partido/51.webp'}}" target="_blank" rel="noopener noreferrer"><img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada_partido/51.webp'" target="_blank" rel="noopener noreferrer"  alt=""></a>
+                                        </div>
+    
+                                        {{item.label}} 
+                                        
+                                      </a>
+                                     
+                                    </td>
+                                    <td>
+                                      <ng-container *ngFor="let dt of item.data, let iddt=index">
+                                        <ng-container *ngIf="iddt==idlav">
+                                          <ng-container *ngFor="let cuentas of con; let idxe = index">
+                                            <span *ngIf="idxe==idlav">
+    
+                                              <progress id="html5" max="{{cuentas}}" value="{{dt}}"></progress>
+                                              {{dt/cuentas | percent}}
+                                            </span>
+                                          </ng-container>
+                                    </ng-container>
+                                  </ng-container>
+                                    </td>
+                                    <td>
+                                     <ng-container *ngFor="let dt of item.data, let iddt=index">
+                                      <ng-container *ngIf="iddt==idlav">
+                                          {{dt}}
+                                      </ng-container>
+                                     </ng-container>
+                                    </td>
+                                  </tr>
+                                </ng-container>
+                              </tbody>
+                              <tfoot>
+                                <tr>
+                                  <td ><b>Total</b></td>
+                                  <td></td>
+                                  <td >
+                                    <ng-container *ngFor="let cuentas of con; let idxe = index">
+                                    <span *ngIf="idxe==idlav">{{cuentas}}</span>
+                                  </ng-container>
+                                  </td> 
+                       
+                                  
+                                </tr>
+                              </tfoot>
+                            </table>
+                            <ngb-pagination *ngIf="auxanio.length >= 1"
+                              [(page)]="page"
+                              [pageSize]="pageSize"
+                              [maxSize]="10"
+                              [rotate]="true" [boundaryLinks]="true"
+                              [collectionSize]="auxanio.length"></ngb-pagination>
+                          
+                            
+                          </div>
+                        </div>
+                      </ng-container>
                 </ng-container>
                  
 
@@ -441,7 +452,7 @@
 
               <div class="card">
 
-                <button id="btnBuscarRecinto" class="btn btn-primary" type="button" data-toggle="modal" [attr.data-target]="'#modalRecinto-dignidad'">Filtro ({{dignidads.length}} votos) </button>
+                <button id="btnBuscarRecinto" class="btn btn-primary" type="button" data-toggle="modal" [attr.data-target]="'#modalRecinto-dignidad'">Filtro ({{condig}} votos) </button>
                 <!--Modal Filtro de Busqueda-->
                 <div class="modal fade" id="modalRecinto-dignidad" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -538,7 +549,7 @@
                                   <a class="text-primary" >{{item.nombre}} </a>
                                 </td>
                                 <td>
-                                 {{item.valor}} ({{item.valor/dignidads.length | percent}})
+                                 {{item.valor}} ({{item.valor/condig | percent}})
                                 </td>
                               </tr>
                             </ng-container>
@@ -548,7 +559,7 @@
                               <td colspan="0"><b>Total</b></td>
                               
                               <td >
-                                {{dignidads.length}}
+                                {{condig}}
                               </td> 
                    
                               
@@ -573,10 +584,10 @@
             </div>
 
             </div>
-            <!-- Distributivons-->
+            <!-- Distributivons
             <div class="card" *ngIf="load_distributivons==true">
               <ng-container>
-              <!-- Alert -->
+              <!-- Alert 
                   <div class="alert alert-danger" *ngIf="distributivons.length==0">
                     <i class="fe fe-info mr-1"></i> No tienes Votaciones realizados
                   </div>
@@ -609,12 +620,12 @@
                         </div>
                     </div>
                 </div>
-                <ng-container *ngIf="distributivons.length!=0"> 
+               <ng-container *ngIf="distributivons.length!=0"> 
                 <ng-container *ngIf="!load_data_est">
                 <div class="row">
                   <div class="col-12 col-md-12">
 
-                    <!-- Card -->
+                    <!-- Card 
                     <div class="card">
                       <div class="card-body">
                         <div class="row align-items-center">
@@ -622,7 +633,7 @@
 
                             
 
-                            <!-- Title -->
+                            <!-- Title 
                             <h3 class="text-uppercase text-muted mb-2">
                               Valor por pagar:
                               <span class="h3 mb-0" style="color: black;">
@@ -641,7 +652,7 @@
                                 {{nmt}}
                               </span>
                             </h3>
-                            <!-- Heading -->
+                            <!-- Heading 
                             
                             <button class="btn btn-primary text-white mr-3" style="cursor: pointer;"
                             (click)="exportTabletotal('Total')">
@@ -649,7 +660,7 @@
                             </button>
                           </div>
                           
-                        </div> <!-- / .row -->
+                        </div> <!-- / .row 
 
                       </div>
                     </div>
@@ -715,7 +726,7 @@
                             
                             </ng-container>
                           
-                            <!-- Name Column -->
+                            <!-- Name Column 
                             <ng-container *ngFor="let curso of cursos2; let idcurso = index" >
                               <ng-container *ngIf="curso!='descr'" matColumnDef="{{curso}}">
                                
@@ -747,7 +758,7 @@
                       <div class="card" *ngIf="constvotacionespension!=undefined">
                         <div class="card-header">
           
-                          <!-- Title -->
+                          <!-- Title
                           <h4 class="card-header-title">
                             Votaciones de Curso: {{cuentas}} <button id="btncursos{{cuentas}}"  mat-raised-button class="btn btn-primary text-white mr-3" (click)="exportTable(cuentas)">Export</button>
                 
@@ -816,7 +827,7 @@
                 <div class="card" *ngIf="penest!=undefined">
                   <div class="card-header">
     
-                    <!-- Title -->
+                    <!-- Title
                     <h4 class="card-header-title" >
                       Becas <button id="btnbecados"  mat-raised-button class="btn btn-primary text-white mr-3" (click)="exportTable('becados')">Export</button>
 
@@ -877,7 +888,7 @@
                   </div>
                   <div class="card-header">
     
-                    <!-- Title -->
+                    <!-- Title
                     <h4 class="card-header-title" >
                       Eliminados <button id="btneliminados"  mat-raised-button class="btn btn-primary text-white mr-3" (click)="exportTable('eliminados')">Export</button>
 
@@ -913,7 +924,7 @@
                               {{votaciones.iddistributivon.nombres}} {{votaciones.iddistributivon.apellidos}}
                                <!--<span class="alert alert-danger" *ngIf="votaciones.iddistributivon.estado=='Desactivado'">
                                 <i class="fe fe-info mr-1"></i>Eliminado
-                              </span>-->
+                              </span>
                             </th>
                             <th>
                               {{votaciones.iddistributivon.f_desac|date:'short'}}
@@ -995,8 +1006,10 @@
                 </div>
               </ng-container>
               </ng-container>
+                
+
             </ng-container>
-            </div>
+            </div>-->
             <!-- Administrativo-->
             <div  *ngIf="load_administrativo==true">
               <!-- Alert -->

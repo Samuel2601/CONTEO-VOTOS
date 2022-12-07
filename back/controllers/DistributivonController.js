@@ -551,6 +551,7 @@ const eliminar_dignidad = async function(req,res){
     if(req.user){
         let registro={};
         var id = req.params['id'];
+        var id_votacion = await Votacion
         //console.log(id);
         var ver = await Dignidad.findById(id);
         if(ver.length!=0){
@@ -559,6 +560,7 @@ const eliminar_dignidad = async function(req,res){
             registro.admin=req.user.sub;
             registro.tipo='Dignidad';
             registro.accion='ELIMINAR';
+
             
             await Registro.create(registro);
             res.status(200).send({message:'Dignidad Eliminada'});
@@ -573,7 +575,7 @@ const eliminar_dignidad = async function(req,res){
 const registrar_votacion = async function(req,res){
     if(req.user){
         var data = req.body;
-        
+       // console.log(data);
         try {
             var img_path = req.files.portada.path;
             var name = img_path.split('\\');
@@ -612,7 +614,7 @@ const registrar_votacion = async function(req,res){
 }
 const listar_votacion = async function(req,res){
     if(req.user){
-        var ver = await Votacion.find().populate('admin').populate('codigo_provincia').populate('codigo_canton').populate('codigo_parroquia').populate('codigo_zona').populate('codigo_recinto').populate('codigo_dignidad').sort({createdAt:-1});
+        var ver = await Votacion.find().populate('admin').populate('codigo_provincia').populate('codigo_canton').populate('codigo_parroquia').populate('codigo_zona').populate('codigo_recinto').sort({createdAt:-1});
         //console.log(ver);
         res.status(200).send({data:ver});
     }else{
@@ -622,9 +624,10 @@ const listar_votacion = async function(req,res){
 const listar_votacion_esp_pro = async function(req,res){
     if(req.user){
         var id = req.params['id'];
-        var ver = await Votacion.find({codigo_provincia:id}).populate('codigo_canton').populate('codigo_dignidad').sort({createdAt:-1});
-        //console.log('Provincia',ver);
-        res.status(200).send({data:ver});
+        var ver = await Dvotacion.find().populate('votacion').populate('codigo_dignidad').sort({createdAt:-1});   
+        var ver2 = ver.filter((element)=>element.votacion.codigo_provincia==id&&element.votacion.estado=='Verificado');
+        //console.log('Provincia',ver2.length);
+        res.status(200).send({data:ver2});
     }else{
         res.status(500).send({message: 'NoAccess'});
     } 
@@ -632,9 +635,10 @@ const listar_votacion_esp_pro = async function(req,res){
 const listar_votacion_esp_can = async function(req,res){
     if(req.user){
         var id = req.params['id'];
-        var ver = await Votacion.find({codigo_canton:id}).populate('codigo_parroquia').populate('codigo_dignidad').sort({createdAt:-1});
-        //console.log('Canton',ver);
-        res.status(200).send({data:ver});
+        var ver = await Dvotacion.find().populate('votacion').populate('codigo_dignidad').sort({createdAt:-1});   
+        var ver2 = ver.filter((element)=>element.votacion.codigo_canton==id&&element.votacion.estado=='Verificado');
+        //console.log('Canton',ver2);
+        res.status(200).send({data:ver2});
     }else{
         res.status(500).send({message: 'NoAccess'});
     } 
@@ -642,9 +646,10 @@ const listar_votacion_esp_can = async function(req,res){
 const listar_votacion_esp_parr = async function(req,res){
     if(req.user){
         var id = req.params['id'];
-        var ver = await Votacion.find({codigo_parroquia:id}).populate('codigo_zona').populate('codigo_dignidad').sort({createdAt:-1});
-        //console.log('Parroquia',ver);
-        res.status(200).send({data:ver});
+        var ver = await Dvotacion.find().populate('votacion').populate('codigo_dignidad').sort({createdAt:-1});   
+        var ver2 = ver.filter((element)=>element.votacion.codigo_parroquia==id&&element.votacion.estado=='Verificado');
+        console.log('Parroquia',ver2);
+        res.status(200).send({data:ver2});
     }else{
         res.status(500).send({message: 'NoAccess'});
     } 
@@ -652,9 +657,10 @@ const listar_votacion_esp_parr = async function(req,res){
 const listar_votacion_esp_zon = async function(req,res){
     if(req.user){
         var id = req.params['id'];
-        var ver = await Votacion.find({codigo_zona:id}).populate('codigo_recinto').populate('codigo_dignidad').sort({createdAt:-1});
-        //console.log('Zona',ver);
-        res.status(200).send({data:ver});
+        var ver = await Dvotacion.find().populate('votacion').populate('codigo_dignidad').sort({createdAt:-1});   
+        var ver2 = ver.filter((element)=>element.votacion.codigo_zona==id&&element.votacion.estado=='Verificado');
+        console.log('Zona',ver2);
+        res.status(200).send({data:ver2});
     }else{
         res.status(500).send({message: 'NoAccess'});
     } 
@@ -662,9 +668,11 @@ const listar_votacion_esp_zon = async function(req,res){
 const listar_votacion_esp_rec = async function(req,res){
     if(req.user){
         var id = req.params['id'];
-        var ver = await Votacion.find({codigo_recinto:id}).populate('codigo_dignidad').sort({createdAt:-1});
-        //console.log('Recinto',ver);
-        res.status(200).send({data:ver});
+        //var ver = await Votacion.find({codigo_recinto:id}).populate('codigo_dignidad').sort({createdAt:-1});
+        var ver = await Dvotacion.find().populate('votacion').populate('codigo_dignidad').sort({createdAt:-1});   
+        var ver2 = ver.filter((element)=>element.votacion.codigo_recinto==id&&element.votacion.estado=='Verificado');
+        console.log('Recinto',ver2);
+        res.status(200).send({data:ver2});
     }else{
         res.status(500).send({message: 'NoAccess'});
     } 
@@ -701,12 +709,13 @@ const listar_dignidad_esp = async function(req,res){
     if(req.user){
         var id = req.params['id'];
         var ver = await Dignidad.find({seleccion:id}).sort({createdAt:-1});
-        //console.log(ver);
+        console.log(ver);
         res.status(200).send({data:ver});
     }else{
         res.status(500).send({message: 'NoAccess'});
     } 
 }
+
 
 const obtener_portada = async function(req,res){
     var img = req.params['img'];
@@ -736,11 +745,37 @@ const obtener_portada_partido = async function(req,res){
         }
     })
 }
+const registro_dvotacion = async function(req,res){
+    if(req.user){
+        var data = req.body;
+        //console.log(data);
+        var ver = await Dvotacion.find({votacion:data.votacion,codigo_dignidad:data.codigo_dignidad});
+        if(ver.length==0){
+            var reg = await Dvotacion.create(data);
+            /*let registro={};
+            registro.admin=req.user.sub;
+            registro.tipo='Dignidad';
+            registro.accion='CREAR';
+            registro.descripcion= JSON.stringify(data);
+            await Registro.create(registro);*/
+            var vot = await Votacion.findById(data.votacion);
+            if(vot.estado='Verificar'){
+                await Votacion.updateOne({_id:data.votacion},{estado:'Verificado'});
+            }
+            res.status(200).send({reg});
+        }else{
+            res.status(200).send({message:'ERROR duplicado'});
+        }
+    }else{
+        res.status(500).send({message: 'NoAccess'});
+    }
+}
 
 module.exports = {
     obtener_portada,
     obtener_portada_partido,
-    
+
+
     registro_distributivon_masivo,
     listar_distributivons,
     eliminar_distributivon_masivo,
@@ -786,7 +821,8 @@ module.exports = {
     registro_recinto,
     registro_zona,
     registrar_votacion,
-    
+    registro_dvotacion,
+
     modificar_dignidad,
 
 

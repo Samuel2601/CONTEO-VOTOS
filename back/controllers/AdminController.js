@@ -181,7 +181,6 @@ const listar_admin = async function(req,res){
 const listar_registro = async function(req,res){
     if(req.user){
         try {
-           
             var admin_arr = [];
             admin_arr = await Registro.find({}).sort({createdAt:-1}).populate('admin');
         

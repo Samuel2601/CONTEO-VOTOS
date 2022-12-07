@@ -738,7 +738,7 @@
                     </div>
                     <div class="modal-footer">
                       <button class="btn btn-secondary btn-sm" (click)="refresh()"  type="button" data-dismiss="modal">Cancelar</button>
-                      <button class="btn btn-primary btn-shadow btn-sm"  type="button">Si, guardar</button>
+                      <button class="btn btn-primary btn-shadow btn-sm" (click)="guardar_conf()" type="button">Si, guardar</button>
                     </div>
                   </div>
                 </div>
@@ -770,7 +770,7 @@
                           
                           
                           
-                          <div class="modal fade" id="modal-spinner" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                          <div class="modal fade" id="modal-spinner" tabindex="-1" role="dialog" data-bs-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                               <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 550px;">
                                 <div class="modal-content">
                                   <div class="modal-header">

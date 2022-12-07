@@ -63,7 +63,49 @@ export class IndexVotacionesComponent implements OnInit {
 		});
 		// this.auxtotal=parseFloat(this.auxtotal.toFixed(2));
 	}
-
+	public td=[];
+	public tipo='PrefecturaViceprefectura';
+	verificar(id){
+		console.log(id);
+		this.td=JSON.parse(id.codigo_dignidad);
+		console.log(this.td);
+		this.td.forEach((element:any) => {
+			element.codigo_dignidad
+			this._adminService.obtener_dignidad(element.codigo_dignidad,this.token).subscribe(response=>{
+				if(response.data){
+					element.codigo_dignidad=response.data;
+				}
+			});
+		});
+		console.log(this.td);
+	}
+	tipo_dignidad(tip){
+		this.tipo=tip
+	}
+	verificado(id){
+		console.log(id);
+		console.log("Cambios: ",this.td);
+		console.log("Origen: ", JSON.parse(id.codigo_dignidad))
+		var ver = JSON.parse(id.codigo_dignidad);
+		for(var i=0; i<this.td.length;i++){
+			if(this.td[i].codigo_dignidad._id==ver[i].codigo_dignidad){
+				if(this.td[i].conteo!=ver[i].conteo){
+					ver[i].conteo=this.td[i].conteo
+				}
+				ver[i].votacion=id._id;
+				console.log(ver[i]);
+				this._adminService.registro_dvotacion(ver[i],this.token).subscribe(response=>{
+					//console.log(response);
+				});
+			}
+		}
+		setTimeout(function(){
+			location.reload();
+		}, 1000);
+	}
+	tabla_dig(id){
+		$("#"+id).attr("disabled", false);
+	}
 	filtrar_votaciones() {
 		this.auxtotal = 0;
 		if (this.filtro) {

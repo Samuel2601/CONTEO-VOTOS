@@ -720,16 +720,16 @@ export class CreateVotacionesComponent implements OnInit {
 							}else {
 								//this.new_votacion.pop('file');
 								var cf=this.new_votacion;
-								/*cf.admin='';
+								cf.admin='';
 								cf.junta='';
 								cf.tipo_junta='';
 								cf.codigo_dignidad='';
-								*/
+								
 								var vcf=JSON.stringify(cf);
-								//console.log(this.config.config==vcf);
+								console.log(this.config.config==vcf);
 
-								//console.log("Votación: ",cf);
-								//console.log("Historial", this.histo);
+								console.log("Votación: ",cf);
+								console.log("Historial", this.histo);
 								if(this.config.config==vcf){
 									setTimeout(function(){
 										location.reload();

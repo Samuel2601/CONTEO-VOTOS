@@ -759,5 +759,12 @@ export class AdminService {
 		});
 		return this._http.post(this.url + "registro_zona", data, { headers: headers });
 	}
+	registro_dvotacion(data: any, token: any): Observable<any> {
+		let headers = new HttpHeaders({
+			"Content-Type": "application/json",
+			Authorization: token
+		});
+		return this._http.post(this.url + "registro_dvotacion", data, { headers: headers });
+	}
 
 }
