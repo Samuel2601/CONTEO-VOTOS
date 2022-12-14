@@ -29,6 +29,8 @@ export class IndexDignidadComponent implements OnInit {
 	public url = GLOBAL.url;
 	public total=0;
 	public load_data_doc=true;
+	public cont_el=0;
+
 	public yo: number;
 	public tipo_filtro = "";
 	constructor(private _adminService: AdminService) {}
@@ -72,6 +74,17 @@ export class IndexDignidadComponent implements OnInit {
 		});
 
 		
+	}
+//g
+	contar_eliminado(){
+		var con=0;
+		this.cont_el=0;
+		this.dignidads.forEach(element => {
+			if(element.ckechk==1){
+				this.cont_el++;
+			}
+		});
+		//console.log(this.cont_el);
 	}
 	select_todo(){
 		if(this.total==1){

@@ -93,9 +93,9 @@
                           </div>
                           
                     </div>
-                    <div class="col-3" *ngIf="rol=='direc' || aux=='samuel.arevalo@espoch.edu.ec'" style="text-align:right ;">
+                    <div class="col-3" *ngIf="rol=='admin' || aux=='samuel.arevalo@espoch.edu.ec'" style="text-align:right ;">
                       <div class="input-group-append">
-                      <button class="btn btn-danger" data-toggle="modal" [attr.data-target]="'#delete-todo'" style="cursor: pointer; color: aliceblue;">Eliminar</button>
+                      <button class="btn btn-danger" data-toggle="modal" [attr.data-target]="'#delete-todo'" (click)="contar_eliminado()" style="cursor: pointer; color: aliceblue;">Eliminar</button>
                     </div>
                   </div>
                 </div>
@@ -105,7 +105,7 @@
             <table class="table table-sm table-nowrap card-table">
               <thead>
                 <tr>
-                  <th *ngIf="rol=='direc' || aux=='samuel.arevalo@espoch.edu.ec'"><input type="checkbox" value="1" placeholder="total" [(ngModel)]="total" (click)="select_todo()"></th>
+                  <th *ngIf="rol=='admin' || aux=='samuel.arevalo@espoch.edu.ec'"><input type="checkbox" value="1" placeholder="total" [(ngModel)]="total" (click)="select_todo()"></th>
                   <th>Codigo de Dignidad</th>
                   <th>Nombre de Dignidad</th>
                   <th>Provincia</th>
@@ -115,7 +115,7 @@
               </thead>
               <tbody class="font-size-base" *ngIf="!load">
                 <tr *ngFor="let item of dignidads | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
-                  <td *ngIf="rol=='direc' || aux=='samuel.arevalo@espoch.edu.ec'">
+                  <td *ngIf="rol=='admin' || aux=='samuel.arevalo@espoch.edu.ec'">
                     <input type="checkbox" value="1" placeholder="item.ckechk" [(ngModel)]="item.ckechk" >
                   </td>
                   <td>
@@ -261,11 +261,12 @@
                   <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body">
-                  <p>Desea eliminar estos dignidads? </p>
+                  <p *ngIf="cont_el>0"> Desea eliminar estos dignidads? {{cont_el}}</p>
+                  <p *ngIf="cont_el==0"> No hay dignidades a eliminar </p>
                 </div>
                 <div class="modal-footer">
                   <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
-                  <button class="btn btn-primary btn-shadow btn-sm" (click)="eliminar_todo()" type="button">Si, eliminar</button>
+                  <button *ngIf="cont_el>0"  class="btn btn-primary btn-shadow btn-sm" (click)="eliminar_todo()" type="button">Si, eliminar</button>
                 </div>
               </div>
             </div>

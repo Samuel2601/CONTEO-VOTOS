@@ -29,9 +29,7 @@ export class CreateVotacionesComponent implements OnInit {
 	public matricula_pago = -1;
 	public tipo = '';
 	public tok = -1;
-
 	public config: any = {};
-
 	public distributivons_const: Array<any> = [];
 	public load_data = false;
 	public token = localStorage.getItem("token");
@@ -117,7 +115,6 @@ export class CreateVotacionesComponent implements OnInit {
 		junta:undefined,
 		localizacion:undefined,
 		tipo_junta:undefined,
-		//file:undefined,
 		admin:undefined
 	};
 
@@ -157,13 +154,11 @@ export class CreateVotacionesComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.carga=true;
-		
 		//$(".modal-backdrop").removeClass("hide");
 		if(this.geo){
 			setTimeout(function(){
 				$("#modal-spinner").modal("show");
 			}, 1000);
-			
 			//var arr=[];
 			//arr=JSON.parse(this.geo);
 			this.new_votacion.localizacion=this.geo;
@@ -173,15 +168,12 @@ export class CreateVotacionesComponent implements OnInit {
 				this.config=response.data;
 				if(response.data.config){
 					this.conf=response.data.config;
-
 					this.histo=JSON.parse(this.conf);
-
 					this.llamada_pro(true);
 				}else{
 					this.carga=false;
 					$("#modal-spinner").modal("hide");
 				}
-			
 				this.new_votacion.admin=response.data._id;
 				if (response.data.email == "samuel.arevalo@espoch.edu.ec") {
 					this.yo = 1;
@@ -597,7 +589,6 @@ export class CreateVotacionesComponent implements OnInit {
 	tabla_dig(){
 		if(this.cn.length>=0){
 			this.cn=[];
-			
 		}
 		this.dignidad.forEach((element:any) => {
 			var l = '#'+element.dignidad._id;
@@ -688,8 +679,8 @@ export class CreateVotacionesComponent implements OnInit {
 				}
 				if(bol==true){
 					this.new_votacion.codigo_dignidad=JSON.stringify(this.cn);
-					console.log(this.new_votacion.codigo_dignidad);
-					console.log(this.new_votacion);
+					//console.log(this.new_votacion.codigo_dignidad);
+					//console.log(this.new_votacion);
 					this._adminService.registrar_votacion(this.new_votacion,this.file,this.token).subscribe(response=>{
 						if(response.message){
 							iziToast.show({

@@ -5,7 +5,7 @@ var Parroquia = require('../models/Parroquia');
 var Zona = require('../models/Zona');
 var Recinto = require('../models/Recinto');
 var Dignidad = require('../models/Dignidad');
-
+ 
 var Votacion = require('../models/Votacion');
 var jwt = require('../helpers/jwt');
 var fs = require('fs');
@@ -550,19 +550,39 @@ const modificar_dignidad = async function(req,res){
 const eliminar_dignidad = async function(req,res){
     if(req.user){
         let registro={};
+        let registrodv={};
         var id = req.params['id'];
-        var id_votacion = await Votacion
+        
         //console.log(id);
         var ver = await Dignidad.findById(id);
-        if(ver.length!=0){
+        var vot = await Dvotacion.find({codigo_dignidad:id}).populate('votacion').populate('codigo_dignidad');
+       
+        console.log("APi:",vot);
+        if(ver.length!=0 && vot.length!=0){
+
             registro.descripcion= JSON.stringify(ver);
-            var reg = await Dignidad.deleteOne({_id:id});
+            registrodv.descripcion=JSON.stringify(vot);
             registro.admin=req.user.sub;
+            registrodv.admin=req.user.sub;
+            
+            var reg = await Dignidad.deleteOne({_id:id});
+            try {
+                var reg2 = await Dvotacion.deleteMany({codigo_dignidad:id});
+                console.log("API2 eliminación: ",reg2)
+                
+            } catch (error) {
+                console.log(error);
+            }
+            
             registro.tipo='Dignidad';
             registro.accion='ELIMINAR';
+            registrodv.tipo='Dvotacion';
+            registrodv.accion='ELIMINAR';
 
             
             await Registro.create(registro);
+            await Registro.create(registrodv);
+            
             res.status(200).send({message:'Dignidad Eliminada'});
         }else{
             res.status(200).send({message:'Dignidad no existente'});

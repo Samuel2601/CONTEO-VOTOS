@@ -199,7 +199,8 @@
                           <input type="checkbox" value="1" placeholder="item.ckechk" [(ngModel)]="item.ckechk" >
                         </td>
                         <td>
-                          {{item.element.codigo_provincia.codigo_provincia}}
+                          <span class="bi bi-arrow-up-right-square"  style="cursor:pointer;" [routerLink]="['/distributivons/edit',item.element.codigo_provincia._id]">{{item.element.codigo_provincia.codigo_provincia}} </span> 
+                          <span class="fe fe-ci-arrow-top-right me-4"></span>
                         </td>
                         <td>
                           {{item.element.codigo_provincia.nombre_provincia}}

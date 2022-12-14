@@ -72,6 +72,7 @@ export class IndexDistributivonsComponent implements OnInit, FlatfileMethods {
 			this.distributivons_const.forEach(element => {
 				this.distributivons.push({ckechk:0,element});
 			});
+			console.log("");
 			this.load_data_est = false;
 		});
 	}

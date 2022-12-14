@@ -399,13 +399,18 @@ export class DashboardComponent implements OnInit {
 							this.tipo_seleccion==element.codigo_dignidad.seleccion
 						);
 					}
-					//console.log(this.new_votacion);
+					console.log(this.new_votacion);
 			
 					if(this.new_recinto.codigo_recinto){
+						this.new_votacion=this.new_votacion.filter((element:any)=>
+						this.new_recinto.codigo_recinto==element.votacion.codigo_recinto
+						);
 						var rec=this.arr_recinto.filter((element:any)=>
 							element._id==this.new_recinto.codigo_recinto);
 						//console.log(rec);
-			
+						this.new_votacion=this.c_new_votacion.filter((element:any)=>
+							this.tipo_seleccion==element.codigo_dignidad.seleccion
+						);
 						for(var i=parseInt(rec[0].jun_inif);i<=parseInt(rec[0].jun_finf);i++){
 							this.lav.push((i).toString() + ' F');
 						}
@@ -421,6 +426,9 @@ export class DashboardComponent implements OnInit {
 						
 			
 					}else if(this.new_recinto.codigo_zona){
+						this.new_votacion=this.new_votacion.filter((element:any)=>
+						this.new_recinto.codigo_zona==element.votacion.codigo_zona
+						);
 						for(var i=0; i<this.arr_recinto.length;i++){
 							if(i==0||this.lav.find(element=> element==this.arr_recinto[i].nombre_recinto)==undefined){
 								this.lav.push({nombre:this.arr_recinto[i].nombre_recinto,codigo:this.arr_recinto[i]._id});
@@ -433,6 +441,9 @@ export class DashboardComponent implements OnInit {
 						//tipo='Zona';
 						
 					}else if(this.new_recinto.codigo_parroquia){
+						this.new_votacion=this.new_votacion.filter((element:any)=>
+						this.new_recinto.codigo_parroquia==element.votacion.codigo_parroquia
+						);
 						for(var i=0; i<this.arr_zona.length;i++){
 							if(i==0||this.lav.find(element=> element==this.arr_zona[i].nombre_zona)==undefined){
 								this.lav.push({nombre:this.arr_zona[i].nombre_zona,codigo:this.arr_zona[i]._id});
@@ -445,6 +456,9 @@ export class DashboardComponent implements OnInit {
 						//tipo='Parroquia';
 						
 					}else if(this.new_recinto.codigo_canton){
+						this.new_votacion=this.new_votacion.filter((element:any)=>
+						this.new_recinto.codigo_canton==element.votacion.codigo_canton
+						);
 						for(var i=0; i<this.arr_parroquia.length;i++){
 							if(i==0||this.lav.find(element=> element==this.arr_parroquia[i].nombre_parroquia)==undefined){
 								this.lav.push({nombre:this.arr_parroquia[i].nombre_parroquia,codigo:this.arr_parroquia[i]._id});
@@ -457,6 +471,11 @@ export class DashboardComponent implements OnInit {
 						///tipo='Canton';
 						
 					}else if(this.new_recinto.codigo_provincia){
+						
+						this.new_votacion=this.new_votacion.filter((element:any)=>
+						this.new_recinto.codigo_provincia==element.votacion.codigo_provincia
+						);
+						
 						for(var i=0; i<this.arr_canton.length;i++){
 							////console.log(this.lav.find(element=> element==this.arr_canton[i].nombre_canton)==undefined);
 							if(i==0||this.lav.find(element=> element==this.arr_canton[i].nombre_canton)==undefined){
@@ -493,7 +512,7 @@ export class DashboardComponent implements OnInit {
 		this.con=new Array(base.length);
 
 			this.con.fill(0,0);
-		//console.log(this.con);
+		console.log(this.new_votacion);
 		this.arr_vot=[];
 		this.portada=[];
 		this.lav=lav;
@@ -501,6 +520,7 @@ export class DashboardComponent implements OnInit {
 		for(var i=0; i<this.new_votacion.length;i++){
 			var auxcolor1 = Math.random() * 255;
 			var auxcolor2 = Math.random() * 255;
+			
 			if(i==0||this.arr_vot.find((elemet:any)=>elemet.label==this.new_votacion[i].codigo_dignidad.nombre_dignidad)==undefined){
 				
 				this.portada.push({p:this.new_votacion[i].codigo_dignidad.partido});
@@ -1824,7 +1844,7 @@ export class DashboardComponent implements OnInit {
 			//this.coloreo();
 		
 		}
-		//console.log(this.mostrar_r);
+		console.log(this.mostrar_r);
 	}
 	coloreo(id){
 		
