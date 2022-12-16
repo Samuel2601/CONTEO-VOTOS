@@ -42,56 +42,68 @@
                 </h4>
 
               </div>
-              <div class="row align-items-center">
-                <div class="col">
+              
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span> {{tp}}
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-                  <!-- Nav -->
-                  <ul class="nav nav-tabs nav-overflow header-tabs">
-                    <li class="nav-item" disabled>
-                      <a *ngIf="!load_provincia" class="nav-link" style="Cursor : pointer" (click)="tiponav('Provincia')" >
-                        PROVINCIA
-                      </a>
-                      <a *ngIf="load_provincia" class="nav-link active " style="Cursor : no-drop;background: rgba(255, 255, 255, 0.365);">
-                        PROVINCIA
-                      </a>
-                    </li> 
-                    <li class="nav-item">
-                      <a *ngIf="!load_canton" class="nav-link" style="Cursor : pointer" (click)="tiponav('Canton')">
-                        CANTON
-                      </a>
-                      <a *ngIf="load_canton" class="nav-link active" style="Cursor : no-drop;background: rgba(255, 255, 255, 0.365);" >
-                        CANTON
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a *ngIf="!load_parroquia" class="nav-link " style="Cursor : pointer" (click)="tiponav('Parroquia')">
-                        PARROQUIA
-                      </a>
-                      <a *ngIf="load_parroquia" class="nav-link active" style="Cursor : no-drop;background: rgba(255, 255, 255, 0.365);">
-                        PARROQUIA
-                      </a>
-                    </li>
-                    <li class="nav-item" *ngIf="rol=='admin'">
-                      <a *ngIf="!load_zona" class="nav-link" style="Cursor : pointer" (click)="tiponav('Zona')">
-                        ZONA
-                      </a>
-                      <a *ngIf="load_zona" class="nav-link active" style="Cursor : no-drop;background: rgba(255, 255, 255, 0.365);" >
-                        ZONA
-                      </a>
-                    </li>
-                    <li class="nav-item" *ngIf="rol=='admin'">
-                      <a *ngIf="!load_recinto" class="nav-link" style="Cursor : pointer" (click)="tiponav('Recinto')">
-                        RECINTO
-                      </a>
-                      <a *ngIf="load_recinto" class="nav-link active" style="Cursor : no-drop;background: rgba(255, 255, 255, 0.365);" >
-                        RECINTO
-                      </a>
-                    </li>
-                    
-                  </ul>
+                    <ul class="navbar-nav mr-auto">
+                      <li class="nav-item" disabled>
+                        <a *ngIf="!load_provincia" class="nav-link" style="Cursor : pointer" (click)="tiponav('Provincia')" >
+                          PROVINCIA
+                        </a>
+                        <a *ngIf="load_provincia" class="nav-link active " style="Cursor : no-drop;background: rgba(255, 255, 255, 0.365);">
+                          PROVINCIA
+                        </a>
+                      </li> 
 
-                </div>
-              </div>
+                      <li class="nav-item">
+                        <a *ngIf="!load_canton" class="nav-link" style="Cursor : pointer" (click)="tiponav('Canton')">
+                          CANTON
+                        </a>
+                        <a *ngIf="load_canton" class="nav-link active" style="Cursor : no-drop;background: rgba(255, 255, 255, 0.365);" >
+                          CANTON
+                        </a>
+                      </li>
+
+                      <li class="nav-item">
+                        <a *ngIf="!load_parroquia" class="nav-link " style="Cursor : pointer" (click)="tiponav('Parroquia')">
+                          PARROQUIA
+                        </a>
+                        <a *ngIf="load_parroquia" class="nav-link active" style="Cursor : no-drop;background: rgba(255, 255, 255, 0.365);">
+                          PARROQUIA
+                        </a>
+                      </li>
+                      <li class="nav-item" *ngIf="rol=='admin'">
+                        <a *ngIf="!load_zona" class="nav-link" style="Cursor : pointer" (click)="tiponav('Zona')">
+                          ZONA
+                        </a>
+                        <a *ngIf="load_zona" class="nav-link active" style="Cursor : no-drop;background: rgba(255, 255, 255, 0.365);" >
+                          ZONA
+                        </a>
+                      </li>
+                      <li class="nav-item" *ngIf="rol=='admin'">
+                        <a *ngIf="!load_recinto" class="nav-link" style="Cursor : pointer" (click)="tiponav('Recinto')">
+                          RECINTO
+                        </a>
+                        <a *ngIf="load_recinto" class="nav-link active" style="Cursor : no-drop;background: rgba(255, 255, 255, 0.365);" >
+                          RECINTO
+                        </a>
+                      </li>
+                      
+                    </ul>
+
+                    <!--<ul class="navbar-nav mr-auto" *ngFor="let item of distributivon | keyvalue">
+                      <li class="nav-item active" *ngIf="item.key.toString().includes('codigo');" >
+                        <a class="nav-link" >{{ item.key }} <span class="sr-only">{{ item.key }}</span></a>
+                      </li>
+                    </ul>-->
+
+                  </div>
+                </nav>
+             
               <ng-container *ngIf="load_provincia">
                 <form #registroForm="ngForm" (ngSubmit)="estadoprovincia(registroForm)">
                 <div class="card-body">

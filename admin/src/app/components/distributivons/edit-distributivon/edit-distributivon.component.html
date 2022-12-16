@@ -38,181 +38,370 @@
   
                   <!-- Title -->
                   <h4 class="card-header-title">
-                    Registro de un nuevo Distributivon
+                   Edición de: {{rtp}}
                   </h4>
   
                 </div>
-  
-                <div class="card-body">
-                  <div class="row">
-                      <div class="col-lg-12">
-                          <div class="row">
-  
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Nombres (*)</label>
-                                            <input type="text" class="form-control" required placeholder="Nombres" pattern="^[A-ZÁÉÍÓÚÑ ]+$" name="nombres" [(ngModel)]="distributivon.nombres">
-                                        </div>
-                                    </div>
-  
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Apellidos (*)</label>
-                                            <input type="text" class="form-control" required placeholder="Apellidos" pattern="^[A-ZÁÉÍÓÚÑ ]+$"  name="apellidos" [(ngModel)]="distributivon.apellidos">
-                                        </div>
-                                    </div>
-  
-                                    <div class="col-6">
-                                      <div class="form-group">
-                                          <label for="exampleInputEmail1">Email (*)</label>
-                                          <input type="email" class="form-control" required placeholder="Email"pattern="^[a-z0-9@.]+$" name="email" [(ngModel)]="distributivon.email">
-                                      </div>
-                                  </div>
-  
-                                  <div class="col-6">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Teléfono (*)</label>
-                                        <input type="tel" class="form-control" required placeholder="Teléfono" pattern="^[0-9]+$"maxlength="10" minlength="8" name="telefono" [(ngModel)]="distributivon.telefono">
-                                    </div>
-  
-                                </div>
-  
-                                <div class="col-lg-6 form-group">	
-                                  <label for="">Cédula (*)</label>
-                                  <input type="text" class="form-control" placeholder="Cédula"  pattern="^[0-9]+$"maxlength="10" minlength="10" required name="dni" [(ngModel)]="distributivon.dni">
-                              </div>
-                              <div class="col-lg-6 form-group">
-                                <label >Genero (*)</label>
-                                <select class="form-control custom-select" id="select-input" required name="genero" [(ngModel)]="distributivon.genero">
-                                    <option value="" selected disabled>Seleccionar</option>
-                                    <option value="Masculino" >Masculino</option>
-                                    <option value="Femenino" >Femenino</option>
-                                </select>
-                              </div>
-                              
-  
-                            
-                            <div class="col-lg-6 form-group">	
-                              <label for="">Curso(*)</label>
-                            
-                              <select class="form-control custom-select" id="select-input" required name="curso" [(ngModel)]="distributivon.curso">
-                                <option value="" selected disabled>Selecciona uno</option>
-                                
-                                <option value="1" >1</option>
-                                <option value="2" >2</option>
-                                <option value="3" >3</option>
-                                <option value="4" >4</option>
-                                <option value="5" >5</option>
-                                <option value="6" >6</option>
-                                <option value="7" >7</option>
-                                <option value="8" >8</option>
-                                <option value="9" >9</option>
-                                <option value="10" >10</option>
-                            </select>
+                
+               
+
+                
+                <!-- 
+                   <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span> {{tp}}
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                    <ul class="navbar-nav mr-auto">
+                      <li class="nav-item" disabled>
+                        <a *ngIf="!load_provincia" class="nav-link" style="Cursor : pointer" (click)="tiponav('Provincia')" >
+                          PROVINCIA
+                        </a>
+                        <a *ngIf="load_provincia" class="nav-link active " style="Cursor : no-drop;background: rgba(255, 255, 255, 0.365);">
+                          PROVINCIA
+                        </a>
+                      </li> 
+
+                      <li class="nav-item">
+                        <a *ngIf="!load_canton" class="nav-link" style="Cursor : pointer" (click)="tiponav('Canton')">
+                          CANTON
+                        </a>
+                        <a *ngIf="load_canton" class="nav-link active" style="Cursor : no-drop;background: rgba(255, 255, 255, 0.365);" >
+                          CANTON
+                        </a>
+                      </li>
+
+                      <li class="nav-item">
+                        <a *ngIf="!load_parroquia" class="nav-link " style="Cursor : pointer" (click)="tiponav('Parroquia')">
+                          PARROQUIA
+                        </a>
+                        <a *ngIf="load_parroquia" class="nav-link active" style="Cursor : no-drop;background: rgba(255, 255, 255, 0.365);">
+                          PARROQUIA
+                        </a>
+                      </li>
+                      <li class="nav-item" *ngIf="rol=='admin'">
+                        <a *ngIf="!load_zona" class="nav-link" style="Cursor : pointer" (click)="tiponav('Zona')">
+                          ZONA
+                        </a>
+                        <a *ngIf="load_zona" class="nav-link active" style="Cursor : no-drop;background: rgba(255, 255, 255, 0.365);" >
+                          ZONA
+                        </a>
+                      </li>
+                      <li class="nav-item" *ngIf="rol=='admin'">
+                        <a *ngIf="!load_recinto" class="nav-link" style="Cursor : pointer" (click)="tiponav('Recinto')">
+                          RECINTO
+                        </a>
+                        <a *ngIf="load_recinto" class="nav-link active" style="Cursor : no-drop;background: rgba(255, 255, 255, 0.365);" >
+                          RECINTO
+                        </a>
+                      </li>
+                      
+                    </ul>
+
+                    <!--<ul class="navbar-nav mr-auto" *ngFor="let item of distributivon | keyvalue">
+                      <li class="nav-item active" *ngIf="item.key.toString().includes('codigo');" >
+                        <a class="nav-link" >{{ item.key }} <span class="sr-only">{{ item.key }}</span></a>
+                      </li>
+                    </ul>
+
+                  </div>
+                </nav>
+
+                  <div class="card-body" *ngFor="let item of distributivon | keyvalue">
+                  
+                    <span *ngIf="item.key.toString().includes('codigo');"> <h2>{{ item.key }}</h2> </span>
+                    <div class="row" *ngIf="(item.value | keyvalue)?.length">
+                      <ng-container *ngFor="let item2 of item.value | keyvalue">
+                        <ng-container *ngIf="item2.key!= '__v'&&item2.key!= '_id'&&item2.key!= 'createdAt'">
+                          <div class="col-6" >
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">{{ item2.key }} (*)</label>
+                                <input type="text" class="form-control" required placeholder="{{item2.value}}" pattern="^[A-ZÁÉÍÓÚÑ ]+$" name="nombres" >
                             </div>
-                            <div class="col-lg-6 form-group">	
-                              <label for="">Paralelo(*)</label>
-                            
-                              <select class="form-control custom-select" id="select-input" required name="paralelo" [(ngModel)]="distributivon.paralelo">
-                                <option value="" selected disabled>Selecciona uno</option>
-                                
-                                <option value="A" >A</option>
-                                <option value="B" >B</option>
-                                <option value="C" >C</option>
-                                <option value="D" >D</option>
-                                <option value="E" >E</option>
-                                <option value="F" >F</option>
-                            </select>
-                            </div>
-                            <ng-container *ngIf="10==mbeca">
-                              <div class="alert alert-warning" >
-                                <i class="fe fe-info mr-1"></i> Ya pago todas las votaciones
-                              </div>
-                            </ng-container>
-                            <ng-container *ngIf="10>mbeca">
-                            <div class="col-lg-6 form-group">
-                              
-                              <label >Condición de Beca (*)</label>
-                              <select class="form-control custom-select" id="select-input" required name="condicion_beca" [(ngModel)]="distributivon.condicion_beca">
-                                  <option value="" selected disabled>Seleccionar</option>
-                                  <option value="Si" >Si</option>
-                                  <option value="No" >No</option>
-                              </select>
-                            
-                              
-                          </div>
-  
-  
-                            <form id="si" class="col-lg-12 form-group" *ngIf="distributivon.condicion_beca == 'Si' "> 
-                                <div class="row">
-                                  <ng-container *ngIf="10>mbeca">
-                                  <div class="col-lg-6 form-group">	
-                                    <label for="">Meses de Pensión con Beca (*) Restante:{{pension.num_mes_res}}</label>
-                                  
-                                    <select class="form-control custom-select" id="select-input" required name="num_mes_beca" [(ngModel)]="pension.num_mes_beca">
-                                      <option value="" selected disabled>Selecciona uno</option>
-                                      
-                                      <option value="1" *ngIf="1<=(10-mbeca)" >1</option>
-                                      <option value="2" *ngIf="2<=(10-mbeca)" >2</option>
-                                      <option value="3" *ngIf="3<=(10-mbeca)">3</option>
-                                      <option value="4" *ngIf="4<=(10-mbeca)">4</option>
-                                      <option value="5" *ngIf="5<=(10-mbeca)" >5</option>
-                                      <option value="6" *ngIf="6<=(10-mbeca)">6</option>
-                                      <option value="7" *ngIf="7<=(10-mbeca)">7</option>
-                                      <option value="8" *ngIf="8<=(10-mbeca)">8</option>
-                                      <option value="9" *ngIf="9<=(10-mbeca)">9</option>
-                                      <option value="10" *ngIf="10<=(10-mbeca)">10</option>
-                                  </select>
-                                  </div>
-                                </ng-container>
-                                
-                                  <div class="col-lg-6 form-group" *ngIf="distributivon.condicion_beca == 'Si' ">
-                                    <label >¿Paga Matricula? (*)</label>
-                                    <ng-container *ngIf="pmat">
-                                      <div class="alert alert-warning" >
-                                        <i class="fe fe-info mr-1"></i> Ya pago matricula
-                                      </div>
-                                    </ng-container>
-                                    <ng-container *ngIf="!pmat">
-                                    
-                                    <select class="form-control custom-select" id="select-input" required name="matricula" [(ngModel)]="pension.matricula">
-                                        <option value="" selected disabled>Seleccionar</option>
-                                        <option value="0"  >Si</option>
-                                        <option value="1" >No</option>
-                                    </select>
-                                    </ng-container>
-                                  </div>
+                        </div>
+                        </ng-container>
+                       
+                      </ng-container>
+                    </div>
+               
+
+                 
+                    <div class="row" *ngIf="!(item.value | keyvalue)?.length && item.key!= '__v'&&item.key!= '_id'&&item.key!= 'createdAt'"> 
+                    <ng-container >
+                      <!--*ngIf="item.key.toString().includes('codigo');" [(ngModel)]="distributivon[]"
+                      
+                      <div class="col-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">{{ item.key }} (*)</label>
+                            <input type="text" class="form-control" required placeholder="{{item.value}}" pattern="^[A-ZÁÉÍÓÚÑ ]+$" name="nombres"  >
+                        </div>
+                    </div>
+                  </ng-container>
+                </div>
+             
+                
+              </div>
+            -->
+                <ng-container *ngIf="load_provincia">
+                  <form #registroForm="ngForm" (ngSubmit)="estadoprovincia(registroForm)">
+                  <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+    
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Codigo Provincia (*)</label>
+                                    <input type="text" class="form-control" required placeholder="{{distributivon.codigo_provincia}}" pattern="^[0-9]+$" name="codigo_provincia" [(ngModel)]="act.codigo_provincia">
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-4 form-group"  >	
-                                      <label for="">Descuento de Beca(*)</label>
-                                      <div class="input-group">
-                                      <input  type="number"  [(ngModel)]="pension.desc_beca"pattern="^[0-9]+$" maxlength="3" minlength="1" class="form-control" placeholder="" required name="desc_beca">
+                            </div>
+  
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Nombre Provincia (*)</label>
+                                    <input type="text" class="form-control" required placeholder="{{distributivon.nombre_provincia}}" pattern="^[A-ZÁÉÍÓÚÑ /]+$" name="nombre_provincia" [(ngModel)]="act.nombre_provincia">
+                                </div>
+                            </div>
+  
+                            </div>
+                                 
+                        </div>
+                        
+                    </div>
+                  </div>
+    
+                  <div class="card-footer">
+    
+                      <a class="btn btn-warning btn-shadow mr-3" [routerLink]="['/distributivons']" routerLinkActive="router-link-active" >Regresar</a>
+                      <button *ngIf="!load_btn" class="btn btn-primary btn-shadow" type="submit">Crear</button>
                                       
-                                    <button class="btn btn-primary" type="button" (click)="descuento_valor()">Calcular</button>
-                                  </div>
-                                      
-                                  </div>
-                              
-                                  <div class="col-lg-4 form-group" style="margin-left: 17%;"  >	
-                                      <label for="">Valor de beca(*) </label>
-                                      <div class="input-group">
-                                      <input type="number" [(ngModel)]="pension.val_beca"pattern="^[0-9]+$" maxlength="3" minlength="1" class="form-control" placeholder="" required name="val_beca" >
-                                      
-                                      <button class="btn btn-primary"  type="button" (click)="valor_descuento()">Calcular</button>
-                                    </div>
-                                    </div>
-                                  </div>
-                                
-                            </form>
-                          </ng-container>
-                          </div>
-                               
-                      </div>
+                      <button disabled *ngIf="load_btn" type="button" class="btn btn-primary btn-shadow">
+                          <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                          Creando...
+                      </button>
+    
                       
                   </div>
-                </div>
-                <div class="card-footer">
+                </form>
+                </ng-container>
+                <ng-container *ngIf="load_canton">
+                  <form #registroForm="ngForm" (ngSubmit)="estadocanton(registroForm)">
+                  <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+    
+                                      <div class="col-6">
+                                        <div class="form-group">
+                                          <label >Codigo Provincia (*)</label>
+                                          <br>
+                                      <span> {{distributivon.codigo_provincia.codigo_provincia}}/{{distributivon.codigo_provincia.nombre_provincia}}</span>
+                                          <select class="form-control custom-select" [(ngModel)]="act.codigo_provincia" id="parr_pro" required name="codigo_provincia" >
+                                            <option [ngValue]="''" selected disabled>Seleccionar</option> 
+                                            <ng-container *ngFor="let item of arr_provincia">
+                                              <option value="{{item._id}}" [ngValue]="item._id" >{{item.codigo_provincia}}/{{item.nombre_provincia}}</option>
+                                            </ng-container>                                  
+                                          </select>
+                                        </div>
+                                      </div>  
+                                      <div class="col-6">
+                                          
+                                      </div>
+                                      <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Código Canton (*)</label>
+                                            <input type="text" class="form-control" required pattern="^[0-9]+$" placeholder="{{distributivon.codigo_canton}}" name="codigo_canton" [(ngModel)]="act.codigo_canton">
+                                        </div>
+      
+                                    </div>
+                                      <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Nombre Canton (*)</label>
+                                            <input type="text" class="form-control" required pattern="^[A-ZÁÉÍÓÚÑ /]+$" placeholder="{{distributivon.nombre_canton}}" name="nombre_canton" [(ngModel)]="act.nombre_canton">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                      <div class="form-group">
+                                          <label for="exampleInputEmail1">Puestos para Consejales Urbanos (*)</label>
+                                          <input type="text" class="form-control" required pattern="^[0-9]+$" placeholder="{{distributivon.consejales_urbanos}}" name="consejales_urbanos" [(ngModel)]="act.consejales_urbanos">
+                                      </div>
+    
+                                  </div>
+                                  <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Puestos para Consejales Rurales (*)</label>
+                                        <input type="text" class="form-control" required pattern="^[0-9]+$" placeholder="{{distributivon.consejales_rurales}}" name="consejales_rurales" [(ngModel)]="act.consejales_rurales">
+                                    </div>
+  
+                                </div>
+                            </div>
+                                 
+                        </div>
+                        
+                    </div>
+                  </div>
+    
+                  <div class="card-footer">
+    
+                      <a class="btn btn-warning btn-shadow mr-3" [routerLink]="['/distributivons']" routerLinkActive="router-link-active" >Regresar</a>
+                      <button *ngIf="!load_btn" class="btn btn-primary btn-shadow" type="submit">Crear</button>
+                                      
+                      <button disabled *ngIf="load_btn" type="button" class="btn btn-primary btn-shadow">
+                          <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                          Creando...
+                      </button>
+    
+                      
+                  </div>
+                </form>
+                </ng-container>
+                <ng-container *ngIf="load_parroquia">
+                  <form #registroForm="ngForm" (ngSubmit)="estadoparroquia(registroForm)">
+                  <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+    
+                              <div class="col-6">
+                                          <div class="form-group">
+                                              <label >Codigo Provincia (*)</label>
+                                              <br>
+                                          <span> {{distributivon.codigo_provincia.codigo_provincia}}/{{distributivon.codigo_provincia.nombre_provincia}}</span>
+                                              <select class="form-control custom-select" [(ngModel)]="act.codigo_provincia" (ngModelChange)="buscar_canton($event)" id="select-input" required name="codigo_provincia" >
+                                                  <option [ngValue]="''" selected >Seleccionar</option> 
+                                                  <ng-container *ngFor="let item of arr_provincia">
+                                                    <option value="{{item._id}}" [ngValue]="item._id" >{{item.codigo_provincia}}/{{item.nombre_provincia}}</option>
+                                                  </ng-container>                                  
+                                                </select>
+                                            </div>
+                                      </div>
+                                      <div class="col-6">
+                                        <div class="form-group">
+                                            <label >Codigo Canton (*)</label>
+                                            <br>
+                                          <span> {{distributivon.codigo_canton.codigo_canton}}/{{distributivon.codigo_canton.nombre_canton}}</span>
+                                            <select disabled  class="form-control custom-select" id="parr-canton" aria-placeholder="item.codigo_canton" required name="codigo_canton" [(ngModel)]="act.codigo_canton">
+                                              <option value="" selected >Seleccionar</option> 
+                                              <ng-container *ngFor="let item of arr_canton">
+                                                <option value="{{item._id}}">{{item.codigo_canton}}/{{item.nombre_canton}}</option>
+                                              </ng-container>                                  
+                                            </select>
+                                          </div>
+                                    </div>  
+    
+                                      <div class="col-6">
+                                          <div class="form-group">
+                                              <label for="exampleInputEmail1">codigo_parroquia (*)</label>
+                                              <input type="text" class="form-control" required placeholder="Apellidos"pattern="^[0-9]+$" name="codigo_parroquia" [(ngModel)]="distributivon.codigo_parroquia">
+                                          </div>
+                                      </div>
+                                    <div class="col-6">
+                                      <div class="form-group">
+                                          <label for="exampleInputEmail1">nombre_parroquia (*)</label>
+                                          <input type="tel" class="form-control" required  pattern="^[A-ZÁÉÍÓÚÑ /]+$" placeholder="nombre_parroquia" name="nombre_parroquia" [(ngModel)]="distributivon.nombre_parroquia">
+                                      </div>
+    
+                                  </div>
+  
+                            </div>
+                                 
+                        </div>
+                        
+                    </div>
+                  </div>
+    
+                  <div class="card-footer">
+    
+                      <a class="btn btn-warning btn-shadow mr-3" [routerLink]="['/distributivons']" routerLinkActive="router-link-active" >Regresar</a>
+                      <button *ngIf="!load_btn" class="btn btn-primary btn-shadow" type="submit">Crear</button>
+                                      
+                      <button disabled *ngIf="load_btn" type="button" class="btn btn-primary btn-shadow">
+                          <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                          Creando...
+                      </button>
+    
+                      
+                  </div>
+                  </form>
+                </ng-container>
+                <ng-container *ngIf="load_zona">
+                  <form #registroForm="ngForm" (ngSubmit)="estadozona(registroForm)">
+                 
+                  <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                        <div class="col-6">
+                                              <div class="form-group">
+                                                <label >Codigo Provincia (*)</label>
+                                                <br>
+                                          <span> {{distributivon.codigo_provincia.codigo_provincia}}/{{distributivon.codigo_provincia.nombre_provincia}}</span>
+                                                <select class="form-control custom-select" [(ngModel)]="act.codigo_provincia" (ngModelChange)="buscar_canton($event)" id="select-input" required name="codigo_provincia" >
+                                                  <option [ngValue]="''" selected >Seleccionar</option> 
+                                                  <ng-container *ngFor="let item of arr_provincia">
+                                                    <option value="{{item._id}}" [ngValue]="item._id" >{{item.codigo_provincia}}/{{item.nombre_provincia}}</option>
+                                                  </ng-container>                                  
+                                                </select>
+                                              </div>
+                                        </div>
+  
+                                        <div class="col-6">
+                                          <div class="form-group">
+                                              <label >Codigo Canton (*)</label>
+                                              <br>
+                                          <span> {{distributivon.codigo_canton.codigo_canton}}/{{distributivon.codigo_canton.nombre_canton}}</span>
+                                              <select disabled class="form-control custom-select" id="zon-canton" (ngModelChange)="buscar_parroquia($event)" aria-placeholder="item.codigo_canton" required name="codigo_canton" [(ngModel)]="act.codigo_canton">
+                                                <option value="" selected >Seleccionar</option> 
+                                                <ng-container *ngFor="let item of arr_canton">
+                                                  <option value="{{item._id}}" [ngValue]="item._id" >{{item.codigo_canton}}/{{item.nombre_canton}}</option>
+                                                </ng-container>                                  
+                                              </select>
+                                            </div>
+                                      </div>  
+  
+                                      <div class="col-6">
+                                        <div class="form-group">
+                                            <label >Codigo Parroquia (*)</label>
+                                            <br>
+                                          <span> {{distributivon.codigo_parroquia.codigo_parroquia}}/{{distributivon.codigo_parroquia.nombre_parroquia}}</span>
+                                            <select disabled class="form-control custom-select" id="zon-parr" aria-placeholder="item.codigo_parroquia" required name="codigo_parroquia" [(ngModel)]="act.codigo_parroquia">
+                                              <option value="" selected >Seleccionar</option> 
+                                              <ng-container *ngFor="let item of arr_parroquia">
+                                                <option value="{{item._id}}">{{item.codigo_parroquia}}/{{item.nombre_parroquia}}</option>
+                                              </ng-container>                                  
+                                            </select>
+                                          </div>
+                                    </div>
+  
+  
+                                      <div class="col-6">
+                                          <div class="form-group">
+                                          </div>
+                                      </div>
+  
+                                      <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">codigo_zona (*)</label>
+                                            <input type="tel" class="form-control" required pattern="^[0-9]+$"placeholder="{{distributivon.codigo_zona}}" name="codigo_zona" [(ngModel)]="act.codigo_zona">
+                                        </div>
+      
+                                    </div>
+  
+                                      <div class="col-6">
+                                          <div class="form-group">
+                                              <label for="exampleInputEmail1">nombre_zona (*)</label>
+                                              <input type="text" class="form-control" required placeholder="{{distributivon.nombre_zona}}" pattern="^[A-ZÁÉÍÓÚÑ0-9 /]+$" name="nombre_zona" [(ngModel)]="act.nombre_zona">
+                                          </div>
+                                      </div>
+                            </div>
+                                 
+                        </div>
+                        
+                    </div>
+                  </div>
+    
+                  <div class="card-footer">
   
                     <a class="btn btn-warning btn-shadow mr-3" [routerLink]="['/distributivons']" routerLinkActive="router-link-active" >Regresar</a>
                     <button *ngIf="!load_btn" class="btn btn-primary btn-shadow" type="submit">Actualizar</button>
@@ -224,6 +413,212 @@
   
                     
                 </div>
+                </form>
+                </ng-container>
+                <ng-container *ngIf="load_recinto">
+                  <form #registroForm="ngForm" (ngSubmit)="estadorecinto(registroForm)">
+                  <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                      <div class="col-6">
+                                        <div class="form-group">
+                                          <label >Codigo Provincia (*)</label>
+                                          <br>
+                                          <span> {{distributivon.codigo_provincia.codigo_provincia}}/{{distributivon.codigo_provincia.nombre_provincia}}</span>
+                                          <select class="form-control custom-select" [(ngModel)]="act.codigo_provincia" (ngModelChange)="buscar_canton($event)" id="rec_pro" required name="codigo_provincia" >
+                                            <option [ngValue]="''" selected >Seleccionar</option> 
+                                            <ng-container *ngFor="let item of arr_provincia">
+                                              <option value="{{item._id}}" [ngValue]="item._id" >{{item.codigo_provincia}}/{{item.nombre_provincia}}</option>
+                                            </ng-container>                                  
+                                          </select>
+                                        </div>
+                                  </div>
+  
+                                  <div class="col-6">
+                                    <div class="form-group">
+                                        <label >Codigo Canton (*)</label>
+                                        <br>
+                                        <span> {{distributivon.codigo_canton.codigo_canton}}/{{distributivon.codigo_canton.nombre_canton}}</span>
+                                        <select disabled class="form-control custom-select" id="rec-canton" (ngModelChange)="buscar_parroquia($event)" aria-placeholder="item.codigo_canton" required name="codigo_canton" [(ngModel)]="act.codigo_canton">
+                                          <option value="" selected >Seleccionar</option> 
+                                          <ng-container *ngFor="let item of arr_canton">
+                                            <option value="{{item._id}}" [ngValue]="item._id" >{{item.codigo_canton}}/{{item.nombre_canton}}</option>
+                                          </ng-container>                                  
+                                        </select>
+                                      </div>
+                                </div>  
+  
+                                <div class="col-6">
+                                  <div class="form-group">
+                                      <label >Codigo Parroquia (*)</label>
+                                      <br>
+                                      <span> {{distributivon.codigo_parroquia.codigo_parroquia}}/{{distributivon.codigo_parroquia.nombre_parroquia}}</span>
+                                      <select disabled class="form-control custom-select" id="rec-parr" (ngModelChange)="buscar_zona($event)" aria-placeholder="item.codigo_parroquia" required name="codigo_parroquia" [(ngModel)]="act.codigo_parroquia">
+                                        <option value="" selected >Seleccionar</option> 
+                                        <ng-container *ngFor="let item of arr_parroquia">
+                                          <option value="{{item._id}}" [ngValue]="item._id">{{item.codigo_parroquia}}/{{item.nombre_parroquia}}</option>
+                                        </ng-container>                                  
+                                      </select>
+                                    </div>
+                              </div>
+                              <div class="col-6">
+                                <div class="form-group">
+                                    <label >Codigo Zona (*)</label>
+                                    <br>
+                                    <span> {{distributivon.codigo_zona.codigo_zona}}/{{distributivon.codigo_zona.nombre_zona}}</span>
+                                    <select disabled class="form-control custom-select" id="rec-zona" aria-placeholder="item.codigo_zona" required name="codigo_zona" [(ngModel)]="act.codigo_zona">
+                                      <option value="" selected >Seleccionar</option> 
+                                      <ng-container *ngFor="let item of arr_zona">
+                                        <option value="{{item._id}}">{{item.codigo_zona}}/{{item.nombre_zona}}</option>
+                                      </ng-container>                                  
+                                    </select>
+                                  </div>
+                            </div>
+                            <div class="col-6">
+                              <div class="form-group">
+                                  <label for="exampleInputEmail1">codigo_recinto (*)</label>
+                                  <input type="text" class="form-control" required pattern="^[0-9]+$" placeholder="{{distributivon.codigo_recinto}}" name="distributivon.codigo_recinto" [(ngModel)]="act.codigo_recinto">
+                              </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">nombre_recinto (*)</label>
+                                    <input type="text" class="form-control" required placeholder="{{distributivon.nombre_recinto}}" pattern="^[A-ZÁÉÍÓÚÑ0-9 /]+$" name="nombre_recinto" [(ngModel)]="act.nombre_recinto">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                              <div class="form-group">
+                                  <label for="exampleInputEmail1">direccion_recinto (*)</label>
+                                  <input type="text" class="form-control" required placeholder="{{distributivon.direccion_recinto}}" pattern="^[A-ZÁÉÍÓÚÑ0-9 /]+$" name="direccion_recinto" [(ngModel)]="act.direccion_recinto">
+                              </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">telefono (*)</label>
+                                <input type="text" class="form-control" required pattern="^[0-9]+$" maxlength="10" placeholder="{{distributivon.telefono}}" name="telefono" [(ngModel)]="act.telefono">
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">zona_utm (*)</label>
+                                <input type="text" class="form-control" required pattern="^[0-9]+$" placeholder="{{distributivon.zona_utm}}" name="zona_utm" [(ngModel)]="act.zona_utm">
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="form-group">
+                             </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">coord_x (*)</label>
+                                <input type="text" class="form-control" required pattern="^[0-9.-,]+$" placeholder="{{distributivon.coord_x}}" name="coord_x" [(ngModel)]="act.coord_x">
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">coord_y (*)</label>
+                                <input type="text" class="form-control" required pattern="^[0-9.-,]+$" placeholder="{{distributivon.coord_y}}" name="coord_y" [(ngModel)]="act.coord_y">
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">long (*)</label>
+                                <input type="text" class="form-control" required pattern="^[0-9.-,]+$" placeholder="{{distributivon.long}}" name="long" [(ngModel)]="act.long">
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">lat (*)</label>
+                                <input type="text" class="form-control" required pattern="^[0-9.-,]+$" placeholder="{{distributivon.lat}}" name="lat" [(ngModel)]="act.lat">
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">u_r (*)</label>
+                                <input type="text" class="form-control" required placeholder="{{distributivon.u_r}}" pattern="^[UR]+$" maxlength="1" name="u_r" [(ngModel)]="act.u_r">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="form-group">
+                           </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="form-group">
+                              <label for="exampleInputEmail1">jun_fem (*)</label>
+                              <input type="text" class="form-control" required pattern="^[0-9]+$" placeholder="{{distributivon.jun_fem}}" name="jun_fem" [(ngModel)]="act.jun_fem">
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="form-group">
+                              <label for="exampleInputEmail1">jun_mas (*)</label>
+                              <input type="text" class="form-control" required pattern="^[0-9]+$" placeholder="{{distributivon.jun_mas}}" name="jun_mas" [(ngModel)]="act.jun_mas">
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="form-group">
+                              <label for="exampleInputEmail1">num_junr (*)</label>
+                              <input type="text" class="form-control" required pattern="^[0-9]+$" placeholder="{{distributivon.num_junr}}" name="num_junr" [(ngModel)]="act.num_junr">
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="form-group">
+                           </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="form-group">
+                              <label for="exampleInputEmail1">jun_inif (*)</label>
+                              <input type="text" class="form-control" required pattern="^[0-9]+$" placeholder="{{distributivon.jun_inif}}" name="jun_inif" [(ngModel)]="act.jun_inif">
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="form-group">
+                              <label for="exampleInputEmail1">jun_finf (*)</label>
+                              <input type="text" class="form-control" required pattern="^[0-9]+$" placeholder="{{distributivon.jun_finf}}" name="jun_finf" [(ngModel)]="act.jun_finf">
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="form-group">
+                              <label for="exampleInputEmail1">jun_inim (*)</label>
+                              <input type="text" class="form-control" required pattern="^[0-9]+$" placeholder="{{distributivon.jun_inim}}" name="jun_inim" [(ngModel)]="act.jun_inim">
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="form-group">
+                              <label for="exampleInputEmail1">jun_finm (*)</label>
+                              <input type="text" class="form-control" required pattern="^[0-9]+$" placeholder="{{distributivon.jun_finm}}" name="jun_finm" [(ngModel)]="act.jun_finm">
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="form-group">
+                              <label for="exampleInputEmail1">numero_electores (*)</label>
+                              <input type="text" class="form-control" required pattern="^[0-9]+$" placeholder="{{distributivon.numero_electores}}" name="numero_electores" [(ngModel)]="act.numero_electores">
+                          </div>
+                        </div>
+                            </div>
+                                 
+                        </div>
+                        
+                    </div>
+                  </div>
+                  <div class="card-footer">
+  
+                    <a class="btn btn-warning btn-shadow mr-3" [routerLink]="['/distributivons']" routerLinkActive="router-link-active" >Regresar</a>
+                    <button *ngIf="!load_btn" class="btn btn-primary btn-shadow" type="submit">Actualizar</button>
+                                    
+                    <button disabled *ngIf="load_btn" type="button" class="btn btn-primary btn-shadow">
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Creando...
+                    </button>
+  
+                    
+                </div>
+                  
+                </form>
+                </ng-container>
+
+               
+                
               </div>
             </form>
               

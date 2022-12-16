@@ -200,34 +200,46 @@
                         </td>
                         <td>
                           <span class="bi bi-arrow-up-right-square"  style="cursor:pointer;" [routerLink]="['/distributivons/edit',item.element.codigo_provincia._id]">{{item.element.codigo_provincia.codigo_provincia}} </span> 
-                          <span class="fe fe-ci-arrow-top-right me-4"></span>
+                          
                         </td>
                         <td>
-                          {{item.element.codigo_provincia.nombre_provincia}}
+                          <span class="bi bi-arrow-up-right-square"  style="cursor:pointer;" [routerLink]="['/distributivons/edit',item.element.codigo_provincia._id]">{{item.element.codigo_provincia.nombre_provincia}} </span>
+                          
                         </td>
                         <td>
-                          {{item.element.codigo_canton.codigo_canton}}
+                          <span class="bi bi-arrow-up-right-square"  style="cursor:pointer;" [routerLink]="['/distributivons/edit',item.element.codigo_canton._id]">{{item.element.codigo_canton.codigo_canton}}</span>
+                          
                         </td>
                         <td>
-                          {{item.element.codigo_canton.nombre_canton}}
+                          <span class="bi bi-arrow-up-right-square"  style="cursor:pointer;" [routerLink]="['/distributivons/edit',item.element.codigo_canton._id]">{{item.element.codigo_canton.nombre_canton}}</span>
+                          
                         </td>
                         <td>
-                          {{item.element.codigo_parroquia.codigo_parroquia}}
+                          <span class="bi bi-arrow-up-right-square"  style="cursor:pointer;" [routerLink]="['/distributivons/edit',item.element.codigo_parroquia._id]">{{item.element.codigo_parroquia.codigo_parroquia}}</span>
+                          
                         </td>
                         <td>
-                          {{item.element.codigo_parroquia.nombre_parroquia}}
+                          <span class="bi bi-arrow-up-right-square"  style="cursor:pointer;" [routerLink]="['/distributivons/edit',item.element.codigo_parroquia._id]">{{item.element.codigo_parroquia.nombre_parroquia}}</span>
+                          
                         </td>
                         <td>
-                          {{item.element.codigo_zona.codigo_zona}}
+                          <span class="bi bi-arrow-up-right-square"  style="cursor:pointer;" [routerLink]="['/distributivons/edit',item.element.codigo_zona._id]">{{item.element.codigo_zona.codigo_zona}}</span>
+                       
+                          
                         </td>
                         <td>
-                          {{item.element.codigo_zona.nombre_zona}}
+                          <span class="bi bi-arrow-up-right-square"  style="cursor:pointer;" [routerLink]="['/distributivons/edit',item.element.codigo_zona._id]">{{item.element.codigo_zona.nombre_zona}}</span>
+                          
                         </td>
                         <td>
-                          {{item.element.codigo_recinto}}
+                          <span class="bi bi-arrow-up-right-square"  style="cursor:pointer;" [routerLink]="['/distributivons/edit',item.element._id]">
+                            {{item.element.codigo_recinto}}</span>
+                          
                         </td>
                         <td>
-                          {{item.element.nombre_recinto}}
+                          <span class="bi bi-arrow-up-right-square"  style="cursor:pointer;" [routerLink]="['/distributivons/edit',item.element._id]">
+                            {{item.element.nombre_recinto}}</span>
+                         
                         </td>
                         <td>
                           {{item.element.direccion_recinto}}
@@ -337,7 +349,7 @@
                 <ngb-pagination *ngIf="distributivons.length >= 1"
                         [(page)]="page"
                         [pageSize]="pageSize"
-                        [maxSize]="10"
+                        [maxSize]="3"
                         [rotate]="true" [boundaryLinks]="true"
                 [collectionSize]="distributivons.length"></ngb-pagination>
   

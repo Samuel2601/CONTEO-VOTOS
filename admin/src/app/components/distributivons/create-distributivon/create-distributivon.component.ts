@@ -56,7 +56,7 @@ export class CreateDistributivonComponent implements OnInit {
 	public new_canton: any = {};
 	public new_recinto: any = {};
 	public new_zona: any = {};
-
+	public tp='Provincia';
 	constructor(
 		private _distributivonService: DistributivonService,
 		private _adminService: AdminService,
@@ -139,6 +139,7 @@ export class CreateDistributivonComponent implements OnInit {
 		
 	}
 	tiponav(id){
+		this.tp=id;
 		switch (id){
 			case 'Provincia':
 				this.load_provincia=true;

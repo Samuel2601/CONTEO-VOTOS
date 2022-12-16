@@ -25,7 +25,7 @@ export class IndexDistributivonsComponent implements OnInit, FlatfileMethods {
 	public token = localStorage.getItem("token");
 	public rol: any;
 	public page = 1;
-	public pageSize = 24;
+	public pageSize = 50;
 	public filtro = "";
 	public tipo_filtro = "";
 	public load_eliminados = false;

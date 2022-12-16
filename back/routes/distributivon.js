@@ -60,6 +60,8 @@ api.post('/registro_dvotacion',auth.auth,path,distributivonController.registro_d
 api.get('/obtener_portada/:img',distributivonController.obtener_portada);
 api.get('/obtener_portada_partido/:img',distributivonController.obtener_portada_partido);
 
+api.get('/obtener_distributivon_guest/:id',auth.auth,distributivonController.obtener_distributivon_guest);
+
 /*
 
 api.post('/registro_distributivon_tienda',distributivonController.registro_distributivon_tienda);

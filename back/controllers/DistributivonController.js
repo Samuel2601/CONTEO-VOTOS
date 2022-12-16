@@ -207,7 +207,7 @@ const eliminar_distributivon_masivo = async function(req,res){
                 contador.parroquia=0;
                 contador.zona=0;
                 contador.recinto=0;
-            //console.log(data.length);
+            console.log(data.length);
 
             if(data.length>0){
                 for(var i=0; i<data.length;i++){
@@ -217,8 +217,10 @@ const eliminar_distributivon_masivo = async function(req,res){
                         
                         //Recinto
                         var reg_rec = await Recinto.findById(datai._id);
+                        var votacion = await Votacion.findById({codigo_recinto:id}).populate('votacion').populate('codigo_recinto');
                         if(reg_rec.length!=0){
                             reg_rec = await Recinto.findByIdAndDelete(datai._id);
+                            votacion = await Votacion.deleteMany({codigo_dignidad:id});
                             contador.recinto++;
                         }
                         
@@ -791,6 +793,50 @@ const registro_dvotacion = async function(req,res){
     }
 }
 
+const obtener_distributivon_guest = async function(req,res){
+    if(req.user){
+        var id = req.params['id'];
+        try {
+            console.log(id);
+            let distributivon = await Provincia.findById(id);
+            let ms = 'Provincia';
+           // console.log("Provincia:",distributivon);
+            if(distributivon==null){
+                distributivon = await Canton.findById(id).populate('codigo_provincia');
+                ms = 'Canton';
+               // console.log("Canton:",distributivon);
+               
+                if(distributivon==null){
+                    distributivon = await Zona.findById(id).populate('codigo_provincia').populate('codigo_canton').populate('codigo_parroquia');
+                    ms = 'Zona';
+                 //   console.log("Zona:",distributivon);
+                    if(distributivon==null){
+                        distributivon = await Parroquia.findById(id).populate('codigo_provincia').populate('codigo_canton');
+                        ms = 'Parroquia';
+                       // console.log("Parroquia:",distributivon);
+                        if(distributivon==null){
+                            distributivon = await Recinto.findById(id).populate('codigo_provincia').populate('codigo_canton').populate('codigo_parroquia').populate('codigo_zona');
+                            ms = 'Recinto';
+                          //  console.log("Recinto:",distributivon);
+                           if(distributivon==null){
+                                ms='no existe';
+                           }
+                        }
+                    }
+                }
+            }
+            
+            res.status(200).send({data:distributivon,message:ms});
+            
+        } catch (error) {
+            res.status(200).send({data:undefined});
+        }
+    }else{
+
+        res.status(500).send({message: 'NoAccess'});
+    }
+}
+
 module.exports = {
     obtener_portada,
     obtener_portada_partido,
@@ -848,6 +894,7 @@ module.exports = {
 
     eliminar_dignidad,
 
+    obtener_distributivon_guest,
 
     /*
     listar_distributivons_tienda,
